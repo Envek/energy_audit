@@ -1,12 +1,28 @@
 !!!
-%html{:lang => I18n.locale}
+%html{lang: I18n.locale}
   %head
-    %title Энергоаудит
-    = stylesheet_link_tag    "application", :media => "all"
+    %meta{charset: "utf-8"}
+    %title #{t("application.short_name")}
+    %meta{name: "viewport", content: "width=device-width, initial-scale=1.0"}
+    = stylesheet_link_tag    "application", media: "all"
     = javascript_include_tag "application"
     = csrf_meta_tags
   %body
-    %p.alert.alert-info= notice
-    %p.alert.alert-error= alert
+    .navbar.navbar-fixed-top
+      .navbar-inner
+        .container-fluid
+          %a.brand.pull-left{href: root_path} #{t("application.short_name")}
+          .nav-collapse
+          %ul.nav
+            %li
+              %a{href: root_path} Главная
+          %ul.nav.pull-right
+            = render "layouts/user_menu"
+    .container-fluid
+      .row-fluid
+        - unless notice.nil?
+          %p.alert.alert-info= notice
+        - unless alert.nil?
+          %p.alert.alert-error= alert
 
-    = yield
+        = yield

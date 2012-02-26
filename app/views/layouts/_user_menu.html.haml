@@ -1,0 +1,15 @@
+- if user_signed_in?
+  %li
+    = link_to current_user.surname_initials, "#"
+  %li
+    = link_to t("devise.labels.sign_out"), destroy_user_session_path
+- else
+  %li.dropdown
+    %a.dropdown-toggle{"data-toggle".to_sym => "dropdown", href: "#"}
+      Вход в систему
+      %b.caret
+    %ul.dropdown-menu
+      %li
+        %a{href: new_operator_session_path} Войти как оператор
+        %a{href: new_auditor_session_path} Войти как аудитор
+        %a{href: new_admin_session_path} Войти как администратор

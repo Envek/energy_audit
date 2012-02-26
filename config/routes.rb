@@ -2,7 +2,7 @@ EnergyAudit::Application.routes.draw do
   # The priority is based upon order of creation:
   # first created -> highest priority.
 
-  devise_for :admins, :auditors, :operators
+  devise_for :admin, :auditor, :operator, :path_names => { :sign_in => 'login', :sign_out => 'logout'}
 
   root :to => 'home#index'
 
