@@ -2,6 +2,8 @@ EnergyAudit::Application.routes.draw do
   # The priority is based upon order of creation:
   # first created -> highest priority.
 
+  devise_for :admins, :auditors, :operators
+
   root :to => 'home#index'
 
   # Sample of regular route:
