@@ -4,6 +4,16 @@ EnergyAudit::Application.routes.draw do
 
   devise_for :admin, :auditor, :operator, :path_names => { :sign_in => 'login', :sign_out => 'logout'}
 
+  namespace :admin do |a|
+    namespace :users do |u|
+      resources :admins do as_routes end
+      resources :auditors do as_routes end
+      resources :operators do as_routes end
+      root :to => redirect('/admin/users/operators')
+    end
+    root :to => redirect('/admin/users/operators')
+  end
+
   root :to => 'home#index'
 
   # Sample of regular route:

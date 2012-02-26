@@ -1,0 +1,7 @@
+%ul.btn-group
+  %li.btn{:class => ("active" if params[:controller] == "admin/users/admins")}
+    = link_to "Администраторы", admin_users_admins_path
+  %li.btn{:class => ("active" if params[:controller] == "admin/users/auditors")}
+    = link_to "Аудиторы", admin_users_auditors_path
+  %li.btn{:class => ("active" if params[:controller] == "admin/users/operators")}
+    = link_to "Операторы", admin_users_operators_path

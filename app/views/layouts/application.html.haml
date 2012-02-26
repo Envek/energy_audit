@@ -14,12 +14,16 @@
           %a.brand.pull-left{href: root_path} #{t("application.short_name")}
           .nav-collapse
           %ul.nav
-            %li
-              %a{href: root_path} Главная
+            %li{:class => ("active" if params[:controller] == "home")}
+              = link_to "Главная", root_path
+            = render "layouts/main_menu"
           %ul.nav.pull-right
             = render "layouts/user_menu"
     .container-fluid
       .row-fluid
+        
+        = render "submenu"
+
         - unless notice.nil?
           %p.alert.alert-info= notice
         - unless alert.nil?
