@@ -11,7 +11,41 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20120227032535) do
+ActiveRecord::Schema.define(:version => 20120227111826) do
+
+  create_table "activities", :force => true do |t|
+    t.string   "name",                 :null => false
+    t.integer  "activity_category_id"
+    t.datetime "created_at",           :null => false
+    t.datetime "updated_at",           :null => false
+  end
+
+  add_index "activities", ["activity_category_id"], :name => "index_activities_on_activity_category_id"
+  add_index "activities", ["name"], :name => "index_activities_on_name", :unique => true
+
+  create_table "activity_categories", :force => true do |t|
+    t.string   "name",       :null => false
+    t.datetime "created_at", :null => false
+    t.datetime "updated_at", :null => false
+  end
+
+  add_index "activity_categories", ["name"], :name => "index_activity_categories_on_name", :unique => true
+
+  create_table "areas", :force => true do |t|
+    t.string   "name",       :null => false
+    t.datetime "created_at", :null => false
+    t.datetime "updated_at", :null => false
+  end
+
+  add_index "areas", ["name"], :name => "index_areas_on_name", :unique => true
+
+  create_table "kinds", :force => true do |t|
+    t.string   "name",       :null => false
+    t.datetime "created_at", :null => false
+    t.datetime "updated_at", :null => false
+  end
+
+  add_index "kinds", ["name"], :name => "index_kinds_on_name", :unique => true
 
   create_table "operator_subjects", :force => true do |t|
     t.integer  "operator_id"
@@ -32,6 +66,14 @@ ActiveRecord::Schema.define(:version => 20120227032535) do
   end
 
   add_index "periods", ["date"], :name => "index_periods_on_date", :unique => true
+
+  create_table "resources", :force => true do |t|
+    t.string   "name",       :null => false
+    t.datetime "created_at", :null => false
+    t.datetime "updated_at", :null => false
+  end
+
+  add_index "resources", ["name"], :name => "index_resources_on_name", :unique => true
 
   create_table "subjects", :force => true do |t|
     t.string   "name",                                   :null => false
