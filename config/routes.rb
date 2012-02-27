@@ -11,6 +11,12 @@ EnergyAudit::Application.routes.draw do
       resources :operators do as_routes end
       root :to => redirect('/admin/users/operators')
     end
+    namespace :subjects do |s|
+      resources :districts do as_routes end
+      resources :authorities do as_routes end
+      resources :organisations do as_routes end
+      root :to => redirect('/admin/subjects/authorities')
+    end
     resources :periods do as_routes end
     root :to => redirect('/admin/users/operators')
   end

@@ -1,0 +1,7 @@
+%ul.btn-group
+  %li.btn{:class => ("active" if params[:controller] == "admin/subjects/districts")}
+    = link_to "Муниципальные образования", admin_subjects_districts_path
+  %li.btn{:class => ("active" if params[:controller] == "admin/subjects/authorities")}
+    = link_to "Исполнительные органы власти", admin_subjects_authorities_path
+  %li.btn{:class => ("active" if params[:controller] == "admin/subjects/organisations")}
+    = link_to "Организации", admin_subjects_organisations_path
