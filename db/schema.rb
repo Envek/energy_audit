@@ -11,7 +11,18 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20120227024508) do
+ActiveRecord::Schema.define(:version => 20120227032535) do
+
+  create_table "operator_subjects", :force => true do |t|
+    t.integer  "operator_id"
+    t.integer  "subject_id"
+    t.datetime "created_at",  :null => false
+    t.datetime "updated_at",  :null => false
+  end
+
+  add_index "operator_subjects", ["operator_id", "subject_id"], :name => "index_operator_subjects_on_operator_id_and_subject_id", :unique => true
+  add_index "operator_subjects", ["operator_id"], :name => "index_operator_subjects_on_operator_id"
+  add_index "operator_subjects", ["subject_id"], :name => "index_operator_subjects_on_subject_id"
 
   create_table "periods", :force => true do |t|
     t.date     "date",                          :null => false
