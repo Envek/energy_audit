@@ -1,6 +1,8 @@
 - if admin_signed_in?
   %li{:class => ("active" if params[:controller].start_with? "admin/users")}
     = link_to "Пользователи", admin_users_root_path
+  %li{:class => ("active" if params[:controller].start_with? "admin/periods")}
+    = link_to "Периоды", admin_periods_path
 - elsif auditor_signed_in?
   
 - elsif operator_signed_in?

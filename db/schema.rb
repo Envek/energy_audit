@@ -11,7 +11,16 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20120226062210) do
+ActiveRecord::Schema.define(:version => 20120227015859) do
+
+  create_table "periods", :force => true do |t|
+    t.date     "date",                          :null => false
+    t.boolean  "published",  :default => false
+    t.datetime "created_at",                    :null => false
+    t.datetime "updated_at",                    :null => false
+  end
+
+  add_index "periods", ["date"], :name => "index_periods_on_date", :unique => true
 
   create_table "users", :force => true do |t|
     t.string   "full_name",                                      :null => false

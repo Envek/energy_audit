@@ -11,6 +11,7 @@ EnergyAudit::Application.routes.draw do
       resources :operators do as_routes end
       root :to => redirect('/admin/users/operators')
     end
+    resources :periods do as_routes end
     root :to => redirect('/admin/users/operators')
   end
 
