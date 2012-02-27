@@ -1,0 +1,11 @@
+%ul.btn-group
+  %li.btn{:class => ("active" if params[:controller] == "admin/dictionaries/activities")}
+    = link_to "Мероприятия", admin_dictionaries_activities_path
+  %li.btn{:class => ("active" if params[:controller] == "admin/dictionaries/activity_categories")}
+    = link_to "Группы мероприятий", admin_dictionaries_activity_categories_path
+  %li.btn{:class => ("active" if params[:controller] == "admin/dictionaries/resources")}
+    = link_to "Топливо-энергетические ресурсы", admin_dictionaries_resources_path
+  %li.btn{:class => ("active" if params[:controller] == "admin/dictionaries/kinds")}
+    = link_to "Показатели", admin_dictionaries_kinds_path
+  %li.btn{:class => ("active" if params[:controller] == "admin/dictionaries/areas")}
+    = link_to "Области охвата показателей", admin_dictionaries_areas_path
