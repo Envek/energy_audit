@@ -23,6 +23,7 @@
       .row-fluid
         
         = render "submenu"
+        = render "current_options" if operator_signed_in?
 
         - unless notice.nil?
           %p.alert.alert-info= notice

@@ -30,6 +30,10 @@ EnergyAudit::Application.routes.draw do
     root :to => redirect('/admin/users/operators')
   end
 
+  namespace :operator do
+    resources :options
+  end
+
   root :to => 'home#index'
 
   # Sample of regular route:
