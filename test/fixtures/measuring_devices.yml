@@ -1,0 +1,19 @@
+# Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/Fixtures.html
+
+one:
+  period: 
+  subject: 
+  area: 
+  kind: 
+  start_value: 9.99
+  planned_value: 9.99
+  final_value: 9.99
+
+two:
+  period: 
+  subject: 
+  area: 
+  kind: 
+  start_value: 9.99
+  planned_value: 9.99
+  final_value: 9.99
