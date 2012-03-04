@@ -1,0 +1,15 @@
+// Place all the styles related to the operator/measuring_devices controller here.
+// They will automatically be included in application.css.
+// You can use Sass (SCSS) here: http://sass-lang.com/
+
+$table_width: 100%;
+$total_columns: 19;
+
+table.devices_form_table {
+
+  td.usual {
+    width: $table_width / $total_columns;
+    text-align: right;
+  }
+
+}

@@ -1,0 +1,30 @@
+%table.form_table.devices_form_table
+  %thead
+    %tr
+      - @val_types.each do |v|
+        %th{:colspan => @kinds.count+1} #{v}
+      %th{:rowspan => 2} Процент оснащённости
+    %tr
+      - @val_types.each do |v|
+        - @kinds.each do |kind|
+          %th #{kind.name}
+        %th Всего
+  %tbody
+    - @areas.each do |area|
+      %tr
+        %th{:colspan => @val_types.count*(@kinds.count+1)+1}
+          #{area.name}
+      %tr
+        - @val_types.each do |v|
+          - @kinds.each do |kind|
+            - value = @current_devices.select{|d| d.area_id == area.id && d.kind_id == kind.id }.first.try(v) if @current_devices
+            - value = (((params[:measuring_device] or {})[area.id.to_s] or {})[kind.id.to_s] or {})[v] unless @current_devices
+            %td.usual.with_input= number_field_tag "measuring_device[#{area.id}][#{kind.id}][#{v}]", value || 0
+              
+          %td.usual
+        %td.usual
+
+.form-actions
+  %button.btn.btn-primary{:type => :submit} Внести данные
+  %button.btn.back_button{:type => :button} Назад
+  %button.btn.btn-inverse{:type => :reset} Отменить изменения

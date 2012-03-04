@@ -32,6 +32,12 @@ EnergyAudit::Application.routes.draw do
 
   namespace :operator do
     resources :options
+    resources :measuring_devices do
+      collection do
+        get :edit
+        put :update
+      end
+    end
   end
 
   root :to => 'home#index'

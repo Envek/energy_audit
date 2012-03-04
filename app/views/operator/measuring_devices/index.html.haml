@@ -1,0 +1,36 @@
+%h1.form_header #{@subject.name}
+
+- if @current_devices.any?
+  %table.form_table.devices_form_table
+    %thead
+      %tr
+        - @val_types.each do |v|
+          %th{:colspan => @kinds.count+1} #{v}
+        %th{:rowspan => 2} Процент оснащённости
+      %tr
+        - @val_types.each do |v|
+          - @kinds.each do |kind|
+            %th #{kind.name}
+          %th Всего
+    %tbody
+      - @areas.each do |area|
+        %tr
+          %th{:colspan => @val_types.count*(@kinds.count+1)+1}
+            #{area.name}
+        %tr
+          - val_sums = {}
+          - @val_types.each do |v|
+            - @kinds.each do |kind|
+              %td.usual #{@current_devices.select{|d| d.area_id == area.id && d.kind_id == kind.id }.first.try(v)}
+            - val_sums[v] = @current_devices.select{|d| d.area_id == area.id }.sum{ |d| d.try(v)}
+            %td.usual #{ val_sums[v] }
+          - percent = val_sums[:final_value]/(val_sums[:start_value]+val_sums[:planned_value])*100
+          %td.usual #{ percent and percent.finite? ? percent.to_s+"%" : "недоступен"  }
+
+  .form-actions
+    = link_to "Внести изменения", url_for(:action => :edit), :class => "primary_action btn"
+
+- else
+  %p 
+    На текущий период нет данных.
+    = link_to "Внести данные", url_for(:action => :new), :class => "btn btn-primary"
