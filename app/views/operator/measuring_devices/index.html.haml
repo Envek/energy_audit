@@ -24,8 +24,9 @@
               %td.usual #{@current_devices.select{|d| d.area_id == area.id && d.kind_id == kind.id }.first.try(v)}
             - val_sums[v] = @current_devices.select{|d| d.area_id == area.id }.sum{ |d| d.try(v)}
             %td.usual #{ val_sums[v] }
-          - percent = val_sums[:final_value]/(val_sums[:start_value]+val_sums[:planned_value])*100
-          %td.usual #{ percent and percent.finite? ? percent.to_s+"%" : "недоступен"  }
+          - divisor = val_sums[:start_value]+val_sums[:planned_value]
+          - percent = val_sums[:final_value]/divisor.to_f*100 unless divisor.zero?
+          %td.usual #{ divisor.zero? ? "недоступен" : number_to_percentage(percent) }
 
   .form-actions
     = link_to "Внести изменения", url_for(:action => :edit), :class => "primary_action btn"

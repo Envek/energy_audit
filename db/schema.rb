@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20120302113722) do
+ActiveRecord::Schema.define(:version => 20120313122725) do
 
   create_table "activities", :force => true do |t|
     t.string   "name",                 :null => false
@@ -48,15 +48,15 @@ ActiveRecord::Schema.define(:version => 20120302113722) do
   add_index "kinds", ["name"], :name => "index_kinds_on_name", :unique => true
 
   create_table "measuring_devices", :force => true do |t|
-    t.integer  "period_id",                                                     :null => false
-    t.integer  "subject_id",                                                    :null => false
-    t.integer  "area_id",                                                       :null => false
-    t.integer  "kind_id",                                                       :null => false
-    t.decimal  "start_value",   :precision => 32, :scale => 8, :default => 0.0
-    t.decimal  "planned_value", :precision => 32, :scale => 8, :default => 0.0
-    t.decimal  "final_value",   :precision => 32, :scale => 8, :default => 0.0
-    t.datetime "created_at",                                                    :null => false
-    t.datetime "updated_at",                                                    :null => false
+    t.integer  "period_id",                    :null => false
+    t.integer  "subject_id",                   :null => false
+    t.integer  "area_id",                      :null => false
+    t.integer  "kind_id",                      :null => false
+    t.integer  "start_value",   :default => 0
+    t.integer  "planned_value", :default => 0
+    t.integer  "final_value",   :default => 0
+    t.datetime "created_at",                   :null => false
+    t.datetime "updated_at",                   :null => false
   end
 
   add_index "measuring_devices", ["area_id"], :name => "index_measuring_devices_on_area_id"
