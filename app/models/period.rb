@@ -1,5 +1,6 @@
 class Period < ActiveRecord::Base
   has_many :measuring_devices
+  has_many :audits
 
   validates :date, :presence => true, :uniqueness => true
 

@@ -1,0 +1,21 @@
+# Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/Fixtures.html
+
+one:
+  period: 
+  subject: 
+  buildings: 1
+  audited_before: 1
+  audit_required: 1
+  audited_in_period: 1
+  audit_contracts_before: 1
+  audit_contracts_after: 1
+
+two:
+  period: 
+  subject: 
+  buildings: 1
+  audited_before: 1
+  audit_required: 1
+  audited_in_period: 1
+  audit_contracts_before: 1
+  audit_contracts_after: 1
