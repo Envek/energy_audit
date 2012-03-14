@@ -22,8 +22,9 @@ class Operator::MeasuringDevicesController < OperatorsController
             device.save!
           end
         end
-      rescue
-        render :new
+      rescue ActiveRecord::RecordInvalid
+        render :new, :notice => "Invalid records"
+        raise ActiveRecord::Rollback
       else
         redirect_to url_for(:action => :index), :notice => "Created"
       end
@@ -48,8 +49,9 @@ class Operator::MeasuringDevicesController < OperatorsController
             device.save!
           end
         end
-      rescue
-        render :edit
+      rescue ActiveRecord::RecordInvalid
+        render :edit, :error => "Invalid records"
+        raise ActiveRecord::Rollback
       else
         redirect_to url_for(:action => :index), :notice => "Saved"
       end
