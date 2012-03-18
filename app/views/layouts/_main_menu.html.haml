@@ -12,3 +12,5 @@
 - elsif operator_signed_in?
   %li{:class => ("active" if params[:controller].start_with? "operator/measuring_devices")}
     = link_to "Измерительные приборы", operator_measuring_devices_path
+  %li{:class => ("active" if params[:controller].start_with? "operator/audits")}
+    = link_to "Аудиты", operator_audits_path

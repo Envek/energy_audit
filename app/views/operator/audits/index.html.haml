@@ -1,0 +1,33 @@
+%h1.form_header #{@subject.name}
+
+- if @current_audit
+  %table.form_table.audits_form_table
+    %thead
+      %tr
+        %th{:colspan => 5} Информация по энергоаудиту
+        %th{:colspan => 2} Информация по энергосервисным контрактам
+      %tr
+        %th Количество зданий, сооружений, строений, находящихся в ведении исполнительного органа государственной власти или муниципального образования области
+        %th Количество зданий, сооружений строений, по которым проведен энергоаудит по состоянию на 01.01.2011г.
+        %th Количество зданий, сооружений строений, по которым необходимо провести энергоаудит 
+        %th Фактическое количество зданий, сооружений строений, по которым проведен энергоаудит по состоянию на отчетную дату 2011 г.
+        %th % проведенных энергоаудитов
+        %th Количество энергосервисных контрактов, заключенных по состоянию на 01.01.2011 г.
+        %th Количество энергосервисных контрактов, заключенных по состоянию на 01.10.2011 г.
+    %tbody
+      %tr
+        %td.usual #{@current_audit.buildings}
+        %td.usual #{@current_audit.audited_before}
+        %td.usual #{@current_audit.audit_required}
+        %td.usual #{@current_audit.audited_in_period}
+        %td.usual #{@current_audit.audited_percentage.nil? ? "недоступен" : number_to_percentage(@current_audit.audited_percentage)}
+        %td.usual #{@current_audit.audit_contracts_before}
+        %td.usual #{@current_audit.audit_contracts_after}
+
+  .form-actions
+    = link_to "Внести изменения", edit_operator_audit_path(@current_audit), :class => "primary_action btn"
+
+- else
+  %p 
+    На текущий период нет данных.
+    = link_to "Внести данные", new_operator_audit_path, :class => "btn btn-primary"

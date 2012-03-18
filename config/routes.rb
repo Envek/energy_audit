@@ -38,6 +38,7 @@ EnergyAudit::Application.routes.draw do
         put :update
       end
     end
+    resources :audits
   end
 
   root :to => 'home#index'

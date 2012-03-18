@@ -1,0 +1,28 @@
+= form_for [:operator, @current_audit] do |f|
+  %table.form_table.audits_form_table
+    %thead
+      %tr
+        %th{:colspan => 5} Информация по энергоаудиту
+        %th{:colspan => 2} Информация по энергосервисным контрактам
+      %tr
+        %th Количество зданий, сооружений, строений, находящихся в ведении исполнительного органа государственной власти или муниципального образования области
+        %th Количество зданий, сооружений строений, по которым проведен энергоаудит по состоянию на 01.01.2011г.
+        %th Количество зданий, сооружений строений, по которым необходимо провести энергоаудит 
+        %th Фактическое количество зданий, сооружений строений, по которым проведен энергоаудит по состоянию на отчетную дату 2011 г.
+        %th % проведенных энергоаудитов
+        %th Количество энергосервисных контрактов, заключенных по состоянию на 01.01.2011 г.
+        %th Количество энергосервисных контрактов, заключенных по состоянию на 01.10.2011 г.
+    %tbody
+      %tr
+        %td.usual.with_input #{f.number_field :buildings}
+        %td.usual.with_input #{f.number_field :audited_before}
+        %td.usual.with_input #{f.number_field :audit_required}
+        %td.usual.with_input #{f.number_field :audited_in_period}
+        %td.usual
+        %td.usual.with_input #{f.number_field :audit_contracts_before}
+        %td.usual.with_input #{f.number_field :audit_contracts_after}
+
+  .form-actions
+    %button.btn.btn-primary{:type => :submit} Внести данные
+    %button.btn.back_button{:type => :button} Назад
+    %button.btn.btn-inverse{:type => :reset} Отменить изменения
