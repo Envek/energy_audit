@@ -4,8 +4,9 @@
   %table.form_table.devices_form_table
     %thead
       %tr
-        - @val_types.each do |v|
-          %th{:colspan => @kinds.count+1} #{v}
+        %th{:colspan => @kinds.count+1} Количество установленных приборов учета по состоянию на #{@period.start_date_localized} г.
+        %th{:colspan => @kinds.count+1} Необходимое количество приборов учета до 100% оснащения на #{@period.start_date_localized} г.
+        %th{:colspan => @kinds.count+1} Фактическое количество установленных приборов учета по состоянию на #{@period.date_localized} г. 
         %th{:rowspan => 2} Процент оснащённости
       %tr
         - @val_types.each do |v|
