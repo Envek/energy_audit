@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20120314105457) do
+ActiveRecord::Schema.define(:version => 20120520070621) do
 
   create_table "activities", :force => true do |t|
     t.string   "name",                 :null => false
@@ -30,6 +30,28 @@ ActiveRecord::Schema.define(:version => 20120314105457) do
   end
 
   add_index "activity_categories", ["name"], :name => "index_activity_categories_on_name", :unique => true
+
+  create_table "activity_values", :force => true do |t|
+    t.integer  "period_id",                                                           :null => false
+    t.integer  "subject_id",                                                          :null => false
+    t.integer  "activity_id",                                                         :null => false
+    t.decimal  "planned_funding",     :precision => 32, :scale => 8, :default => 0.0
+    t.decimal  "actual_funding",      :precision => 32, :scale => 8, :default => 0.0
+    t.decimal  "total_financing",     :precision => 32, :scale => 8, :default => 0.0
+    t.decimal  "regional_financing",  :precision => 32, :scale => 8, :default => 0.0
+    t.decimal  "federal_financing",   :precision => 32, :scale => 8, :default => 0.0
+    t.decimal  "municipal_financing", :precision => 32, :scale => 8, :default => 0.0
+    t.decimal  "offbudget_financing", :precision => 32, :scale => 8, :default => 0.0
+    t.decimal  "natural_economy",     :precision => 32, :scale => 8, :default => 0.0
+    t.decimal  "cost_economy",        :precision => 32, :scale => 8, :default => 0.0
+    t.datetime "created_at",                                                          :null => false
+    t.datetime "updated_at",                                                          :null => false
+  end
+
+  add_index "activity_values", ["activity_id"], :name => "index_activity_values_on_activity_id"
+  add_index "activity_values", ["period_id", "subject_id", "activity_id"], :name => "activity_values_main_index", :unique => true
+  add_index "activity_values", ["period_id"], :name => "index_activity_values_on_period_id"
+  add_index "activity_values", ["subject_id"], :name => "index_activity_values_on_subject_id"
 
   create_table "areas", :force => true do |t|
     t.string   "name",       :null => false

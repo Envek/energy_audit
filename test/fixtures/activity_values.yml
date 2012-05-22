@@ -1,0 +1,29 @@
+# Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/Fixtures.html
+
+one:
+  period: 
+  subject: 
+  activity: 
+  planned_funding: 9.99
+  actual_funding: 9.99
+  total_financing: 9.99
+  regional_financing: 9.99
+  federal_financing: 9.99
+  municipal_financing: 9.99
+  offbudget_financing: 9.99
+  natural_economy: 9.99
+  cost_economy: 9.99
+
+two:
+  period: 
+  subject: 
+  activity: 
+  planned_funding: 9.99
+  actual_funding: 9.99
+  total_financing: 9.99
+  regional_financing: 9.99
+  federal_financing: 9.99
+  municipal_financing: 9.99
+  offbudget_financing: 9.99
+  natural_economy: 9.99
+  cost_economy: 9.99
