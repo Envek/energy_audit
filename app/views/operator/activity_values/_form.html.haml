@@ -1,0 +1,36 @@
+= form_for [:operator, @value] do |f|
+  %table.form_table.activity_values_form_table
+    %thead
+      %tr
+        %th{:rowspan => 3} Наименование мероприятия 
+        %th{:rowspan => 3} Объем средств, предусмотренных по Программе энергосбережения на #{@period.date.year} год, в том числе по источникам финансирования, тыс. руб
+        %th{:rowspan => 3} Фактический объем средств, предусмотренный на мероприятия энергосбережения на #{@period.date.year} год, в том числе по источникам финансирования, тыс.руб
+        %th{:colspan => 5} на #{@period.start_date_localized} г.
+        %th{:colspan => 2, :rowspan => 2} Экономия ресурсов
+      %tr
+        %th{:rowspan => 2} Объём финансирования, всего
+        %th{:colspan => 4} Источники финансирования
+      %tr
+        %th Средства областного бюджета, тыс.руб
+        %th Средства федерального бюджета, тыс.руб
+        %th Средства местного бюджета, тыс.руб
+        %th Внебюджетные средства, тыс.руб.
+        %th в натуральном выражении
+        %th в стоим.выр.
+    %tbody
+      %tr
+        %td.usual.with_input= f.select :activity_id, grouped_options_for_select(activities_grouped_for_select_with_activity(@value.activity))
+        %td.usual.with_input= f.number_field :planned_funding
+        %td.usual.with_input= f.number_field :actual_funding
+        %td.usual.with_input= f.number_field :total_financing
+        %td.usual.with_input= f.number_field :regional_financing
+        %td.usual.with_input= f.number_field :federal_financing
+        %td.usual.with_input= f.number_field :municipal_financing
+        %td.usual.with_input= f.number_field :offbudget_financing
+        %td.usual.with_input= f.number_field :natural_economy
+        %td.usual.with_input= f.number_field :cost_economy
+
+  .form-actions
+    = link_to "Назад", request.referer, :class => "btn"
+    %button.primary_action.btn.btn-primary{:type => :submit} Сохранить 
+

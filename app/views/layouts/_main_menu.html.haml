@@ -14,3 +14,5 @@
     = link_to "Измерительные приборы", operator_measuring_devices_path
   %li{:class => ("active" if params[:controller].start_with? "operator/audits")}
     = link_to "Аудиты", operator_audits_path
+  %li{:class => ("active" if params[:controller].start_with? "operator/activity_values")}
+    = link_to "Мероприятия", operator_activity_values_path

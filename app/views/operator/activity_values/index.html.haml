@@ -1,0 +1,47 @@
+%h1.form_header #{@subject.name}
+
+- if @categories.any?
+  %table.form_table.activity_values_form_table
+    %thead
+      %tr
+        %th{:rowspan => 3} Наименование мероприятия 
+        %th{:rowspan => 3} Объем средств, предусмотренных по Программе энергосбережения на #{@period.date.year} год, в том числе по источникам финансирования, тыс. руб
+        %th{:rowspan => 3} Фактический объем средств, предусмотренный на мероприятия энергосбережения на #{@period.date.year} год, в том числе по источникам финансирования, тыс.руб
+        %th{:colspan => 5} на #{@period.start_date_localized} г.
+        %th{:colspan => 2, :rowspan => 2} Экономия ресурсов
+      %tr
+        %th{:rowspan => 2} Объём финансирования, всего
+        %th{:colspan => 4} Источники финансирования
+      %tr
+        %th Средства областного бюджета, тыс.руб
+        %th Средства федерального бюджета, тыс.руб
+        %th Средства местного бюджета, тыс.руб
+        %th Внебюджетные средства, тыс.руб.
+        %th в натуральном выражении
+        %th в стоим.выр.
+    - @categories.each do |category|
+      %tbody
+        %tr
+          %td{:colspan => 10} #{category.name}
+        - category.activities.each do |activity|
+          - value = activity.activity_values.first
+          - if value
+            %tr
+              %td.usual #{activity.name}
+              %td.usual #{value.planned_funding}
+              %td.usual #{value.actual_funding}
+              %td.usual #{value.total_financing}
+              %td.usual #{value.regional_financing}
+              %td.usual #{value.federal_financing}
+              %td.usual #{value.municipal_financing}
+              %td.usual #{value.offbudget_financing}
+              %td.usual #{value.natural_economy}
+              %td.usual #{value.cost_economy}
+              %td.manage
+                = link_to "Изменить", edit_operator_activity_value_path(value), :class => "primary_action btn"
+                = link_to "Удалить", operator_activity_value_path(value), :class => "primary_action btn btn-danger", :method => :delete
+
+- else
+  %p 
+    На текущий период нет данных.
+    = link_to "Внести данные", new_operator_activity_value_path, :class => "btn btn-primary"

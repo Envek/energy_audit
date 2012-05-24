@@ -18,6 +18,8 @@ class ActivityValue < ActiveRecord::Base
   validates :natural_economy,     :format => { :with => /\A[+-]?\d{0,24}(\.\d{0,8})?\Z/ }
   validates :cost_economy,        :format => { :with => /\A[+-]?\d{0,24}(\.\d{0,8})?\Z/ }
 
+  scope :with_categories, includes(:activity => :activity_category)
+
   # Replaces colon (,) to dot (.) in user input for decimal attributes
   def planned_funding=(value)
     self[:planned_funding] = value.to_s.strip.tr(',', '.')
