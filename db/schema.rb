@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20120520070621) do
+ActiveRecord::Schema.define(:version => 20120525013412) do
 
   create_table "activities", :force => true do |t|
     t.string   "name",                 :null => false
@@ -77,6 +77,28 @@ ActiveRecord::Schema.define(:version => 20120520070621) do
   add_index "audits", ["period_id", "subject_id"], :name => "audits_main_index", :unique => true
   add_index "audits", ["period_id"], :name => "index_audits_on_period_id"
   add_index "audits", ["subject_id"], :name => "index_audits_on_subject_id"
+
+  create_table "consumptions", :force => true do |t|
+    t.integer  "period_id",                                                                     :null => false
+    t.integer  "subject_id",                                                                    :null => false
+    t.integer  "resource_id",                                                                   :null => false
+    t.decimal  "prev_cons_units",               :precision => 32, :scale => 8, :default => 0.0
+    t.decimal  "prev_cons_monetary",            :precision => 32, :scale => 8, :default => 0.0
+    t.decimal  "approved_year_cons_units",      :precision => 32, :scale => 8, :default => 0.0
+    t.decimal  "approved_year_cons_monetary",   :precision => 32, :scale => 8, :default => 0.0
+    t.decimal  "approved_period_cons_units",    :precision => 32, :scale => 8, :default => 0.0
+    t.decimal  "approved_period_cons_monetary", :precision => 32, :scale => 8, :default => 0.0
+    t.decimal  "actual_cons_units",             :precision => 32, :scale => 8, :default => 0.0
+    t.decimal  "actual_cons_monetary",          :precision => 32, :scale => 8, :default => 0.0
+    t.string   "reason"
+    t.datetime "created_at",                                                                    :null => false
+    t.datetime "updated_at",                                                                    :null => false
+  end
+
+  add_index "consumptions", ["period_id", "subject_id", "resource_id"], :name => "consumptions_main_index", :unique => true
+  add_index "consumptions", ["period_id"], :name => "index_consumptions_on_period_id"
+  add_index "consumptions", ["resource_id"], :name => "index_consumptions_on_resource_id"
+  add_index "consumptions", ["subject_id"], :name => "index_consumptions_on_subject_id"
 
   create_table "kinds", :force => true do |t|
     t.string   "name",       :null => false

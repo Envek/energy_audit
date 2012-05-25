@@ -1,0 +1,27 @@
+# Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/Fixtures.html
+
+one:
+  period: 
+  subject: 
+  resource: 
+  prev_cons_units: 9.99
+  prev_cons_monetary: 9.99
+  approved_year_cons_units: 9.99
+  approved_year_cons_monetary: 9.99
+  approved_period_cons_units: 9.99
+  approved_period_cons_monetary: 9.99
+  actual_cons_units: 9.99
+  actual_cons_monetary: 9.99
+
+two:
+  period: 
+  subject: 
+  resource: 
+  prev_cons_units: 9.99
+  prev_cons_monetary: 9.99
+  approved_year_cons_units: 9.99
+  approved_year_cons_monetary: 9.99
+  approved_period_cons_units: 9.99
+  approved_period_cons_monetary: 9.99
+  actual_cons_units: 9.99
+  actual_cons_monetary: 9.99
