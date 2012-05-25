@@ -1,0 +1,20 @@
+ru:
+  activerecord:
+    errors:
+      models:
+        activity:
+          attributes:
+            name:
+              taken: ": мероприятие с таким именем уже существует."
+
+    models:
+      activity: 
+        one: "Мероприятие"
+        few: "Мероприятия"
+        many: "Мероприятия"
+        other: "Мероприятия"
+
+    attributes:
+      activity:
+        name: "Название"
+        activity_category: "Группа мероприятий"

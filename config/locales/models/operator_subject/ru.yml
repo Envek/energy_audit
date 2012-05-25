@@ -1,0 +1,18 @@
+ru:
+  activerecord:
+    errors:
+      models:
+        operator_subject:
+          attributes:
+
+    models:
+      operator_subject: 
+        one: "Субъект заполнения"
+        few: "Субъекты заполнения"
+        many: "Субъекты заполнения"
+        other: "Субъекты заполнения"
+
+    attributes:
+      operator_subject:
+        subject: "Субъект"
+        label: "Субъект заполнения — %{subject}"

@@ -19,4 +19,8 @@ class User < ActiveRecord::Base
     "#{s[0]} #{s[1..-1].map { |w| "#{w[0]}." }.join(' ')}"
   end
 
+  def to_s
+    surname_initials
+  end
+
 end

@@ -1,0 +1,20 @@
+ru:
+  activerecord:
+    errors:
+      models:
+        period:
+          attributes:
+            date:
+              taken: ": период с такой датой уже существует."
+
+    models:
+      period: 
+        one: "Период"
+        few: "Периоды"
+        many: "Периоды"
+        other: "Периоды"
+
+    attributes:
+      period:
+        date: "Дата"
+        published: "Опубликован?"

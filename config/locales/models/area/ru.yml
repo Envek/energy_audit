@@ -1,0 +1,19 @@
+ru:
+  activerecord:
+    errors:
+      models:
+        area:
+          attributes:
+            name:
+              taken: ": область охвата с таким именем уже существует."
+
+    models:
+      area: 
+        one: "Область охвата показателей"
+        few: "Области охвата показателей"
+        many: "Области охвата показателей"
+        other: "Области охвата показателей"
+
+    attributes:
+      area:
+        name: "Название"

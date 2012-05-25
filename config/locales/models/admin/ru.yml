@@ -1,0 +1,18 @@
+ru:
+  activerecord:
+    errors:
+      models:
+        admin:
+          attributes:
+
+    models:
+      admin: 
+        one: "Администратор"
+        few: "Администраторы"
+        many: "Администраторы"
+        other: "Администраторы"
+
+    attributes:
+      admin:
+        email: "E-mail"
+        full_name: "Фамилия, имя, отчество"

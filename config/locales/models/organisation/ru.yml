@@ -1,0 +1,17 @@
+ru:
+  activerecord:
+    errors:
+      models:
+        organisation:
+          attributes:
+
+    models:
+      organisation: 
+        one: "Организация"
+        few: "Организации"
+        many: "Организации"
+        other: "Организации"
+
+    attributes:
+      organisation:
+        name: "Название"

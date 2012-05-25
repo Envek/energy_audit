@@ -1,0 +1,19 @@
+ru:
+  activerecord:
+    errors:
+      models:
+        authority:
+          attributes:
+            name:
+              taken: ": ИОГВ с таким именем уже существует."
+
+    models:
+      authority: 
+        one: "Исполнительный орган власти"
+        few: "Исполнительные органы власти"
+        many: "Исполнительные органы власти"
+        other: "Исполнительные органы власти"
+
+    attributes:
+      authority:
+        name: "Название"

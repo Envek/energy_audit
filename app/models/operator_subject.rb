@@ -4,4 +4,9 @@ class OperatorSubject < ActiveRecord::Base
   
   validates :operator_id, :presence => true, :uniqueness => {:scope => :subject_id}
   validates :subject_id, :presence => true, :uniqueness => {:scope => :operator_id}
+
+  def to_s
+    I18n.t("activerecord.attributes.operator_subject.label", :subject => subject.name)  
+  end
+
 end

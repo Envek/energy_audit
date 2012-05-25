@@ -3,5 +3,6 @@ class Admin::Subjects::SubjectsController < ApplicationController
 
   active_scaffold :subject do |conf|
     conf.columns = [:name]
+    conf.show.link = false
   end
 end 

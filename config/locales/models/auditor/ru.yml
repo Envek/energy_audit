@@ -1,0 +1,18 @@
+ru:
+  activerecord:
+    errors:
+      models:
+        auditor:
+          attributes:
+
+    models:
+      auditor: 
+        one: "Аудитор"
+        few: "Аудиторы"
+        many: "Аудиторы"
+        other: "Аудиторы"
+
+    attributes:
+      auditor:
+        email: "E-mail"
+        full_name: "Фамилия, имя, отчество"
