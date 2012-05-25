@@ -16,3 +16,5 @@
     = link_to "Аудиты", operator_audits_path
   %li{:class => ("active" if params[:controller].start_with? "operator/activity_values")}
     = link_to "Мероприятия", operator_activity_values_path
+  %li{:class => ("active" if params[:controller].start_with? "operator/consumptions")}
+    = link_to "Потребление ТЭР", operator_consumptions_path

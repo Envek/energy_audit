@@ -1,0 +1,46 @@
+%h1.form_header #{@subject.name}
+
+- if @consumptions.any?
+  %table.form_table.activity_values_form_table
+    %thead
+      %tr
+        %th Наименование ТЭР
+        %th{:colspan => 2} Фактические объемы потребления ТЭР период #{@period.date.year - 2} год, аналогичный отчетному за #{@period.date.year} год
+        %th{:colspan => 2} Объем потребления ТЭР на #{@period.date.year} год утвержденный постановлением губернатора области или главой администрации ОМСУ
+        %th{:colspan => 2} Объем потребления ТЭР на #{@period.start_date_localized} года, утвержденный постановлением губернатора области или главой администрации ОМСУ
+        %th{:colspan => 2} Фактический объем потребления ТЭР на #{@period.start_date_localized} г.
+        %th{:colspan => 2} Отклонение фактического объема потребления #{@period.date.year} г. к #{@period.date.year - 2} г. (+,-)
+        %th Причина отклонения
+        %th
+      %tr
+        - 12.times do |i|
+          %th #{i+1} 
+    %tbody
+      - @consumptions.each do |consumption|
+        %tr
+          %th{:rowspan => 2} #{consumption.resource.name}
+          - 5.times do
+            %td #{consumption.resource.unit}
+            %td руб.
+          %td{:rowspan => 2} #{consumption.reason}
+          %td.manage{:rowspan => 2}
+            = link_to "Изменить", edit_operator_consumption_path(consumption), :class => "primary_action btn"
+            = link_to "Удалить", operator_consumption_path(consumption), :class => "primary_action btn btn-danger", :method => :delete
+        %tr
+          %td.usual #{consumption.prev_cons_units}
+          %td.usual #{consumption.prev_cons_monetary}
+          %td.usual #{consumption.approved_year_cons_units}
+          %td.usual #{consumption.approved_year_cons_monetary}
+          %td.usual #{consumption.approved_period_cons_units}
+          %td.usual #{consumption.approved_period_cons_monetary}
+          %td.usual #{consumption.actual_cons_units}
+          %td.usual #{consumption.actual_cons_monetary}
+          %td.usual
+          %td.usual
+
+  - unless @consumptions.count == Resource.count
+    = link_to "Внести данные", new_operator_consumption_path, :class => "btn btn-primary"
+- else
+  %p 
+    На текущий период нет данных.
+    = link_to "Внести данные", new_operator_consumption_path, :class => "btn btn-primary"
