@@ -17,7 +17,7 @@
   %li{:class => ("active" if params[:controller] == "operator/dashboard")}
     = link_to "Главная", operator_root_path
   %li{:class => ("active" if params[:controller].start_with? "operator/measuring_devices")}
-    = link_to "Измерительные приборы", operator_measuring_devices_path
+    = link_to "Приборы учёта", operator_measuring_devices_path
   %li{:class => ("active" if params[:controller].start_with? "operator/audits")}
     = link_to "Аудиты", operator_audits_path
   %li{:class => ("active" if params[:controller].start_with? "operator/activity_values")}

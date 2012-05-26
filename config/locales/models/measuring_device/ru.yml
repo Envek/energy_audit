@@ -2,18 +2,21 @@ ru:
   activerecord:
     errors:
       models:
-        operator:
+        measuring_device:
           attributes:
 
     models:
-      operator: 
-        one: "Оператор"
-        few: "Операторы"
-        many: "Операторы"
-        other: "Операторы"
+      measuring_device: 
+        one: "Прибор учёта"
+        few: "Приборы учёта"
+        many: "Приборы учёта"
+        other: "Приборы учёта"
 
     attributes:
-      operator:
-        email: "E-mail"
-        full_name: "Фамилия, имя, отчество"
-        operator_subjects: "Субъекты заполнения"
+      measuring_device:
+        area: "Область охвата"
+        kind: "Показатель"
+        start_value: "Количество установленных приборов учета по состоянию на %{date} г."
+        planned_value: "Необходимое количество приборов учета до 100% оснащения на %{date} г."
+        final_value: "Фактическое количество установленных приборов учета по состоянию на отчетную дату %{period_year} г."
+        equipment_level: "% оснащенности"

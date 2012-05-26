@@ -1,0 +1,40 @@
+%h1.form_header Информация об установленных приборах учета
+%h2.form_header #{@subject.name}
+
+- if @areas.any?
+  %table.form_table.measuring_devices_form_table
+    %thead
+      %tr
+        %th= MeasuringDevice.human_attribute_name :kind
+        %th= MeasuringDevice.human_attribute_name :start_value, :date => @period.start_date_localized
+        %th= MeasuringDevice.human_attribute_name :planned_value, :date => @period.start_date_localized
+        %th= MeasuringDevice.human_attribute_name :final_value, :period_year => @period.date.year
+        %th= MeasuringDevice.human_attribute_name :equipment_level
+        %th
+    - @areas.each do |area|
+      %tbody
+        %tr
+          %th{:colspan => 6}= area.name
+        - area.measuring_devices.each do |device|
+          %tr
+            %th #{device.kind.name}
+            %td #{device.start_value}
+            %td #{device.planned_value}
+            %td #{device.final_value}
+            %td #{number_to_percentage(device.equipment_level)}
+            %td.manage
+              = link_to "Изменить", edit_operator_measuring_device_path(device), :class => "primary_action btn"
+              = link_to "Удалить", operator_measuring_device_path(device), :class => "primary_action btn btn-danger", :method => :delete
+        %tr
+          %th Итог
+          %td= s = area.measuring_devices.map{|d| d.start_value}.compact.sum
+          %td= p = area.measuring_devices.map{|d| d.planned_value}.compact.sum
+          %td= f =  area.measuring_devices.map{|d| d.final_value}.compact.sum
+          %td= number_to_percentage(f*100.0/(s+p))
+  .form-actions
+    = link_to "Внести данные", new_operator_measuring_device_path, :class => "primary_action btn btn-primary"
+
+- else
+  %p На текущий период нет данных.
+  .form-actions
+    = link_to "Внести данные", new_operator_measuring_device_path, :class => "primary_action btn btn-primary"

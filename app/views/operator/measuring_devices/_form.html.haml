@@ -1,0 +1,23 @@
+= form_for [:operator, @device] do |f|
+  %table.form_table.measuring_devices_form_table
+    %thead
+      %tr
+        %th= MeasuringDevice.human_attribute_name :area
+        %th= MeasuringDevice.human_attribute_name :kind
+        %th= MeasuringDevice.human_attribute_name :start_value, :date => @period.start_date_localized
+        %th= MeasuringDevice.human_attribute_name :planned_value, :date => @period.start_date_localized
+        %th= MeasuringDevice.human_attribute_name :final_value, :period_year => @period.date.year
+        %th= MeasuringDevice.human_attribute_name :equipment_level
+    %tbody
+      %tr
+        %th.usual.with_input= f.select :area_id, Area.all.map { |a| [a.name, a.id] }
+        %th.usual.with_input= f.select :kind_id, Kind.all.map { |k| [k.name, k.id] }
+        %td.usual.with_input= f.number_field :start_value
+        %td.usual.with_input= f.number_field :planned_value
+        %td.usual.with_input= f.number_field :final_value
+        %td.usual
+
+  .form-actions
+    = link_to "Назад", request.referer, :class => "btn"
+    %button.btn.btn-inverse{:type => :reset} Отменить изменения
+    %button.primary_action.btn.btn-primary{:type => :submit} Сохранить
