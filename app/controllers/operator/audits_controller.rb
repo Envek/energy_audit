@@ -46,6 +46,11 @@ class Operator::AuditsController < OperatorsController
     end
   end
 
+  def destroy
+    audit = Audit.find(params[:id])
+    audit.destroy
+  end
+
 private
 
   def initialize_common_vars

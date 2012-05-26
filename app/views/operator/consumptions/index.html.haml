@@ -40,7 +40,9 @@
           %td.usual #{consumption.deviation_monetary}
 
   - unless @consumptions.count == Resource.count
-    = link_to "Внести данные", new_operator_consumption_path, :class => "btn btn-primary"
+    .form-actions
+      = link_to "Внести данные", new_operator_consumption_path, :class => "primary_action btn btn-primary"
+
 - else
   %p 
     На текущий период нет данных.

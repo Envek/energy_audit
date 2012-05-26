@@ -14,9 +14,9 @@ class Operator::ConsumptionsController < OperatorsController
       value = Consumption.new(:period => @period, :subject => @subject)
       value.update_attributes(params[:consumption])
       value.save
-      redirect_to url_for(:action => :index), :notice => "Saved"
+      redirect_to url_for(:action => :index), :notice => t("operator.consumptions.messages.saved")
     else
-      redirect_to url_for(:action => :index), :error => "Already exists"
+      redirect_to url_for(:action => :index), :error => t("operator.consumptions.messages.already_exists")
     end
   end
 
@@ -28,13 +28,13 @@ class Operator::ConsumptionsController < OperatorsController
     value = Consumption.find(params[:id])
     value.update_attributes(params[:consumption])
     value.save!
-    redirect_to url_for(:action => :index), :notice => "Saved"
+    redirect_to url_for(:action => :index), :notice => t("operator.consumptions.messages.saved")
   end
 
   def destroy
     value = Consumption.find(params[:id])
     value.destroy
-    redirect_to url_for(:action => :index), :notice => "Removed"
+    redirect_to url_for(:action => :index), :notice => t("operator.consumptions.messages.removed")
   end
 
 private
