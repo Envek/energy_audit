@@ -6,7 +6,7 @@ class OperatorSubject < ActiveRecord::Base
   validates :subject_id, :presence => true, :uniqueness => {:scope => :operator_id}
 
   def to_s
-    I18n.t("activerecord.attributes.operator_subject.label", :subject => subject.name)  
+    self.human_attribute_name :label, :subject => subject.name
   end
 
 end

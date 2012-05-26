@@ -10,6 +10,14 @@ class Consumption < ActiveRecord::Base
   scope :with_resource, includes(:resource)
   default_scope with_resource.order("resource_id ASC")
 
+  def deviation_units
+    actual_cons_units - prev_cons_units
+  end
+
+  def deviation_monetary
+    actual_cons_monetary - prev_cons_monetary
+  end
+
   # Replaces colon (,) to dot (.) in user input for decimal attributes
   def prev_cons_units=(value)
     self[:prev_cons_units] = value.to_s.strip.tr(',', '.')

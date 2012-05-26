@@ -2,18 +2,26 @@ ru:
   activerecord:
     errors:
       models:
-        activity_category:
+        activity_value:
           attributes:
             name:
               taken: ": группа мероприятий с таким именем уже существует."
 
     models:
-      activity_category: 
-        one: "Группа мероприятий"
-        few: "Группы мероприятий"
-        many: "Группы мероприятий"
-        other: "Группы мероприятий"
+      activity_value: 
 
     attributes:
-      activity_category:
-        name: "Название"
+      activity_value:
+        activity: "Наименование мероприятия"
+        planned_funding: "Объем средств, предусмотренных по программе энергосбережения на %{period_year} год, в том числе по источникам финансирования, тыс. руб"
+        actual_funding: "Фактический объем средств, предусмотренный на мероприятия энергосбережения на %{period_year} год, в том числе по источникам финансирования, тыс.руб"
+        total_financing: "Объём финансирования, всего"
+        financing_on: "на %{date}"
+        financing_sources: "Источники финансирования"
+        regional_financing: "Средства областного бюджета, тыс.руб"
+        federal_financing: "Средства федерального бюджета, тыс.руб"
+        municipal_financing: "Средства местного бюджета, тыс.руб"
+        offbudget_financing: "Внебюджетные средства, тыс.руб."
+        resource_economy: "Экономия ресурсов"
+        natural_economy: "в натуральном выражении"
+        cost_economy: "в стоимостном выражении"

@@ -2,13 +2,13 @@
   %table.form_table.consumptions_form_table
     %thead
       %tr
-        %th Наименование ТЭР
-        %th{:colspan => 2} Фактические объемы потребления ТЭР период #{@period.date.year - 2} год, аналогичный отчетному за #{@period.date.year} год
-        %th{:colspan => 2} Объем потребления ТЭР на #{@period.date.year} год утвержденный постановлением губернатора области или главой администрации ОМСУ
-        %th{:colspan => 2} Объем потребления ТЭР на #{@period.start_date_localized} года, утвержденный постановлением губернатора области или главой администрации ОМСУ
-        %th{:colspan => 2} Фактический объем потребления ТЭР на #{@period.start_date_localized} г.
-        %th{:colspan => 2} Отклонение фактического объема потребления #{@period.date.year} г. к #{@period.date.year - 2} г. (+,-)
-        %th{:colspan => 2} Причина отклонения
+        %th= Consumption.human_attribute_name :resource
+        %th{:colspan => 2}= Consumption.human_attribute_name :prev_cons, :start_year => @period.date.year-2, :period_year => @period.date.year
+        %th{:colspan => 2}= Consumption.human_attribute_name :approved_year_cons, :period_year => @period.date.year
+        %th{:colspan => 2}= Consumption.human_attribute_name :approved_period_cons, :start_date => @period.start_date_localized
+        %th{:colspan => 2}= Consumption.human_attribute_name :actual_cons, :start_date => @period.start_date_localized
+        %th{:colspan => 2}= Consumption.human_attribute_name :deviation, :start_year => @period.date.year-2, :period_year => @period.date.year
+        %th= Consumption.human_attribute_name :deviation_reason
       %tr
         - 12.times do |i|
           %th #{i+1} 
@@ -28,6 +28,9 @@
         %td.usual.with_input= f.number_field :approved_period_cons_monetary
         %td.usual.with_input= f.number_field :actual_cons_units
         %td.usual.with_input= f.number_field :actual_cons_monetary
+        %td.usual.consumption_deviation_units= @consumption.deviation_units
+        %td.usual.consumption_deviation_monetary= @consumption.deviation_monetary
+        
 
   .form-actions
     = link_to "Назад", request.referer, :class => "btn"

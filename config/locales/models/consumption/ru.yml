@@ -2,18 +2,24 @@ ru:
   activerecord:
     errors:
       models:
-        activity_category:
+        consumption:
           attributes:
-            name:
-              taken: ": группа мероприятий с таким именем уже существует."
+            resource_id:
+              taken: ": информация по данному ТЭР уже внесена."
 
     models:
-      activity_category: 
-        one: "Группа мероприятий"
-        few: "Группы мероприятий"
-        many: "Группы мероприятий"
-        other: "Группы мероприятий"
+      consumption: 
+        one: "Потребление ТЭР"
+        few: "Потребления ТЭР"
+        many: "Потребления ТЭР"
+        other: "Потребления ТЭР"
 
     attributes:
-      activity_category:
-        name: "Название"
+      consumption:
+        resource: "Наименование ТЭР"
+        prev_cons: "Фактические объемы потребления ТЭР период %{start_year} год, аналогичный отчетному за %{period_year} год"
+        approved_year_cons: "Объем потребления ТЭР на %{period_year} год утвержденный постановлением губернатора области или главой администрации ОМСУ"
+        approved_period_cons: "Объем потребления ТЭР на %{start_date} года, утвержденный постановлением губернатора области или главой администрации ОМСУ"
+        actual_cons: "Фактический объем потребления ТЭР на %{start_date} г."
+        deviation: "Отклонение фактического объема потребления %{period_year} г. к %{start_year} г. (+,-)"
+        deviation_reason: "Причина отклонения"

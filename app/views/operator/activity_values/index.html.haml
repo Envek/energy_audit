@@ -4,25 +4,26 @@
   %table.form_table.activity_values_form_table
     %thead
       %tr
-        %th{:rowspan => 3} Наименование мероприятия 
-        %th{:rowspan => 3} Объем средств, предусмотренных по Программе энергосбережения на #{@period.date.year} год, в том числе по источникам финансирования, тыс. руб
-        %th{:rowspan => 3} Фактический объем средств, предусмотренный на мероприятия энергосбережения на #{@period.date.year} год, в том числе по источникам финансирования, тыс.руб
-        %th{:colspan => 5} на #{@period.start_date_localized} г.
-        %th{:colspan => 2, :rowspan => 2} Экономия ресурсов
+        %th{:rowspan => 3}= ActivityValue.human_attribute_name :activity
+        %th{:rowspan => 3}= ActivityValue.human_attribute_name :planned_funding, :period_year => @period.date.year
+        %th{:rowspan => 3}= ActivityValue.human_attribute_name :actual_funding, :period_year => @period.date.year
+        %th{:colspan => 5}= ActivityValue.human_attribute_name :financing_on, :date => @period.start_date_localized
+        %th{:colspan => 2, :rowspan => 2}= ActivityValue.human_attribute_name :resource_economy
+        %th{:rowspan => 3}
       %tr
-        %th{:rowspan => 2} Объём финансирования, всего
-        %th{:colspan => 4} Источники финансирования
+        %th{:rowspan => 2}= ActivityValue.human_attribute_name :total_financing
+        %th{:colspan => 4}= ActivityValue.human_attribute_name :financing_sources
       %tr
-        %th Средства областного бюджета, тыс.руб
-        %th Средства федерального бюджета, тыс.руб
-        %th Средства местного бюджета, тыс.руб
-        %th Внебюджетные средства, тыс.руб.
-        %th в натуральном выражении
-        %th в стоим.выр.
+        %th= ActivityValue.human_attribute_name :regional_financing
+        %th= ActivityValue.human_attribute_name :federal_financing
+        %th= ActivityValue.human_attribute_name :municipal_financing
+        %th= ActivityValue.human_attribute_name :offbudget_financing
+        %th= ActivityValue.human_attribute_name :natural_economy
+        %th= ActivityValue.human_attribute_name :cost_economy
     - @categories.each do |category|
       %tbody
         %tr
-          %td{:colspan => 10} #{category.name}
+          %td{:colspan => 11} #{category.name}
         - category.activities.each do |activity|
           - value = activity.activity_values.first
           - if value
@@ -40,6 +41,8 @@
               %td.manage
                 = link_to "Изменить", edit_operator_activity_value_path(value), :class => "primary_action btn"
                 = link_to "Удалить", operator_activity_value_path(value), :class => "primary_action btn btn-danger", :method => :delete
+
+  = link_to "Внести данные", new_operator_activity_value_path, :class => "btn btn-primary"
 
 - else
   %p 
