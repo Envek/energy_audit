@@ -1,3 +1,7 @@
+- unless user_signed_in?
+  %li{:class => ("active" if params[:controller] == "home")}
+    = link_to "Главная", root_path
+
 - if admin_signed_in?
   %li{:class => ("active" if params[:controller].start_with? "admin/users")}
     = link_to "Пользователи", admin_users_root_path
@@ -10,6 +14,8 @@
 - elsif auditor_signed_in?
   
 - elsif operator_signed_in?
+  %li{:class => ("active" if params[:controller] == "operator/dashboard")}
+    = link_to "Главная", operator_root_path
   %li{:class => ("active" if params[:controller].start_with? "operator/measuring_devices")}
     = link_to "Измерительные приборы", operator_measuring_devices_path
   %li{:class => ("active" if params[:controller].start_with? "operator/audits")}

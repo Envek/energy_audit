@@ -41,6 +41,7 @@ EnergyAudit::Application.routes.draw do
     resources :audits
     resources :activity_values
     resources :consumptions
+    root :to => 'dashboard#index'
   end
 
   root :to => 'home#index'

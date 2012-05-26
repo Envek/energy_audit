@@ -14,8 +14,6 @@
           %a.brand.pull-left{href: root_path} #{t("application.short_name")}
           .nav-collapse
           %ul.nav
-            %li{:class => ("active" if params[:controller] == "home")}
-              = link_to "Главная", root_path
             = render "layouts/main_menu"
           %ul.nav.pull-right
             = render "layouts/user_menu"

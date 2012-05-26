@@ -1,0 +1,11 @@
+%h1 Степень заполнения данных на текущий период
+- if @subjects.any?
+  %ol
+    - @subjects.each do |subject|
+      %li
+        %p= subject.name
+        %ul
+          %li Измерительные приборы: #{@measuring_devices[subject.id] ? "заполнено" : "не заполнено"}
+          %li Аудиты: #{@audit[subject.id] ? "заполнено" : "не заполнено"}
+          %li Мероприятия: #{@activities[subject.id]} мероприятий из #{@total_activities} доступных.
+          %li Потребление ТЭР: #{@consumptions[subject.id]} ТЭР из #{@total_consumptions} доступных.
