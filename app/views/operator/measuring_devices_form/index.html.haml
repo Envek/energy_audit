@@ -31,8 +31,9 @@
 
   .form-actions
     = link_to "Внести изменения", url_for(:action => :edit), :class => "primary_action btn"
+    = link_to "Удалить", url_for(:action => :destroy), :class => "btn btn-danger", :method => :delete, :confirm => t(".delete_confirm")
 
 - else
-  %p 
-    На текущий период нет данных.
-    = link_to "Внести данные", url_for(:action => :new), :class => "btn btn-primary"
+  %p На текущий период нет данных.
+  .form-actions
+    = link_to "Внести данные", url_for(:action => :new), :class => "primary_action btn btn-primary"

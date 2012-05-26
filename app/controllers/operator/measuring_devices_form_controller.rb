@@ -1,4 +1,4 @@
-class Operator::MeasuringDevicesController < OperatorsController
+class Operator::MeasuringDevicesFormController < OperatorsController
   before_filter :initialize_common_vars
 
   def index
@@ -23,10 +23,10 @@ class Operator::MeasuringDevicesController < OperatorsController
           end
         end
       rescue ActiveRecord::RecordInvalid
-        render :new, :notice => "Invalid records"
+        render :new, :notice => t("operator.measuring_devices_form.messages.errors")
         raise ActiveRecord::Rollback
       else
-        redirect_to url_for(:action => :index), :notice => "Created"
+        redirect_to url_for(:action => :index), :notice => t("operator.measuring_devices_form.messages.created")
       end
     end
   end
@@ -50,10 +50,23 @@ class Operator::MeasuringDevicesController < OperatorsController
           end
         end
       rescue ActiveRecord::RecordInvalid
-        render :edit, :error => "Invalid records"
+        render :edit, :error => t("operator.measuring_devices_form.messages.errors")
         raise ActiveRecord::Rollback
       else
-        redirect_to url_for(:action => :index), :notice => "Saved"
+        redirect_to url_for(:action => :index), :notice => t("operator.measuring_devices_form.messages.saved")
+      end
+    end
+  end
+
+  def destroy
+    MeasuringDevice.transaction do
+      begin
+        MeasuringDevice.where(:period_id => @period.id, :subject_id => @subject.id).destroy_all
+      rescue ActiveRecord::RecordInvalid
+        redirect_to url_for(:action => :index), :error => t("operator.measuring_devices_form.messages.cant_remove")
+        raise ActiveRecord::Rollback
+      else
+        redirect_to url_for(:action => :index), :notice => t("operator.measuring_devices_form.messages.removed")
       end
     end
   end

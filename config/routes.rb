@@ -32,10 +32,11 @@ EnergyAudit::Application.routes.draw do
 
   namespace :operator do
     resources :options
-    resources :measuring_devices do
+    resources :measuring_devices_form do
       collection do
         get :edit
         put :update
+        delete :destroy
       end
     end
     resources :audits
