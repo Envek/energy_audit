@@ -26,5 +26,5 @@
 
 .form-actions
   %button.btn.btn-primary{:type => :submit} Внести данные
-  %button.btn.back_button{:type => :button} Назад
+  = link_to "Назад", request.referer, :class => "btn"
   %button.btn.btn-inverse{:type => :reset} Отменить изменения
