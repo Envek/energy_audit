@@ -30,12 +30,15 @@ gem 'anjlab-bootstrap-rails', '~> 2.0', :require => 'bootstrap-rails'
 
 gem 'active_scaffold'
 
+gem 'whenever'
+
 # To use ActiveModel has_secure_password
 gem 'bcrypt-ruby', '~> 3.0.0'
 
 group :development do
   # Deployment
   gem 'capistrano'
+  gem "rvm-capistrano"
   # Debugging
   gem 'ruby-debug19', :require => 'ruby-debug'
 end
