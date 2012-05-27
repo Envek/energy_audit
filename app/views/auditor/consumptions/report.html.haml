@@ -1,0 +1,39 @@
+- if @consumptions.any?
+  %table.form_table.consumptions_form_table
+    %thead
+      %tr
+        %th= @subject_type.model_name.human if @subject_type
+        %th= Consumption.human_attribute_name :resource
+        %th{:colspan => 2}= Consumption.human_attribute_name :prev_cons, :start_year => @period.date.year-2, :period_year => @period.date.year
+        %th{:colspan => 2}= Consumption.human_attribute_name :approved_year_cons, :period_year => @period.date.year
+        %th{:colspan => 2}= Consumption.human_attribute_name :approved_period_cons, :start_date => @period.start_date_localized
+        %th{:colspan => 2}= Consumption.human_attribute_name :actual_cons, :start_date => @period.start_date_localized
+        %th{:colspan => 2}= Consumption.human_attribute_name :deviation, :start_year => @period.date.year-2, :period_year => @period.date.year
+        %th= Consumption.human_attribute_name :deviation_reason
+      %tr
+        %th
+        - 12.times do |i|
+          %th #{i+1} 
+    %tbody
+      - @subjects.each do |subject|
+        - consumptions = @consumptions.select{|c| c.subject_id == subject.id }
+        - consumptions.each_with_index do |consumption, index|
+          %tr
+            - if index.zero?
+              %td{:rowspan => consumptions.count}= subject.name
+            %td #{consumption.resource.name}
+            %td.usual #{consumption.prev_cons_units}
+            %td.usual #{consumption.prev_cons_monetary}
+            %td.usual #{consumption.approved_year_cons_units}
+            %td.usual #{consumption.approved_year_cons_monetary}
+            %td.usual #{consumption.approved_period_cons_units}
+            %td.usual #{consumption.approved_period_cons_monetary}
+            %td.usual #{consumption.actual_cons_units}
+            %td.usual #{consumption.actual_cons_monetary}
+            %td.usual #{consumption.deviation_units}
+            %td.usual #{consumption.deviation_monetary}
+            %td.usual #{consumption.reason}
+
+- else
+  %p 
+    На текущий период нет данных.

@@ -1,0 +1,25 @@
+%table.form_table.consumptions_form_table
+  %thead
+    %tr
+      %th
+      %th= Consumption.human_attribute_name :resource
+      %th{:colspan => 2}= Consumption.human_attribute_name :prev_cons, :start_year => @period.date.year-2, :period_year => @period.date.year
+      %th{:colspan => 2}= Consumption.human_attribute_name :approved_year_cons, :period_year => @period.date.year
+      %th{:colspan => 2}= Consumption.human_attribute_name :approved_period_cons, :start_date => @period.start_date_localized
+      %th{:colspan => 2}= Consumption.human_attribute_name :actual_cons, :start_date => @period.start_date_localized
+      %th{:colspan => 2}= Consumption.human_attribute_name :deviation, :start_year => @period.date.year-2, :period_year => @period.date.year
+    %tr
+      %th
+      - 11.times do |i|
+        %th #{i+1} 
+  %tbody
+    - value_fields = [:prev_cons_units, :prev_cons_monetary, :approved_year_cons_units, :approved_year_cons_monetary, :approved_period_cons_units, :approved_period_cons_monetary, :actual_cons_units, :actual_cons_monetary, :deviation_units, :deviation_monetary]
+    - {"Муниципальные образования" => @districts, "Исполнительные органы власти" => @authorities, "Итого" => @total}.each do |title,cons|
+      - @resources.each_with_index do |resource, index|
+        - consumptions = cons.select{|c| c.resource_id == resource.id }
+        %tr
+          - if index.zero?
+            %td{:rowspan => @resources.count}= title
+          %td #{resource.name}
+          - value_fields.each do |field|
+            %td.usual= consumptions.map{ |c| c.send(field) }.compact.sum

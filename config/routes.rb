@@ -58,7 +58,8 @@ EnergyAudit::Application.routes.draw do
     match 'audits/' => redirect("/auditor/audits/districts")
     match 'audits/:action' => 'audits', :via => :get
     resources :activity_values
-    resources :consumptions
+    match 'consumptions/' => redirect("/auditor/consumptions/districts")
+    match 'consumptions/:action' => 'consumptions', :via => :get
     root :to => redirect('/auditor/periods')
   end
 
