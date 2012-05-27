@@ -46,4 +46,9 @@ end
 group :production do
   # Production application server
   gem 'unicorn'
+  # Backup automated system
+  gem 'backup'
+  gem 'net-ssh'
+  gem 'net-scp'
+  gem 'mail'
 end
