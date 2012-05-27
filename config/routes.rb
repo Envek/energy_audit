@@ -53,7 +53,8 @@ EnergyAudit::Application.routes.draw do
         get :set_current
       end
     end
-    resources :measuring_devices
+    match 'measuring_devices/' => redirect("/auditor/measuring_devices/districts")
+    match 'measuring_devices/:action' => 'measuring_devices', :via => :get
     resources :audits
     resources :activity_values
     resources :consumptions

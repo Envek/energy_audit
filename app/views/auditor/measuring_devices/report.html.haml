@@ -1,0 +1,52 @@
+%h1
+
+- if @areas.any?
+  %table.form_table.measuring_devices_form_table
+    %thead
+      %tr
+        %th{:rowspan => 2} #{@subject_type.model_name.human if @subject_type}
+        %th{:colspan => @kinds.count+1} Количество установленных приборов учета по состоянию на #{@period.start_date_localized} г.
+        %th{:colspan => @kinds.count+1} Необходимое количество приборов учета до 100% оснащения на #{@period.start_date_localized} г.
+        %th{:colspan => @kinds.count+1} Фактическое количество установленных приборов учета по состоянию на #{@period.date_localized} г. 
+        %th{:rowspan => 2} Процент оснащённости
+      %tr
+        - @val_types.each do |v|
+          - @kinds.each do |kind|
+            %th #{kind.name}
+          %th Всего
+    - @areas.each do |area|
+      %tbody
+        %tr
+          %th{:colspan => @val_types.count*(@kinds.count+1)+2}
+            #{area.name}
+        - sum = {nil => 0}; @val_types.each{|vt| sum[vt] = Hash.new(0) }
+        - if @use_only_filled_subjects
+          - @subjects = area.measuring_devices.map{|d| d.subject }.uniq
+        - @subjects.each do |subject|
+          - devices = area.measuring_devices.select{|d| d.subject_id == subject.id}
+          %tr
+            %th #{subject.name}
+            - val_sums = {}
+            - @val_types.each do |v|
+              - @kinds.each do |kind|
+                - value = devices.select{|d| d.kind_id == kind.id }.first.try(v)
+                - sum[v][kind.id] += value if value
+                %td.usual #{value}
+              - val_sums[v] = devices.sum{|d| d.try(v)}
+              - sum[v][nil] += val_sums[v]
+              %td.usual #{ val_sums[v] }
+            - divisor = val_sums[:start_value]+val_sums[:planned_value]
+            - percent = val_sums[:final_value]/divisor.to_f*100 unless divisor.zero?
+            - sum[nil] += percent if percent
+            %td.usual #{ divisor.zero? ? "недоступен" : number_to_percentage(percent) }
+        %tr
+          %th Итого
+          - @val_types.each do |v|
+            - @kinds.each do |kind|
+              %td #{sum[v][kind.id]}
+            %td #{sum[v][nil]}
+          - divisor = sum[:start_value][nil]+sum[:planned_value][nil]
+          - percent = sum[:final_value][nil]/divisor.to_f*100 unless divisor.zero?
+          %td #{divisor.zero? ? "недоступен" : number_to_percentage(percent)}
+- else
+  %p На текущий период нет данных.

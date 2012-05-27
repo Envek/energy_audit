@@ -1,6 +1,6 @@
 class District < Subject
 
-  default_scope :order => "id ASC"
+  default_scope :order => "subjects.id ASC"
 
   def authorized_for?(*args)
     if ["destroy", "edit"].include?(args[0][:action])
