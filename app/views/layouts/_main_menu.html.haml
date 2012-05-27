@@ -12,7 +12,16 @@
   %li{:class => ("active" if params[:controller].start_with? "admin/dictionaries")}
     = link_to "Вспомогательные словари", admin_dictionaries_root_path
 - elsif auditor_signed_in?
-  
+  %li{:class => ("active" if params[:controller] == "auditor/periods")}
+    = link_to "Главная", auditor_periods_path
+  %li{:class => ("active" if params[:controller].start_with? "auditor/measuring_devices")}
+    = link_to "Приборы учёта", auditor_measuring_devices_path
+  %li{:class => ("active" if params[:controller].start_with? "auditor/audits")}
+    = link_to "Аудиты", auditor_audits_path
+  %li{:class => ("active" if params[:controller].start_with? "auditor/activity_values")}
+    = link_to "Мероприятия", auditor_activity_values_path
+  %li{:class => ("active" if params[:controller].start_with? "auditor/consumptions")}
+    = link_to "Потребление ТЭР", auditor_consumptions_path
 - elsif operator_signed_in?
   %li{:class => ("active" if params[:controller] == "operator/dashboard")}
     = link_to "Главная", operator_root_path

@@ -1,0 +1,7 @@
+ru:
+  auditor:
+    periods:
+      index:
+        set_current: "Установить текущим"
+      messages:
+        period_changed: "Текущий период изменён"

@@ -1,0 +1,11 @@
+.active-scaffold tr.current_period td.date-column {
+  color: darkgreen;
+  font-weight: bold;
+  
+  &::after {
+    content: '(текущий период)';
+    display: inline;
+    font-weight: normal;
+    color: gray;
+  }
+}

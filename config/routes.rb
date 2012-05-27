@@ -46,6 +46,20 @@ EnergyAudit::Application.routes.draw do
     root :to => 'dashboard#index'
   end
 
+  namespace :auditor do
+    resources :periods do 
+      as_routes
+      member do
+        get :set_current
+      end
+    end
+    resources :measuring_devices
+    resources :audits
+    resources :activity_values
+    resources :consumptions
+    root :to => redirect('/auditor/periods')
+  end
+
   root :to => 'home#index'
 
   # Sample of regular route:
