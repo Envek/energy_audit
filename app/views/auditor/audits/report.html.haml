@@ -1,0 +1,37 @@
+- if @audits.any?
+  %table.form_table.audits_form_table
+    %thead
+      %tr
+        %th{:rowspan => 2} #{@subject_type.model_name.human if @subject_type}
+        %th{:colspan => 5} Информация по энергоаудиту
+        %th{:colspan => 2} Информация по энергосервисным контрактам
+      %tr
+        %th Количество зданий, сооружений, строений, находящихся в ведении исполнительного органа государственной власти или муниципального образования области
+        %th Количество зданий, сооружений строений, по которым проведен энергоаудит по состоянию на #{@period.start_date_localized} г.
+        %th Количество зданий, сооружений строений, по которым необходимо провести энергоаудит 
+        %th Фактическое количество зданий, сооружений строений, по которым проведен энергоаудит по состоянию на #{@period.date_localized} г.
+        %th % проведенных энергоаудитов
+        %th Количество энергосервисных контрактов, заключенных по состоянию на #{@period.start_date_localized} г.
+        %th Количество энергосервисных контрактов, заключенных по состоянию на #{@period.date_localized} г.
+    %tbody
+      - @audits.each do |audit|
+        %tr
+          %th #{audit.subject.name}
+          %td.usual #{audit.buildings}
+          %td.usual #{audit.audited_before}
+          %td.usual #{audit.audit_required}
+          %td.usual #{audit.audited_in_period}
+          %td.usual #{audit.audited_percentage.finite? ? number_to_percentage(audit.audited_percentage) : "недоступен" }
+          %td.usual #{audit.audit_contracts_before}
+          %td.usual #{audit.audit_contracts_after}
+      %tr
+        %th Всего
+        %td.usual= @audits.map{|a| a.buildings }.compact.sum
+        %td.usual= @audits.map{|a| a.audited_before }.compact.sum
+        %td.usual= @audits.map{|a| a.audit_required }.compact.sum
+        %td.usual= @audits.map{|a| a.audited_in_period }.compact.sum
+        %td.usual= number_to_percentage(@audits.map{|a| a.audited_in_period }.compact.sum.to_f*100 / @audits.map{|a| a.audit_required }.compact.sum)
+        %td.usual= @audits.map{|a| a.audit_contracts_before }.compact.sum
+        %td.usual= @audits.map{|a| a.audit_contracts_after }.compact.sum
+- else
+  %p На текущий период нет данных.
