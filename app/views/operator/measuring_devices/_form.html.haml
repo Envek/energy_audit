@@ -15,7 +15,7 @@
         %td.usual.with_input= f.number_field :start_value
         %td.usual.with_input= f.number_field :planned_value
         %td.usual.with_input= f.number_field :final_value
-        %td.usual
+        %td.usual.equipment_level= number_to_percentage(@device.equipment_level)
 
   .form-actions
     = link_to "Назад", request.referer, :class => "btn"

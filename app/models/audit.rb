@@ -16,7 +16,7 @@ class Audit < ActiveRecord::Base
     :audited_in_period, :audit_contracts_before, :audit_contracts_after
 
   def audited_percentage
-    self.audit_required.zero? ? nil : self.audited_in_period.to_f / self.audit_required * 100
+    self.audited_in_period.to_f / self.audit_required * 100
   end
 
 end

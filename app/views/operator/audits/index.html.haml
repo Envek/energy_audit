@@ -20,7 +20,7 @@
         %td.usual #{@current_audit.audited_before}
         %td.usual #{@current_audit.audit_required}
         %td.usual #{@current_audit.audited_in_period}
-        %td.usual #{@current_audit.audited_percentage.nil? ? "недоступен" : number_to_percentage(@current_audit.audited_percentage)}
+        %td.usual #{@current_audit.audited_percentage.finite? ? number_to_percentage(@current_audit.audited_percentage) : "недоступен" }
         %td.usual #{@current_audit.audit_contracts_before}
         %td.usual #{@current_audit.audit_contracts_after}
 

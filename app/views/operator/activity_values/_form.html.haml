@@ -22,11 +22,11 @@
         %td.usual.with_input= f.select :activity_id, grouped_options_for_select(activities_grouped_for_select_with_activity(@value.activity))
         %td.usual.with_input= f.number_field :planned_funding
         %td.usual.with_input= f.number_field :actual_funding
-        %td.usual.with_input= f.number_field :total_financing
-        %td.usual.with_input= f.number_field :regional_financing
-        %td.usual.with_input= f.number_field :federal_financing
-        %td.usual.with_input= f.number_field :municipal_financing
-        %td.usual.with_input= f.number_field :offbudget_financing
+        %td.usual.with_input.total_financing= f.number_field :total_financing
+        %td.usual.with_input.component_financing= f.number_field :regional_financing
+        %td.usual.with_input.component_financing= f.number_field :federal_financing
+        %td.usual.with_input.component_financing= f.number_field :municipal_financing
+        %td.usual.with_input.component_financing= f.number_field :offbudget_financing
         %td.usual.with_input= f.number_field :natural_economy
         %td.usual.with_input= f.number_field :cost_economy
 

@@ -42,7 +42,7 @@ class Operator::MeasuringDevicesFormController < OperatorsController
       begin
         @areas.each do |a|
           @kinds.each do |k|
-            device = MeasuringDevice.where(:period_id => @period.id, :subject_id => @subject.id, :area_id => a.id, :kind_id => k.id).first
+            device = MeasuringDevice.where(:period_id => @period.id, :subject_id => @subject.id, :area_id => a.id, :kind_id => k.id).first_or_initialize
             device.start_value = params[:measuring_device][a.id.to_s][k.id.to_s][:start_value]
             device.planned_value = params[:measuring_device][a.id.to_s][k.id.to_s][:planned_value]
             device.final_value = params[:measuring_device][a.id.to_s][k.id.to_s][:final_value]

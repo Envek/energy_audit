@@ -16,9 +16,9 @@
       %tr
         %td.usual.with_input #{f.number_field :buildings}
         %td.usual.with_input #{f.number_field :audited_before}
-        %td.usual.with_input #{f.number_field :audit_required}
-        %td.usual.with_input #{f.number_field :audited_in_period}
-        %td.usual
+        %td.usual.with_input.audit_required #{f.number_field :audit_required}
+        %td.usual.with_input.audited_in_period #{f.number_field :audited_in_period}
+        %td.usual.audited_percentage #{@current_audit.audited_percentage.finite? ? number_to_percentage(@current_audit.audited_percentage) : "недоступен" }
         %td.usual.with_input #{f.number_field :audit_contracts_before}
         %td.usual.with_input #{f.number_field :audit_contracts_after}
 
