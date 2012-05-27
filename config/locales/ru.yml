@@ -1,3 +1,7 @@
 ru:
   application:
     short_name: "Энергоаудит"
+
+  number:
+    format:
+      precision: 2

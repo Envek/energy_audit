@@ -3,9 +3,14 @@
   %ol
     - @subjects.each do |subject|
       %li
-        %p= subject.name
+        #{subject.name}
         %ul
-          %li Измерительные приборы: #{@measuring_devices[subject.id] ? "заполнено" : "не заполнено"}
+          %li
+            Измерительные приборы:
+            - if @measuring_devices[subject.id][:filled].zero?
+              не заполнено
+            - else
+              #{number_to_percentage(100.0*@measuring_devices[subject.id][:filled]/@measuring_devices[subject.id][:total])}
           %li Аудиты: #{@audit[subject.id] ? "заполнено" : "не заполнено"}
-          %li Мероприятия: #{@activities[subject.id]} мероприятий из #{@total_activities} доступных.
-          %li Потребление ТЭР: #{@consumptions[subject.id]} ТЭР из #{@total_consumptions} доступных.
+          %li Мероприятия: #{@activities[subject.id]} #{Russian.p @activities[subject.id], "мероприятие", "мероприятия", "мероприятий"} из #{@total_activities} #{Russian.p @total_activities, "доступного", "доступных", "доступных"}.
+          %li Потребление ТЭР: #{@consumptions[subject.id]} ТЭР из #{@total_consumptions} #{Russian.p @total_consumptions, "доступного", "доступных", "доступных"}.

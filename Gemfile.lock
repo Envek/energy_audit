@@ -146,6 +146,7 @@ GEM
     uglifier (1.0.4)
       execjs (>= 0.3.0)
       multi_json (>= 1.0.2)
+    unicode (0.4.2)
     unicorn (4.2.0)
       kgio (~> 2.6)
       rack
@@ -172,4 +173,5 @@ DEPENDENCIES
   sass-rails (~> 3.2.3)
   therubyracer
   uglifier (~> 1.0.3)
+  unicode
   unicorn

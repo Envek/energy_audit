@@ -4,6 +4,8 @@ gem 'rails', '~> 3.2.1'
 
 gem 'russian'
 
+gem 'unicode'
+
 gem 'mysql2'
 
 gem 'devise', '~> 2.0'

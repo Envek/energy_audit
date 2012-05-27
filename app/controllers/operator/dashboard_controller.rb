@@ -9,7 +9,10 @@ class Operator::DashboardController < OperatorsController
     @consumptions = {}
     @total_consumptions = Consumption.count
     @subjects.each do |subject|
-      @measuring_devices[subject.id] = MeasuringDevice.where(:period_id => @period.id, :subject_id => subject.id).any?
+      @measuring_devices[subject.id] = {
+        :filled => MeasuringDevice.where(:period_id => @period.id, :subject_id => subject.id).count,
+        :total => Area.count * Kind.count
+      }
       @audit[subject.id] = Audit.where(:period_id => @period.id, :subject_id => subject.id).any?
       @activities[subject.id] = ActivityValue.where(:period_id => @period.id, :subject_id => subject.id).uniq.pluck(:activity_id).count
       @consumptions[subject.id] = Consumption.where(:period_id => @period.id, :subject_id => subject.id).count
