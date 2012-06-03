@@ -43,6 +43,8 @@ EnergyAudit::Application.routes.draw do
     resources :audits
     resources :activity_values
     resources :consumptions
+    # API controller
+    resources :activities, :only => [:show]
     root :to => 'dashboard#index'
   end
 

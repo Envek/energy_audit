@@ -19,7 +19,9 @@
         %th= ActivityValue.human_attribute_name :cost_economy
     %tbody
       %tr
-        %td.usual.with_input= f.select :activity_id, grouped_options_for_select(activities_grouped_for_select_with_activity(@value.activity))
+        %td.usual.with_input
+          = f.select :activity_id, grouped_options_for_select(activities_grouped_for_select_with_activity(@value.activity))
+          %p#activity_value_activity_description= @value.activity.try(:description)
         %td.usual.with_input= f.number_field :planned_funding
         %td.usual.with_input= f.number_field :actual_funding
         %td.usual.with_input.total_financing= f.number_field :total_financing

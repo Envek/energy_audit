@@ -17,4 +17,5 @@ ru:
     attributes:
       activity:
         name: "Название"
+        description: "Расшифровка"
         activity_category: "Группа мероприятий"

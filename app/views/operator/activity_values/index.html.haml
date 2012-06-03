@@ -23,12 +23,12 @@
     - @categories.each do |category|
       %tbody
         %tr
-          %td{:colspan => 11} #{category.name}
+          %td{:colspan => 11, :title => category.description} #{category.name}
         - category.activities.each do |activity|
           - value = activity.activity_values.first
           - if value
             %tr
-              %td.usual #{activity.name}
+              %td.usual{:title => activity.description} #{activity.name}
               %td.usual #{value.planned_funding}
               %td.usual #{value.actual_funding}
               %td.usual #{value.total_financing}

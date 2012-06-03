@@ -11,22 +11,24 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20120525024601) do
+ActiveRecord::Schema.define(:version => 20120603174921) do
 
   create_table "activities", :force => true do |t|
     t.string   "name",                 :null => false
     t.integer  "activity_category_id"
     t.datetime "created_at",           :null => false
     t.datetime "updated_at",           :null => false
+    t.string   "description"
   end
 
   add_index "activities", ["activity_category_id"], :name => "index_activities_on_activity_category_id"
   add_index "activities", ["name"], :name => "index_activities_on_name", :unique => true
 
   create_table "activity_categories", :force => true do |t|
-    t.string   "name",       :null => false
-    t.datetime "created_at", :null => false
-    t.datetime "updated_at", :null => false
+    t.string   "name",        :null => false
+    t.datetime "created_at",  :null => false
+    t.datetime "updated_at",  :null => false
+    t.string   "description"
   end
 
   add_index "activity_categories", ["name"], :name => "index_activity_categories_on_name", :unique => true
@@ -148,9 +150,9 @@ ActiveRecord::Schema.define(:version => 20120525024601) do
 
   create_table "resources", :force => true do |t|
     t.string   "name",                       :null => false
-    t.string   "unit",       :default => ""
     t.datetime "created_at",                 :null => false
     t.datetime "updated_at",                 :null => false
+    t.string   "unit",       :default => ""
   end
 
   add_index "resources", ["name"], :name => "index_resources_on_name", :unique => true
