@@ -11,7 +11,7 @@ $(document).ready ->
     $(".total_financing input[type=number]").val(total)
   )
 
-  $("#activity_value_activity_id").change( ->
+  $("#activity_value_activity_id").on("change keyup", ->
     $.getJSON("/operator/activities/"+this.value+".json", (data, status, xhr) ->
       $("#activity_value_activity_description").text(data.description or "");
     )

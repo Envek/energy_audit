@@ -10,13 +10,15 @@ class Operator::ActivityValuesController < OperatorsController
   end
 
   def create
-    unless ActivityValue.where(:period_id => @period.id, :subject_id => @subject.id, :activity_id => params[:activity_value][:activity_id]).any?
-      value = ActivityValue.new(:period => @period, :subject => @subject)
-      value.update_attributes(params[:activity_value])
-      value.save
-      redirect_to url_for(:action => :index), :notice => "Saved"
-    else
-      redirect_to url_for(:action => :index), :error => "Already exists"
+    @value = ActivityValue.new(params[:activity_value])
+    @value.period = @period
+    @value.subject = @subject
+    respond_to do |format|
+      if @value.save
+        format.html { redirect_to( url_for(:action => :index), :notice => t("operator.activity_values.messages.created") ) }
+      else
+        format.html { render :action => 'new' }
+      end
     end
   end
 
@@ -25,16 +27,24 @@ class Operator::ActivityValuesController < OperatorsController
   end
 
   def update
-    value = ActivityValue.find(params[:id])
-    value.update_attributes(params[:activity_value])
-    value.save!
-    redirect_to url_for(:action => :index), :notice => "Saved"
+    @value = ActivityValue.find(params[:id])
+    @value.update_attributes(params[:activity_value])
+    respond_to do |format|
+      if @value.save
+        format.html { redirect_to( url_for(:action => :index), :notice => t("operator.activity_values.messages.saved") ) }
+      else
+        format.html { render :action => 'edit' }
+      end
+    end
   end
 
   def destroy
     value = ActivityValue.find(params[:id])
-    value.destroy
-    redirect_to url_for(:action => :index), :notice => "Removed"
+    if value.destroy
+      redirect_to url_for(:action => :index), :notice => t("operator.activity_values.messages.removed")
+    else
+      redirect_to url_for(:action => :index), :error => t("operator.activity_values.messages.cant_remove")
+    end
   end
 
 private

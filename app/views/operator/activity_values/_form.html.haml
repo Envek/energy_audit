@@ -1,4 +1,12 @@
 = form_for [:operator, @value] do |f|
+
+  - if @value.errors.any?
+    .alert.alert-error
+      %p При заполнении формы произошли следующие ошибки:
+      %ul
+        - @value.errors.full_messages.each do |msg|
+          %li= msg
+
   %table.form_table.activity_values_form_table
     %thead
       %tr
@@ -20,7 +28,7 @@
     %tbody
       %tr
         %td.usual.with_input
-          = f.select :activity_id, grouped_options_for_select(activities_grouped_for_select_with_activity(@value.activity))
+          = f.select :activity_id, grouped_options_for_select(activities_grouped_for_select_with_activity(@value.activity), @value.activity_id)
           %p#activity_value_activity_description= @value.activity.try(:description)
         %td.usual.with_input= f.number_field :planned_funding
         %td.usual.with_input= f.number_field :actual_funding

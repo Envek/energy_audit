@@ -40,7 +40,7 @@
               %td.usual #{value.cost_economy}
               %td.manage
                 = link_to "Изменить", edit_operator_activity_value_path(value), :class => "btn btn-mini"
-                = link_to "Удалить", operator_activity_value_path(value), :class => "btn btn-danger btn-mini", :method => :delete
+                = link_to "Удалить", operator_activity_value_path(value), :class => "btn btn-danger btn-mini", :method => :delete, :confirm => t(".delete_confirm")
 
   .form-actions
     = link_to "Внести данные", new_operator_activity_value_path, :class => "primary_action btn btn-primary"

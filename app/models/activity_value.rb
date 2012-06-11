@@ -2,7 +2,16 @@ class ActivityValue < ActiveRecord::Base
   belongs_to :period
   belongs_to :subject
   belongs_to :activity
-  
+
+  attr_accessible :planned_funding, :actual_funding, :total_financing, 
+                  :regional_financing, :federal_financing, :municipal_financing,
+                  :offbudget_financing, :natural_economy, :cost_economy, :activity_id
+  attr_accessible :planned_funding, :actual_funding, :total_financing, 
+                  :regional_financing, :federal_financing, :municipal_financing,
+                  :offbudget_financing, :natural_economy, :cost_economy,
+                  :period_id, :subject_id, :activity_id,
+                  :as => :admin
+
   validates :activity_id, :presence => true, :uniqueness => {:scope => [:period_id, :subject_id]}
   validates :period_id, :presence => true
   validates :subject_id, :presence => true
