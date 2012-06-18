@@ -1,0 +1,39 @@
+- if @subjects.any?
+  %table.form_table.activity_values_form_table
+    %thead
+      %tr
+        %th{:rowspan => 3}= ActivityValue.human_attribute_name :activity
+        %th{:rowspan => 3}= ActivityValue.human_attribute_name :planned_funding, :period_year => @period.date.year
+        %th{:rowspan => 3}= ActivityValue.human_attribute_name :actual_funding, :period_year => @period.date.year
+        %th{:colspan => 5}= ActivityValue.human_attribute_name :financing_on, :date => @period.start_date_localized
+        %th{:colspan => 2, :rowspan => 2}= ActivityValue.human_attribute_name :resource_economy
+        %th{:rowspan => 3}
+      %tr
+        %th{:rowspan => 2}= ActivityValue.human_attribute_name :total_financing
+        %th{:colspan => 4}= ActivityValue.human_attribute_name :financing_sources
+      %tr
+        %th= ActivityValue.human_attribute_name :regional_financing
+        %th= ActivityValue.human_attribute_name :federal_financing
+        %th= ActivityValue.human_attribute_name :municipal_financing
+        %th= ActivityValue.human_attribute_name :offbudget_financing
+        %th= ActivityValue.human_attribute_name :natural_economy
+        %th= ActivityValue.human_attribute_name :cost_economy
+    %tbody
+      - @subjects.each do |subject|
+        %tbody
+          %tr
+            %th{:colspan => 10}= subject.name
+          - subject.activity_values.each do |value|
+            %tr
+              %td.usual{:title => value.activity.description} #{value.activity.name}
+              %td.usual #{value.planned_funding}
+              %td.usual #{value.actual_funding}
+              %td.usual #{value.total_financing}
+              %td.usual #{value.regional_financing}
+              %td.usual #{value.federal_financing}
+              %td.usual #{value.municipal_financing}
+              %td.usual #{value.offbudget_financing}
+              %td.usual #{value.natural_economy}
+              %td.usual #{value.cost_economy}
+- else
+  %p На текущий период нет данных.
