@@ -28,7 +28,7 @@ class Auditor::ActivityValuesController < AuditorController
     types = [Authority, District, Organisation]
     @values = {}
     types.each do |t|
-      value = ActivityValue.joins(:subject).where(:period_id => 4, :subjects => {:type => t.to_s}).group("subjects.type")
+      value = ActivityValue.joins(:subject).where(:period_id => @period.id, :subjects => {:type => t.to_s}).group("subjects.type")
               .select(ActivityValue.significant_column_names.collect { |col| " sum(#{col}) as #{col}" }.join(','))
               # Well, it was a bit tricky. It just executes sql SUMs for all required columns
       @values[t.to_s] = value.first if value.any?
