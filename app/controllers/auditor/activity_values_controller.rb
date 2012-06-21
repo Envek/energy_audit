@@ -16,4 +16,12 @@ class Auditor::ActivityValuesController < AuditorController
     render 'subjects'
   end
 
+  def organisations
+    @subjects = Organisation.includes(:activity_values => :activity).
+                          joins(:activity_values => :activity).
+                          where(:activity_values => {:period_id => @period.id})
+    @subject_type = Organisation
+    render 'subjects'
+  end
+
 end

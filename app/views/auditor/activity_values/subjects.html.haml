@@ -7,7 +7,6 @@
         %th{:rowspan => 3}= ActivityValue.human_attribute_name :actual_funding, :period_year => @period.date.year
         %th{:colspan => 5}= ActivityValue.human_attribute_name :financing_on, :date => @period.start_date_localized
         %th{:colspan => 2, :rowspan => 2}= ActivityValue.human_attribute_name :resource_economy
-        %th{:rowspan => 3}
       %tr
         %th{:rowspan => 2}= ActivityValue.human_attribute_name :total_financing
         %th{:colspan => 4}= ActivityValue.human_attribute_name :financing_sources
@@ -18,22 +17,21 @@
         %th= ActivityValue.human_attribute_name :offbudget_financing
         %th= ActivityValue.human_attribute_name :natural_economy
         %th= ActivityValue.human_attribute_name :cost_economy
-    %tbody
-      - @subjects.each do |subject|
-        %tbody
+    - @subjects.each do |subject|
+      %tbody
+        %tr
+          %th{:colspan => 10}= subject.name
+        - total = ActivityValue.new
+        - subject.activity_values.each do |value|
           %tr
-            %th{:colspan => 10}= subject.name
-          - subject.activity_values.each do |value|
-            %tr
-              %td.usual{:title => value.activity.description} #{value.activity.name}
-              %td.usual #{value.planned_funding}
-              %td.usual #{value.actual_funding}
-              %td.usual #{value.total_financing}
-              %td.usual #{value.regional_financing}
-              %td.usual #{value.federal_financing}
-              %td.usual #{value.municipal_financing}
-              %td.usual #{value.offbudget_financing}
-              %td.usual #{value.natural_economy}
-              %td.usual #{value.cost_economy}
+            %td.usual{:title => value.activity.description} #{value.activity.name}
+            - ActivityValue.significant_column_names.each do |column|
+              %td.usual #{value[column]}
+              - total[column] += value[column]
+        %tr
+          %td.usual Итого
+          - ActivityValue.significant_column_names.each do |column|
+            %td.usual #{total[column]}
+
 - else
   %p На текущий период нет данных.

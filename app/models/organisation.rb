@@ -1,5 +1,5 @@
 class Organisation < Subject
 
-  default_scope :order => "name ASC"
+  default_scope :order => "subjects.name ASC"
 
 end

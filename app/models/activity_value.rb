@@ -29,6 +29,12 @@ class ActivityValue < ActiveRecord::Base
 
   scope :with_categories, includes(:activity => :activity_category)
 
+  def self.significant_column_names
+    [:planned_funding, :actual_funding, :total_financing, :regional_financing, 
+     :federal_financing, :municipal_financing, :offbudget_financing, 
+     :natural_economy, :cost_economy]
+  end
+
   # Replaces colon (,) to dot (.) in user input for decimal attributes
   def planned_funding=(value)
     self[:planned_funding] = value.to_s.strip.tr(',', '.')
