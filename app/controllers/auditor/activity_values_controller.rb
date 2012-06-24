@@ -1,27 +1,15 @@
 class Auditor::ActivityValuesController < AuditorController
   
   def districts
-    @subjects = District.includes(:activity_values => :activity).
-                         joins(:activity_values => :activity).
-                         where(:activity_values => {:period_id => @period.id})
-    @subject_type = District
-    render 'subjects'
+    subjects(District)
   end
   
   def authorities
-    @subjects = Authority.includes(:activity_values => :activity).
-                          joins(:activity_values => :activity).
-                          where(:activity_values => {:period_id => @period.id})
-    @subject_type = Authority
-    render 'subjects'
+    subjects(Authority)
   end
 
   def organisations
-    @subjects = Organisation.includes(:activity_values => :activity).
-                          joins(:activity_values => :activity).
-                          where(:activity_values => {:period_id => @period.id})
-    @subject_type = Organisation
-    render 'subjects'
+    subjects(Organisation)
   end
 
   def budgets
@@ -64,6 +52,14 @@ class Auditor::ActivityValuesController < AuditorController
   end
 
 protected
+
+  def subjects(subject_type)
+    @subject_type = subject_type
+    @subjects = @subject_type.includes(:activity_values => :activity)
+                             .joins(:activity_values => :activity)
+                             .where(:activity_values => {:period_id => @period.id})
+    render 'subjects'
+  end
 
   def totals(subject_type)
     @subject_type = subject_type
