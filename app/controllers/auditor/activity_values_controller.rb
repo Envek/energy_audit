@@ -51,16 +51,26 @@ class Auditor::ActivityValuesController < AuditorController
     end
   end
 
-  def districts_total
-  
+  def district_totals
+    totals(District)
   end
 
-  def authorities_total
-  
+  def authority_totals
+    totals(Authority)
   end
 
-  def organisations_total
-  
+  def organisation_totals
+    totals(Organisation)
+  end
+
+protected
+
+  def totals(subject_type)
+    @subject_type = subject_type
+    @values = ActivityValue.joins(:subject).where(:period_id => @period.id, :subjects => {:type => @subject_type.to_s}).group("subject_id")
+              .select((ActivityValue.significant_column_names+[:subject_id]).collect { |col| "sum(#{col}) as #{col}" }.join(', '))
+    @subjects = @subject_type.find(@values.map {|v| v.subject_id}) # Preload subjects (as of Rails 3.2.5 includes method breaks previous query)
+    render 'totals'
   end
 
 end

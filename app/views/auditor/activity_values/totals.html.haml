@@ -1,0 +1,35 @@
+- if @subjects.any?
+  %table.form_table.activity_values_form_table
+    %thead
+      %tr
+        %th{:rowspan => 3}= @subject_type.model_name.human
+        %th{:rowspan => 3}= ActivityValue.human_attribute_name :planned_funding, :period_year => @period.date.year
+        %th{:rowspan => 3}= ActivityValue.human_attribute_name :actual_funding, :period_year => @period.date.year
+        %th{:colspan => 5}= ActivityValue.human_attribute_name :financing_on, :date => @period.start_date_localized
+        %th{:colspan => 2, :rowspan => 2}= ActivityValue.human_attribute_name :resource_economy
+      %tr
+        %th{:rowspan => 2}= ActivityValue.human_attribute_name :total_financing
+        %th{:colspan => 4}= ActivityValue.human_attribute_name :financing_sources
+      %tr
+        %th= ActivityValue.human_attribute_name :regional_financing
+        %th= ActivityValue.human_attribute_name :federal_financing
+        %th= ActivityValue.human_attribute_name :municipal_financing
+        %th= ActivityValue.human_attribute_name :offbudget_financing
+        %th= ActivityValue.human_attribute_name :natural_economy
+        %th= ActivityValue.human_attribute_name :cost_economy
+    %tbody
+      - total = ActivityValue.new
+      - @subjects.each do |subject|
+        - value = @values.select{|v| v.subject_id == subject.id }.first
+        %tr
+          %td.usual= subject.name
+          - ActivityValue.significant_column_names.each do |column|
+            %td.usual #{value[column]}
+            - total[column] += value[column]
+      %tr
+        %td.usual Итого
+        - ActivityValue.significant_column_names.each do |column|
+          %td.usual #{total[column]}
+
+- else
+  %p На текущий период нет данных.
