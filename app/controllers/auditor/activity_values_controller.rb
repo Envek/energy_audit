@@ -36,4 +36,31 @@ class Auditor::ActivityValuesController < AuditorController
     render 'budget'
   end
 
+  def activities
+    ActiveRecord::IdentityMap.use do
+      types = [District, Authority, Organisation]
+      @values = {}
+      types.each do |t|
+        values = ActivityValue.joins(:subject, :activity)
+                .where(:period_id => @period.id, :subjects => {:type => t.to_s}).group("activity_id")
+                .select((ActivityValue.significant_column_names+[:activity_id]).collect { |col| "sum(#{col}) as #{col}" }.join(', '))
+        Activity.find(values.map {|v| v.activity_id}) # Preload activities (as of Rails 3.2.5 includes method breaks previous query)
+        @values[t.to_s] = values if values.any?
+      end
+      render 'activities'
+    end
+  end
+
+  def districts_total
+  
+  end
+
+  def authorities_total
+  
+  end
+
+  def organisations_total
+  
+  end
+
 end
