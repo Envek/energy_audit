@@ -47,8 +47,9 @@ group :production do
   # Production application server
   gem 'unicorn'
   # Backup automated system
-  gem 'backup'
+  gem 'backup', '~> 3.0.24'
   gem 'net-ssh'
   gem 'net-scp'
   gem 'mail'
+  gem 'dropbox-sdk', '~> 1.2.0'
 end
