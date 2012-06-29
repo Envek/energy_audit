@@ -16,3 +16,5 @@
 
 # Ignore database config in to the repository (use the sample files instead)
 /config/database.yml
+# Same for backup configuration
+/config/backup.rb
