@@ -16,10 +16,10 @@ class Auditor::AuditsExporter
       header_height = 3
       headers = [
         {:titles => ["Информация о количестве проведенных энергетических обследованиях в бюджетных учреждениях муниципальных образований области за #{period.date.month} #{Russian.p period.date.month, "месяц", "месяца", "месяцев"} #{period.date.year} года"],
-         :styles => [top_cell],
+         :styles => [top_cell, top_cell, top_cell, top_cell, top_cell, top_cell, top_cell, top_cell, top_cell],
          :merges => ["A1:I1"]},
         {:titles => ["", "Муниципальное образование", "Информация по энергоаудиту", "", "", "", "", "Информация по энергосервисным контрактам" ],
-         :styles => [header_cell, header_cell, header_cell, header_cell, header_cell, header_cell, header_cell, header_cell],
+         :styles => [header_cell, header_cell, header_cell, header_cell, header_cell, header_cell, header_cell, header_cell, header_cell],
          :merges => ["C2:G2", "H2:I2"]},
         {:titles => ["", "",
             "Количество зданий, сооружений, строений, находящихся в ведении исполнительного органа государственной власти или муниципального образования области",
@@ -33,8 +33,11 @@ class Auditor::AuditsExporter
          :styles => [header_cell, header_cell, header_cell, header_cell, header_cell, header_cell, header_cell, header_cell, header_cell],
          :merges => ["A2:A3", "B2:B3"]}
       ]
+      # Printing preparations
+      margins = {:left => 2.5/2.54, :right => 0.5/2.54, :top => 0.5/2.54, :bottom => 0.5/2.54, :header => 0, :footer => 0}
+      setup = {:fit_to_width => 1, :orientation => :landscape, :paper_width => "210mm", :paper_height => "297mm"}
       # Export first worksheet: Districts
-      wb.add_worksheet(:name => District.model_name.human(:count => 2)) do |sheet|
+      wb.add_worksheet(:name => District.model_name.human(:count => 2), :page_margins => margins, :page_setup => setup) do |sheet|
         headers.each do |hr|
           sheet.add_row hr[:titles], :style => hr[:styles]
           hr[:merges].each do |merge|
@@ -51,11 +54,10 @@ class Auditor::AuditsExporter
         sheet.add_row [ "", "Итого", "=SUM(C#{s}:C#{e})", "=SUM(D#{s}:D#{e})", "=SUM(E#{s}:E#{e})",
          "=SUM(F#{s}:F#{e})",  "=F#{e+1}/E#{e+1}", "=SUM(H#{s}:H#{e})", "=SUM(I#{s}:I#{e})"],
           :style => [total_cell, total_cell, total_cell, total_cell, total_cell, total_cell, total_percent_cell, total_cell, total_cell]
-        sheet.fit_to_page = true
         sheet.column_widths 3, 20, 20, 20, 20, 20, 20, 20, 20
       end
       # Export second worksheet: Authorities
-      wb.add_worksheet(:name => Authority.model_name.human(:count => 2)) do |sheet|
+      wb.add_worksheet(:name => Authority.model_name.human(:count => 2), :page_margins => margins, :page_setup => setup) do |sheet|
         headers.each do |hr|
           sheet.add_row hr[:titles], :style => hr[:styles]
           hr[:merges].each do |merge|
@@ -72,7 +74,6 @@ class Auditor::AuditsExporter
         sheet.add_row [ "", "Итого", "=SUM(C#{s}:C#{e})", "=SUM(D#{s}:D#{e})", "=SUM(E#{s}:E#{e})",
          "=SUM(F#{s}:F#{e})",  "=F#{e+1}/E#{e+1}", "=SUM(H#{s}:H#{e})", "=SUM(I#{s}:I#{e})"],
           :style => [total_cell, total_cell, total_cell, total_cell, total_cell, total_cell, total_percent_cell, total_cell, total_cell]
-        sheet.fit_to_page = true
         sheet.column_widths 3, 20, 20, 20, 20, 20, 20, 20, 20
       end
     end
