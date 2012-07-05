@@ -32,6 +32,8 @@ gem 'active_scaffold'
 
 gem 'whenever'
 
+gem 'acts_as_xlsx'
+
 # To use ActiveModel has_secure_password
 gem 'bcrypt-ruby', '~> 3.0.0'
 

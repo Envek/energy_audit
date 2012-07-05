@@ -21,6 +21,24 @@ class Auditor::ConsumptionsController < AuditorController
     @total = Consumption.includes(:subject).where(:period_id => @period.id, :subjects => {:type => ['District','Authority']})
   end
 
+  def export
+    respond_to do |format|
+      format.xlsx do
+        p = Axlsx::Package.new
+        wb = p.workbook
+        wb = Auditor::ConsumptionsExporter::export(wb, @period)
+        begin
+          temp = Tempfile.new("consumptions.xlsx")
+          p.serialize temp.path
+          send_file temp.path, :filename => "consumptions_#{@period.date}.xlsx", :type => "application/xlsx"
+        ensure
+          temp.close
+          temp.unlink
+        end
+      end
+    end
+  end
+
   private
 
   def load_resources
