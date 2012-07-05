@@ -15,10 +15,10 @@ class Auditor::AuditsExporter
       # Some preassumptions
       header_height = 3
       headers = [
-        {:titles => ["Информация о количестве проведенных энергетических обследованиях в бюджетных учреждениях муниципальных образований области за #{period.date.month} #{Russian.p period.date.month, "месяц", "месяца", "месяцев"} #{period.date.year} года"],
+        {:titles => ["Информация о количестве проведенных энергетических обследованиях в бюджетных учреждениях муниципальных образований области за #{period.date.month} #{Russian.p period.date.month, "месяц", "месяца", "месяцев"} #{period.date.year} года", "", "", "", "", "", "", "", ""],
          :styles => [top_cell, top_cell, top_cell, top_cell, top_cell, top_cell, top_cell, top_cell, top_cell],
          :merges => ["A1:I1"]},
-        {:titles => ["", "Муниципальное образование", "Информация по энергоаудиту", "", "", "", "", "Информация по энергосервисным контрактам" ],
+        {:titles => ["", "Муниципальное образование", "Информация по энергоаудиту", "", "", "", "", "Информация по энергосервисным контрактам", "" ],
          :styles => [header_cell, header_cell, header_cell, header_cell, header_cell, header_cell, header_cell, header_cell, header_cell],
          :merges => ["C2:G2", "H2:I2"]},
         {:titles => ["", "",
@@ -35,7 +35,7 @@ class Auditor::AuditsExporter
       ]
       # Printing preparations
       margins = {:left => 2.5/2.54, :right => 0.5/2.54, :top => 0.5/2.54, :bottom => 0.5/2.54, :header => 0, :footer => 0}
-      setup = {:fit_to_width => 1, :orientation => :landscape, :paper_width => "210mm", :paper_height => "297mm"}
+      setup = {:fit_to_width => 1, :orientation => :landscape}
       # Export first worksheet: Districts
       wb.add_worksheet(:name => District.model_name.human(:count => 2), :page_margins => margins, :page_setup => setup) do |sheet|
         headers.each do |hr|
