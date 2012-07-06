@@ -1,5 +1,5 @@
 = form_tag("/operator/options/update", {method: "put", class: 'well form-inline'}) do
   %span Период и субъект, по которым будут вносится данные:
   = select_tag :period_id, options_for_select(Period.all.map{|p| [p.to_label, p.id]}, session[:period].id)
-  = select_tag :subject_id, options_for_select(current_operator.subjects.all.map{|p| [p.to_label, p.id]}, session[:subject].id)
+  = select_tag :subject_id, grouped_options_for_select(subjects_grouped_for_select(current_operator.subjects), session[:subject].id)
   = submit_tag "Установить", class: "btn btn-primary"
