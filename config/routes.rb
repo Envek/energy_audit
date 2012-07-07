@@ -4,6 +4,26 @@ EnergyAudit::Application.routes.draw do
 
   devise_for :admin, :auditor, :operator, :path_names => { :sign_in => 'login', :sign_out => 'logout'}
 
+  # Public part: view all aggregated data by periods
+  resources :periods, :path => '', :constraints => {:id => /\d{4}-\d{2}/} do
+    # Measuring devices
+    match 'measuring_devices/:action' => 'auditor/measuring_devices', :via => :get, :as => 'measuring_devices'
+    match 'measuring_devices.:format' => 'auditor/measuring_devices#export', :as => 'export_measuring_devices'
+    match 'measuring_devices' => redirect{ |params| "/#{params[:period_id]}/measuring_devices/districts" }, :as => nil
+    # Audits
+    match 'audits/:action' => 'auditor/audits', :via => :get, :as => 'audits'
+    match 'audits.:format' => 'auditor/audits#export', :as => 'export_audits'
+    match 'audits' => redirect{ |params| "/#{params[:period_id]}/audits/districts" }, :as => nil
+    # Activity values
+    match 'activity_values/:action' => 'auditor/activity_values', :via => :get, :as => 'activity_values'
+    match 'activity_values.:format' => 'auditor/activity_values#export', :as => 'export_activity_values'
+    match 'activity_values' => redirect{ |params| "/#{params[:period_id]}/activity_values/districts" }, :as => nil
+    # Consumptions
+    match 'consumptions/:action' => 'auditor/consumptions', :via => :get, :as => 'consumptions'
+    match 'consumptions.:format' => 'auditor/consumptions#export', :as => 'export_consumptions'
+    match 'consumptions' => redirect{ |params| "/#{params[:period_id]}/consumptions/districts" }, :as => nil
+  end
+
   namespace :admin do |a|
     namespace :users do |u|
       resources :admins do as_routes end
@@ -48,77 +68,4 @@ EnergyAudit::Application.routes.draw do
     root :to => 'dashboard#index'
   end
 
-  namespace :auditor do
-    resources :periods do 
-      as_routes
-      member do
-        get :set_current
-      end
-    end
-    match 'measuring_devices/' => redirect("/auditor/measuring_devices/districts")
-    match 'measuring_devices/:action' => 'measuring_devices', :via => :get
-    match 'audits/' => redirect("/auditor/audits/districts")
-    match 'audits/:action' => 'audits', :via => :get
-    match 'activity_values/' => redirect("/auditor/activity_values/districts")
-    match 'activity_values/:action' => 'activity_values', :via => :get
-    match 'consumptions/' => redirect("/auditor/consumptions/districts")
-    match 'consumptions/:action' => 'consumptions', :via => :get
-    root :to => redirect('/auditor/periods')
-  end
-
-  root :to => 'home#index'
-
-  # Sample of regular route:
-  #   match 'products/:id' => 'catalog#view'
-  # Keep in mind you can assign values other than :controller and :action
-
-  # Sample of named route:
-  #   match 'products/:id/purchase' => 'catalog#purchase', :as => :purchase
-  # This route can be invoked with purchase_url(:id => product.id)
-
-  # Sample resource route (maps HTTP verbs to controller actions automatically):
-  #   resources :products
-
-  # Sample resource route with options:
-  #   resources :products do
-  #     member do
-  #       get 'short'
-  #       post 'toggle'
-  #     end
-  #
-  #     collection do
-  #       get 'sold'
-  #     end
-  #   end
-
-  # Sample resource route with sub-resources:
-  #   resources :products do
-  #     resources :comments, :sales
-  #     resource :seller
-  #   end
-
-  # Sample resource route with more complex sub-resources
-  #   resources :products do
-  #     resources :comments
-  #     resources :sales do
-  #       get 'recent', :on => :collection
-  #     end
-  #   end
-
-  # Sample resource route within a namespace:
-  #   namespace :admin do
-  #     # Directs /admin/products/* to Admin::ProductsController
-  #     # (app/controllers/admin/products_controller.rb)
-  #     resources :products
-  #   end
-
-  # You can have the root of your site routed with "root"
-  # just remember to delete public/index.html.
-  # root :to => 'welcome#index'
-
-  # See how all your routes lay out with "rake routes"
-
-  # This is a legacy wild controller route that's not recommended for RESTful applications.
-  # Note: This route will make all actions in every controller accessible via GET requests.
-  # match ':controller(/:action(/:id))(.:format)'
 end

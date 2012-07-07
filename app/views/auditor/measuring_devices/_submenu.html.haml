@@ -1,5 +1,5 @@
 %ul.btn-group
   - [{:action => :districts, :title => "Муниципальные образования"}, {:action => :authorities, :title => "Исполнительные органы государственной власти"}, {:action => :organisations, :title => "Организации"},].each do |item|
-    %li.btn{:class => ("active" if params[:action] == item[:action].to_s)}
+    %li.btn{:class => ("active" if params[:action].to_s == item[:action].to_s)}
       = link_to item[:title], url_for(:action => item[:action])
 

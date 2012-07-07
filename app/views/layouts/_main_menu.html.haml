@@ -1,28 +1,19 @@
-- unless user_signed_in?
-  %li{:class => ("active" if params[:controller] == "home")}
-    = link_to "Главная", root_path
-
-- if admin_signed_in?
-  %li{:class => ("active" if params[:controller].start_with? "admin/users")}
-    = link_to "Пользователи", admin_users_root_path
-  %li{:class => ("active" if params[:controller].start_with? "admin/subjects")}
-    = link_to "Субъекты", admin_subjects_root_path
-  %li{:class => ("active" if params[:controller].start_with? "admin/periods")}
-    = link_to "Периоды", admin_periods_path
-  %li{:class => ("active" if params[:controller].start_with? "admin/dictionaries")}
-    = link_to "Вспомогательные словари", admin_dictionaries_root_path
-- elsif auditor_signed_in?
-  %li{:class => ("active" if params[:controller] == "auditor/periods")}
-    = link_to "Главная", auditor_periods_path
+- if @period
+  %li{:class => ("active" if params[:controller] == "periods")}
+    = link_to "Главная", period_path(@period)
   %li{:class => ("active" if params[:controller].start_with? "auditor/measuring_devices")}
-    = link_to "Приборы учёта", auditor_measuring_devices_path
+    = link_to "Приборы учёта", period_measuring_devices_path(@period, :districts)
   %li{:class => ("active" if params[:controller].start_with? "auditor/audits")}
-    = link_to "Аудиты", auditor_audits_path
+    = link_to "Аудиты", period_audits_path(@period, :districts)
   %li{:class => ("active" if params[:controller].start_with? "auditor/activity_values")}
-    = link_to "Мероприятия", auditor_activity_values_path
+    = link_to "Мероприятия", period_activity_values_path(@period, :districts)
   %li{:class => ("active" if params[:controller].start_with? "auditor/consumptions")}
-    = link_to "Потребление ТЭР", auditor_consumptions_path
-- elsif operator_signed_in?
+    = link_to "Потребление ТЭР", period_consumptions_path(@period, :districts)
+- else
+  %li{:class => ("active" if params[:controller] == "periods")}
+    = link_to "Главная", periods_path
+
+- if operator_signed_in?
   %li{:class => ("active" if params[:controller] == "operator/dashboard")}
     = link_to "Главная", operator_root_path
   %li{:class => ("active" if params[:controller].start_with? "operator/measuring_devices")}
@@ -33,3 +24,13 @@
     = link_to "Мероприятия", operator_activity_values_path
   %li{:class => ("active" if params[:controller].start_with? "operator/consumptions")}
     = link_to "Потребление ТЭР", operator_consumptions_path
+
+- if admin_signed_in?
+  %li{:class => ("active" if params[:controller].start_with? "admin/users")}
+    = link_to "Пользователи", admin_users_root_path
+  %li{:class => ("active" if params[:controller].start_with? "admin/subjects")}
+    = link_to "Субъекты", admin_subjects_root_path
+  %li{:class => ("active" if params[:controller].start_with? "admin/periods")}
+    = link_to "Периоды", admin_periods_path
+  %li{:class => ("active" if params[:controller].start_with? "admin/dictionaries")}
+    = link_to "Вспомогательные словари", admin_dictionaries_root_path
