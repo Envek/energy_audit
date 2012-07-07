@@ -5,7 +5,7 @@ EnergyAudit::Application.routes.draw do
   devise_for :admin, :auditor, :operator, :path_names => { :sign_in => 'login', :sign_out => 'logout'}
 
   # Public part: view all aggregated data by periods
-  resources :periods, :path => '', :constraints => {:id => /\d{4}-\d{2}/} do
+  resources :periods, :only => [:index, :show], :path => '', :constraints => {:id => /\d{4}-\d{2}/} do
     # Measuring devices
     match 'measuring_devices/:action' => 'auditor/measuring_devices', :via => :get, :as => 'measuring_devices'
     match 'measuring_devices.:format' => 'auditor/measuring_devices#export', :as => 'export_measuring_devices'

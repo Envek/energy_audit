@@ -7,7 +7,13 @@ class Period < ActiveRecord::Base
 
   default_scope :order => "periods.date DESC"
 
+  scope :published, where(:published => true)
+
   def to_label
+    to_s
+  end
+
+  def to_s
     I18n::localize self.date, :format => "%B %Y"
   end
 
