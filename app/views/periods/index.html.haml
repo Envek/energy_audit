@@ -7,6 +7,12 @@
   - if @period
     %p.alert.alert-info Сейчас вы просматриваете информацию за #{Unicode.downcase(@period.to_s)} года. Используйте верхнее меню для навигации
 
+  - if user_signed_in? and current_user.subjects.any?
+    %p.alert.alert-info
+      Вы можете вносить информацию для #{current_user.subjects.count}
+      #{Russian.p current_user.subjects.count, "субъекта", "субъектов", "субъектов"}.
+      Выберите период для заполнения, переключитесь в верхнем меню на интересующий вас раздел и в нём нажмите кнопку «Внести данные»
+
 #homepage_contents
 
   - if @periods.any?
@@ -19,15 +25,5 @@
   - else
     %p Нет опубликованных данных ни по одному периоду.
 
-  %p Сейчас вы можете:
-
-  %ul
-    %li
-      = link_to "Войти как оператор", new_operator_session_path
-      для внесения данных в систему;
-    %li
-      = link_to "Войти как аудитор", new_auditor_session_path
-      для проверки данных и проведения аудита;
-    %li
-      = link_to "Войти как администратор", new_admin_session_path
-      для администрирования.
+- unless user_signed_in?
+  %p Сейчас вы можете <a href="#{new_user_session_path}">войти в систему</a> для работы в ней (внесение данных или администрирование)

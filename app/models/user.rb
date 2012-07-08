@@ -5,6 +5,10 @@ class User < ActiveRecord::Base
 
   # Setup accessible (or protected) attributes for your model
   attr_accessible :full_name, :email, :password, :password_confirmation, :remember_me
+
+  # Relations
+  has_many :operator_subjects, :foreign_key => "operator_id"
+  has_many :subjects, :through => :operator_subjects
   
   # Validations
   validates :full_name, :presence => true

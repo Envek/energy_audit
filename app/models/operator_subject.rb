@@ -1,5 +1,5 @@
 class OperatorSubject < ActiveRecord::Base
-  belongs_to :operator
+  belongs_to :user, :foreign_key => "operator_id"
   belongs_to :subject
   
   validates :operator_id, :presence => true, :uniqueness => {:scope => :subject_id}

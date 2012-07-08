@@ -13,24 +13,14 @@
   %li{:class => ("active" if params[:controller] == "periods")}
     = link_to "Главная", periods_path
 
-- if operator_signed_in?
-  %li{:class => ("active" if params[:controller] == "operator/dashboard")}
-    = link_to "Главная", operator_root_path
-  %li{:class => ("active" if params[:controller].start_with? "operator/measuring_devices")}
-    = link_to "Приборы учёта", operator_measuring_devices_path
-  %li{:class => ("active" if params[:controller].start_with? "operator/audits")}
-    = link_to "Аудиты", operator_audits_path
-  %li{:class => ("active" if params[:controller].start_with? "operator/activity_values")}
-    = link_to "Мероприятия", operator_activity_values_path
-  %li{:class => ("active" if params[:controller].start_with? "operator/consumptions")}
-    = link_to "Потребление ТЭР", operator_consumptions_path
-
-- if admin_signed_in?
-  %li{:class => ("active" if params[:controller].start_with? "admin/users")}
-    = link_to "Пользователи", admin_users_root_path
-  %li{:class => ("active" if params[:controller].start_with? "admin/subjects")}
-    = link_to "Субъекты", admin_subjects_root_path
-  %li{:class => ("active" if params[:controller].start_with? "admin/periods")}
-    = link_to "Периоды", admin_periods_path
-  %li{:class => ("active" if params[:controller].start_with? "admin/dictionaries")}
-    = link_to "Вспомогательные словари", admin_dictionaries_root_path
+- if user_signed_in? and current_user.admin
+  %li.dropdown
+    %a.dropdown-toggle{"data-toggle".to_sym => "dropdown", href: "#"}
+      Администрирование
+      %b.caret
+    %ul.dropdown-menu
+      %li
+        = link_to "Пользователи", admin_users_path
+        = link_to "Субъекты", admin_subjects_root_path
+        = link_to "Периоды", admin_periods_path
+        = link_to "Вспомогательные словари", admin_dictionaries_root_path

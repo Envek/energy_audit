@@ -2,7 +2,7 @@ EnergyAudit::Application.routes.draw do
   # The priority is based upon order of creation:
   # first created -> highest priority.
 
-  devise_for :admin, :auditor, :operator, :path_names => { :sign_in => 'login', :sign_out => 'logout'}
+  devise_for :user, :path_names => { :sign_in => 'login', :sign_out => 'logout'}
 
   # Public part: view all aggregated data by periods
   resources :periods, :only => [:index, :show], :path => '', :constraints => {:id => /\d{4}-\d{2}/} do
@@ -25,13 +25,8 @@ EnergyAudit::Application.routes.draw do
   end
 
   namespace :admin do |a|
-    namespace :users do |u|
-      resources :admins do as_routes end
-      resources :auditors do as_routes end
-      resources :operators do as_routes end
-      resources :operator_subjects do as_routes end
-      root :to => redirect('/admin/users/operators')
-    end
+    resources :users do as_routes end
+    resources :operator_subjects do as_routes end
     namespace :subjects do |s|
       resources :districts do as_routes end
       resources :authorities do as_routes end

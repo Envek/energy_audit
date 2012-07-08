@@ -1,9 +1,12 @@
 .btn-toolbar
-  %ul.btn-group
-    - [{:action => :districts, :title => "Муниципальные образования"}, {:action => :authorities, :title => "Исполнительные органы государственной власти"}, {:action => :total, :title => "Итог"}].each do |item|
-      %li.btn{:class => ("active" if params[:action].to_s == item[:action].to_s)}
-        = link_to item[:title], url_for(:action => item[:action])
 
-  %ul.btn-group.pull-right
-    %li.btn
-      = link_to "Экспорт в Excel", url_for(:action => :export, :format => :xlsx), :class => "excel_export"
+  - if user_signed_in? and current_user.subjects.any?
+    .btn-group
+      %a.btn.btn-primary{:href => operator_consumptions_path} Внести данные
+
+  .btn-group
+    - [{:action => :districts, :title => "Муниципальные образования"}, {:action => :authorities, :title => "Исполнительные органы государственной власти"}, {:action => :total, :title => "Итог"}].each do |item|
+      %a.btn{:href =>  url_for(:action => item[:action]), :class => ("active" if params[:action].to_s == item[:action].to_s)}= item[:title]
+
+  .btn-group.pull-right
+    %a.btn.excel_export{:href => url_for(:action => :export, :format => :xlsx)} Экспорт в Excel

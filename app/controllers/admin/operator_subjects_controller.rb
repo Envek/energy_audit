@@ -1,4 +1,5 @@
-class Admin::Users::OperatorSubjectsController < ApplicationController
+class Admin::OperatorSubjectsController < ApplicationController
+  before_filter :authenticate_user!
   active_scaffold :operator_subject do |conf|
     conf.columns = [:subject]
     conf.columns[:subject].clear_link

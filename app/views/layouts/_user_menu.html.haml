@@ -2,19 +2,7 @@
   %li
     = link_to current_user.surname_initials, "#"
   %li
-    - if operator_signed_in?
-      = link_to t("devise.labels.sign_out"), destroy_operator_session_path
-    - elsif auditor_signed_in?
-      = link_to t("devise.labels.sign_out"), destroy_auditor_session_path
-    - elsif admin_signed_in?
-      = link_to t("devise.labels.sign_out"), destroy_admin_session_path
+    = link_to t("devise.labels.sign_out"), destroy_user_session_path
 - else
-  %li.dropdown
-    %a.dropdown-toggle{"data-toggle".to_sym => "dropdown", href: "#"}
-      Вход в систему
-      %b.caret
-    %ul.dropdown-menu
-      %li
-        %a{href: new_operator_session_path} Войти как оператор
-        %a{href: new_auditor_session_path} Войти как аудитор
-        %a{href: new_admin_session_path} Войти как администратор
+  %li
+    = link_to "Вход в систему", new_user_session_path

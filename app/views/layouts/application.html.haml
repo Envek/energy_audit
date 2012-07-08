@@ -21,7 +21,7 @@
       .row-fluid
         
         = render "submenu"
-        = render "current_options" if controller.class < OperatorsController and operator_signed_in?
+        = render "current_options" if controller.class < OperatorsController and user_signed_in? and current_user.subjects.any?
 
         - unless notice.nil?
           %p.alert.alert-info= notice
