@@ -75,8 +75,6 @@ private
 
   def initialize_common_vars
     @val_types = [:start_value, :planned_value, :final_value]
-    @period = session[:period]
-    @subject = session[:subject]
     @areas = Area.all
     @kinds = Kind.all
   end

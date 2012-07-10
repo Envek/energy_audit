@@ -1,13 +1,13 @@
 - if @period
   %li{:class => ("active" if params[:controller] == "periods")}
     = link_to "Главная", period_path(@period)
-  %li{:class => ("active" if params[:controller].start_with? "auditor/measuring_devices")}
+  %li{:class => ("active" if params[:controller].include? "measuring_devices")}
     = link_to "Приборы учёта", period_measuring_devices_path(@period, :districts)
-  %li{:class => ("active" if params[:controller].start_with? "auditor/audits")}
+  %li{:class => ("active" if params[:controller].include? "audits")}
     = link_to "Аудиты", period_audits_path(@period, :districts)
-  %li{:class => ("active" if params[:controller].start_with? "auditor/activity_values")}
+  %li{:class => ("active" if params[:controller].include? "activity_values")}
     = link_to "Мероприятия", period_activity_values_path(@period, :districts)
-  %li{:class => ("active" if params[:controller].start_with? "auditor/consumptions")}
+  %li{:class => ("active" if params[:controller].include? "consumptions")}
     = link_to "Потребление ТЭР", period_consumptions_path(@period, :districts)
 - else
   %li{:class => ("active" if params[:controller] == "periods")}

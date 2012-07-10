@@ -1,5 +1,4 @@
 class Operator::ConsumptionsController < OperatorsController
-  before_filter :initialize_common_vars
 
   def index
     @consumptions = Consumption.with_resource.where(:period_id => @period.id, :subject_id => @subject.id)
@@ -35,13 +34,6 @@ class Operator::ConsumptionsController < OperatorsController
     value = Consumption.find(params[:id])
     value.destroy
     redirect_to url_for(:action => :index), :notice => t("operator.consumptions.messages.removed")
-  end
-
-private
-
-  def initialize_common_vars
-    @period = session[:period]
-    @subject = session[:subject]
   end
 
 end

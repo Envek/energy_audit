@@ -1,5 +1,4 @@
 class Operator::AuditsController < OperatorsController
-  before_filter :initialize_common_vars
 
   def index
     @current_audit = Audit.where(:period_id => @period.id, :subject_id => @subject.id).first
@@ -49,13 +48,7 @@ class Operator::AuditsController < OperatorsController
   def destroy
     audit = Audit.find(params[:id])
     audit.destroy
-  end
-
-private
-
-  def initialize_common_vars
-    @period = session[:period]
-    @subject = session[:subject]
+    redirect_to url_for(:action => :index), :notice => "Deleted"
   end
 
 end

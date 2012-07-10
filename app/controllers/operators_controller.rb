@@ -11,8 +11,8 @@ class OperatorsController < ApplicationController
   end
 
   def load_period_and_subject
-    @period = session[:period]
-    @subject = session[:subject]
+    @period = params[:period_id] ? Period.from_param(params[:period_id]) : session[:period]
+    @subject = params[:subject_id] ? Subject.find(params[:subject_id]) : session[:subject]
   end
 
 end

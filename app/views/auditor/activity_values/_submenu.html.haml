@@ -2,7 +2,7 @@
 
   - if user_signed_in? and current_user.subjects.any?
     .btn-group
-      %a.btn.btn-primary{:href => operator_activity_values_path} Внести данные
+      %a.btn.btn-primary{:href => activity_values_path(@period.to_param, current_user.subjects.first)} Внести данные
 
   .btn-group
     - [ |

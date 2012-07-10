@@ -1,4 +1,5 @@
-= form_for [:operator, @value] do |f|
+- next_action = (params[:action]=='new' ? 'create' : 'update')
+= form_for @value, :url => url_for(:period_id => @period.to_param, :subject_id => @subject.id, :id => @value.id, :action => next_action) do |f|
 
   - if @value.errors.any?
     .alert.alert-error

@@ -20,7 +20,7 @@
     - @subjects.each do |subject|
       %tbody
         %tr
-          %th{:colspan => 10}= subject.name
+          %th{:colspan => 10}= link_to subject.name, activity_values_path(@period, subject)
         - total = ActivityValue.new
         - subject.activity_values.each do |value|
           %tr

@@ -24,6 +24,38 @@ EnergyAudit::Application.routes.draw do
     match 'consumptions' => redirect{ |params| "/#{params[:period_id]}/consumptions/districts" }, :as => nil
   end
 
+  # A combined public and operator area
+  # Measuring devices
+  scope ':period_id/measuring_devices/subjects/:subject_id', :period_id => /\d{4}-\d{2}/, :subject_id => /\d+/ do
+    resources :measuring_devices, :controller => 'operator/measuring_devices', :path => '', :except => [:show]
+  end
+  scope ':period_id/measuring_devices_form/subjects/:subject_id', :period_id => /\d{4}-\d{2}/, :subject_id => /\d+/ do
+    resources :measuring_devices_form, :controller => 'operator/measuring_devices_form', :path => '', :except => [:show, :edit, :update, :destroy] do
+      collection do
+        get :edit
+        put :update
+        delete :destroy
+      end
+    end
+  end
+  # Audits
+  scope ':period_id/audits/subjects/:subject_id', :period_id => /\d{4}-\d{2}/, :subject_id => /\d+/ do
+    resources :audits, :controller => 'operator/audits', :path => '', :except => [:show]
+  end
+  # Activity values
+  scope ':period_id/activity_values/subjects/:subject_id', :period_id => /\d{4}-\d{2}/, :subject_id => /\d+/ do
+    resources :activity_values, :controller => 'operator/activity_values', :path => '', :except => [:show]
+  end
+  # Consumptions
+  scope ':period_id/consumptions/subjects/:subject_id', :period_id => /\d{4}-\d{2}/, :subject_id => /\d+/ do
+    resources :consumptions, :controller => 'operator/consumptions', :path => '', :except => [:show]
+  end
+  # Operator options
+  match "/operator/options/update" => "operator/options#update", :via => :post
+  # API controller
+  resources :activities, :only => [:show], :path => 'operator/activities', :module => 'operator'
+
+  # Administration
   namespace :admin do |a|
     resources :users do as_routes end
     resources :operator_subjects do as_routes end
@@ -43,24 +75,6 @@ EnergyAudit::Application.routes.draw do
       root :to => redirect('/admin/dictionaries/activities')
     end
     root :to => redirect('/admin/users/operators')
-  end
-
-  namespace :operator do
-    resources :options
-    resources :measuring_devices
-    resources :measuring_devices_form do
-      collection do
-        get :edit
-        put :update
-        delete :destroy
-      end
-    end
-    resources :audits
-    resources :activity_values
-    resources :consumptions
-    # API controller
-    resources :activities, :only => [:show]
-    root :to => 'dashboard#index'
   end
 
 end

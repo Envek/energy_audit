@@ -2,7 +2,7 @@
 
   - if user_signed_in? and current_user.subjects.any?
     .btn-group
-      %a.btn.btn-primary{:href => operator_measuring_devices_path} Внести данные
+      %a.btn.btn-primary{:href => measuring_devices_path(@period, current_user.subjects.first)} Внести данные
 
   .btn-group
     - [{:action => :districts, :title => "Муниципальные образования"}, {:action => :authorities, :title => "Исполнительные органы государственной власти"}, {:action => :organisations, :title => "Организации"},].each do |item|
