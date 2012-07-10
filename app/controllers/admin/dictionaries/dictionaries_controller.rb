@@ -1,3 +1,3 @@
 class Admin::Dictionaries::DictionariesController < ApplicationController
-  before_filter :authenticate_admin!
+  before_filter :authenticate_user!
 end 

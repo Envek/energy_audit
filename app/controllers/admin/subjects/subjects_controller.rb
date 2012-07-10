@@ -1,5 +1,5 @@
 class Admin::Subjects::SubjectsController < ApplicationController
-  before_filter :authenticate_admin!
+  before_filter :authenticate_user!
 
   active_scaffold :subject do |conf|
     conf.columns = [:name]
