@@ -1,7 +1,8 @@
 class Period < ActiveRecord::Base
-  has_many :measuring_devices
-  has_many :audits
-  has_many :activity_values
+  has_many :measuring_devices, :dependent => :destroy
+  has_many :audits,            :dependent => :destroy
+  has_many :activity_values,   :dependent => :destroy
+  has_many :consumptions,      :dependent => :destroy
 
   validates :date, :presence => true, :uniqueness => true
 
