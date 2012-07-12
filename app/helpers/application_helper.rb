@@ -12,9 +12,9 @@ module ApplicationHelper
     destroy_admin_session_path or destroy_auditor_session_path or destroy_operator_session_path
   end
 
-  def subjects_grouped_for_select(subjects=[])
+  def subjects_grouped_for_select(subject_ids=nil)
     [District, Authority, Organisation].map { |subject_type|
-      entries = subjects.any?? subject_type.where(:id => subjects.map{|s| s.id}) : subject_type.all
+      entries = subject_ids.is_a?(Array) ? subject_type.where(:id => subject_ids) : subject_type.all
       [subject_type.model_name.human(:count => 2), entries.map{|s| [s.name, s.id]}] if entries.any?
     }.compact
   end
