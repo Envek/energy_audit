@@ -16,7 +16,7 @@
 #homepage_contents
 
   - if @periods.any?
-    %h2 Список периодов с опубликованными данными
+    %h2 Список периодов #{"с опубликованными данными" unless current_user and (current_user.admin or current_user.subjects.any?)}
     %p Нажмите на интересующий вас период, чтобы просмотреть информацию по нему
     %ul
       - @periods.each do |period|
