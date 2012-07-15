@@ -24,11 +24,13 @@
         %td.usual #{@current_audit.audit_contracts_before}
         %td.usual #{@current_audit.audit_contracts_after}
 
-  .form-actions
-    = link_to "Внести изменения", edit_operator_audit_path(@current_audit), :class => "primary_action btn"
-    = link_to "Удалить", operator_audit_path(@current_audit), :class => "btn btn-danger", :method => :delete, :confirm => t(".delete_confirm")
+  - if current_user.subjects.include? @subject
+    .form-actions
+      = link_to "Внести изменения", edit_audit_path(@period.to_param, @subject.id, @current_audit.id), :class => "primary_action btn"
+      = link_to "Удалить", audit_path(@period.to_param, @subject.id, @current_audit.id), :class => "btn btn-danger", :method => :delete, :confirm => t(".delete_confirm")
 
 - else
   %p На текущий период нет данных.
-  .form-actions
-    = link_to "Внести данные", new_operator_audit_path, :class => "primary_action btn btn-primary"
+  - if current_user.subjects.include? @subject
+    .form-actions
+      = link_to "Внести данные", new_audit_path(@period.to_param, @subject.id), :class => "primary_action btn btn-primary"

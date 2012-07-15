@@ -15,7 +15,8 @@
         %th
       %tr
         - 12.times do |i|
-          %th #{i+1} 
+          %th #{i+1}
+        %th
     %tbody
       - @consumptions.each do |consumption|
         %tr
@@ -25,8 +26,9 @@
             %td руб.
           %td{:rowspan => 2} #{consumption.reason}
           %td.manage{:rowspan => 2}
-            = link_to "Изменить", edit_operator_consumption_path(consumption), :class => "btn btn-mini"
-            = link_to "Удалить", operator_consumption_path(consumption), :class => "btn btn-danger btn-mini", :method => :delete, :confirm => t(".delete_confirm")
+            - if current_user.subjects.include? @subject
+              = link_to "Изменить", edit_consumption_path(@period.to_param, @subject.id, consumption.id), :class => "btn btn-mini"
+              = link_to "Удалить", consumption_path(@period.to_param, @subject.id, consumption.id), :class => "btn btn-danger btn-mini", :method => :delete, :confirm => t(".delete_confirm")
         %tr
           %td.usual #{consumption.prev_cons_units}
           %td.usual #{consumption.prev_cons_monetary}
@@ -39,11 +41,10 @@
           %td.usual #{consumption.deviation_units}
           %td.usual #{consumption.deviation_monetary}
 
+- else
+  %p На текущий период нет данных.
+
+- if current_user.subjects.include? @subject
   - unless @consumptions.count == Resource.count
     .form-actions
-      = link_to "Внести данные", new_operator_consumption_path, :class => "primary_action btn btn-primary"
-
-- else
-  %p 
-    На текущий период нет данных.
-    = link_to "Внести данные", new_operator_consumption_path, :class => "btn btn-primary"
+      = link_to "Внести данные", new_consumption_path(@period.to_param, @subject.id), :class => "primary_action btn btn-primary"

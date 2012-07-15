@@ -39,14 +39,13 @@
               %td.usual #{value.natural_economy}
               %td.usual #{value.cost_economy}
               %td.manage
-                = link_to "Изменить", edit_operator_activity_value_path(value), :class => "btn btn-mini"
-                = link_to "Удалить", operator_activity_value_path(value), :class => "btn btn-danger btn-mini", :method => :delete, :confirm => t(".delete_confirm")
-
-  .form-actions
-    = link_to "Внести данные", new_operator_activity_value_path, :class => "primary_action btn btn-primary"
+                - if current_user.subjects.include? @subject
+                  = link_to "Изменить", edit_activity_value_path(@period.to_param, @subject.id, value.id), :class => "btn btn-mini"
+                  = link_to "Удалить", activity_value_path(@period.to_param, @subject.id, value.id), :class => "btn btn-danger btn-mini", :method => :delete, :confirm => t(".delete_confirm")
 
 - else
-  %p 
-    На текущий период нет данных.
-    .form-actions
-      = link_to "Внести данные", new_operator_activity_value_path, :class => "primary_action btn btn-primary"
+  %p На текущий период нет данных.
+
+- if current_user.subjects.include? @subject
+  .form-actions
+    = link_to "Внести данные", new_activity_value_path(@period.to_param, @subject.id), :class => "primary_action btn btn-primary"

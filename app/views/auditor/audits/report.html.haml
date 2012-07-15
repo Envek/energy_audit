@@ -16,7 +16,7 @@
     %tbody
       - @audits.each do |audit|
         %tr
-          %th #{audit.subject.name}
+          %th #{link_to audit.subject.name, audits_path(@period, audit.subject)}
           %td.usual #{audit.buildings}
           %td.usual #{audit.audited_before}
           %td.usual #{audit.audit_required}

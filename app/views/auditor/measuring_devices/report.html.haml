@@ -25,7 +25,7 @@
         - @subjects.each do |subject|
           - devices = area.measuring_devices.select{|d| d.subject_id == subject.id}
           %tr
-            %th #{subject.name}
+            %th #{link_to subject.name, measuring_devices_form_index_path(@period, subject)}
             - val_sums = {}
             - @val_types.each do |v|
               - @kinds.each do |kind|

@@ -1,4 +1,5 @@
-= form_for [:operator, @current_audit] do |f|
+- next_action = (params[:action]=='new' ? 'create' : 'update')
+= form_for @current_audit, :url => url_for(:period_id => @period.to_param, :subject_id => @subject.id, :id => @current_audit.id, :action => next_action) do |f|
   %table.form_table.audits_form_table
     %thead
       %tr

@@ -22,7 +22,7 @@
       - @subjects.each do |subject|
         - value = @values.select{|v| v.subject_id == subject.id }.first
         %tr
-          %td.usual= subject.name
+          %td.usual= link_to subject.name, activity_values_path(@period, subject)
           - ActivityValue.significant_column_names.each do |column|
             %td.usual #{value[column]}
             - total[column] += value[column]

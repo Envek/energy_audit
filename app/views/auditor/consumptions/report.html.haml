@@ -20,7 +20,7 @@
         - consumptions.each_with_index do |consumption, index|
           %tr
             - if index.zero?
-              %td{:rowspan => consumptions.count}= subject.name
+              %td{:rowspan => consumptions.count}= link_to subject.name, consumptions_path(@period, subject)
             %td #{consumption.resource.name}
             %td.usual #{consumption.prev_cons_units}
             %td.usual #{consumption.prev_cons_monetary}

@@ -2,16 +2,63 @@ EnergyAudit::Application.routes.draw do
   # The priority is based upon order of creation:
   # first created -> highest priority.
 
-  devise_for :admin, :auditor, :operator, :path_names => { :sign_in => 'login', :sign_out => 'logout'}
+  devise_for :user, :path_names => { :sign_in => 'login', :sign_out => 'logout'}
 
-  namespace :admin do |a|
-    namespace :users do |u|
-      resources :admins do as_routes end
-      resources :auditors do as_routes end
-      resources :operators do as_routes end
-      resources :operator_subjects do as_routes end
-      root :to => redirect('/admin/users/operators')
+  # Public part: view all aggregated data by periods
+  resources :periods, :only => [:index, :show], :path => '', :constraints => {:id => /\d{4}-\d{2}/} do
+    # Measuring devices
+    match 'measuring_devices/:action' => 'auditor/measuring_devices', :via => :get, :as => 'measuring_devices'
+    match 'measuring_devices.:format' => 'auditor/measuring_devices#export', :as => 'export_measuring_devices'
+    match 'measuring_devices' => redirect{ |params| "/#{params[:period_id]}/measuring_devices/districts" }, :as => nil
+    # Audits
+    match 'audits/:action' => 'auditor/audits', :via => :get, :as => 'audits'
+    match 'audits.:format' => 'auditor/audits#export', :as => 'export_audits'
+    match 'audits' => redirect{ |params| "/#{params[:period_id]}/audits/districts" }, :as => nil
+    # Activity values
+    match 'activity_values/:action' => 'auditor/activity_values', :via => :get, :as => 'activity_values'
+    match 'activity_values.:format' => 'auditor/activity_values#export', :as => 'export_activity_values'
+    match 'activity_values' => redirect{ |params| "/#{params[:period_id]}/activity_values/districts" }, :as => nil
+    # Consumptions
+    match 'consumptions/:action' => 'auditor/consumptions', :via => :get, :as => 'consumptions'
+    match 'consumptions.:format' => 'auditor/consumptions#export', :as => 'export_consumptions'
+    match 'consumptions' => redirect{ |params| "/#{params[:period_id]}/consumptions/districts" }, :as => nil
+  end
+
+  # A combined public and operator area
+  # Measuring devices
+  scope ':period_id/measuring_devices/subjects/:subject_id', :period_id => /\d{4}-\d{2}/, :subject_id => /\d+/ do
+    resources :measuring_devices, :controller => 'operator/measuring_devices', :path => '', :except => [:show]
+  end
+  scope ':period_id/measuring_devices_form/subjects/:subject_id', :period_id => /\d{4}-\d{2}/, :subject_id => /\d+/ do
+    resources :measuring_devices_form, :controller => 'operator/measuring_devices_form', :path => '', :except => [:show, :edit, :update, :destroy] do
+      collection do
+        get :edit
+        put :update
+        delete :destroy
+      end
     end
+  end
+  # Audits
+  scope ':period_id/audits/subjects/:subject_id', :period_id => /\d{4}-\d{2}/, :subject_id => /\d+/ do
+    resources :audits, :controller => 'operator/audits', :path => '', :except => [:show]
+  end
+  # Activity values
+  scope ':period_id/activity_values/subjects/:subject_id', :period_id => /\d{4}-\d{2}/, :subject_id => /\d+/ do
+    resources :activity_values, :controller => 'operator/activity_values', :path => '', :except => [:show]
+  end
+  # Consumptions
+  scope ':period_id/consumptions/subjects/:subject_id', :period_id => /\d{4}-\d{2}/, :subject_id => /\d+/ do
+    resources :consumptions, :controller => 'operator/consumptions', :path => '', :except => [:show]
+  end
+  # Operator options
+  match "/operator/options/update" => "operator/options#update", :via => :post
+  # API controller
+  resources :activities, :only => [:show], :path => 'operator/activities', :module => 'operator'
+
+  # Administration
+  namespace :admin do |a|
+    resources :users do as_routes end
+    resources :operator_subjects do as_routes end
     namespace :subjects do |s|
       resources :districts do as_routes end
       resources :authorities do as_routes end
@@ -30,95 +77,4 @@ EnergyAudit::Application.routes.draw do
     root :to => redirect('/admin/users/operators')
   end
 
-  namespace :operator do
-    resources :options
-    resources :measuring_devices
-    resources :measuring_devices_form do
-      collection do
-        get :edit
-        put :update
-        delete :destroy
-      end
-    end
-    resources :audits
-    resources :activity_values
-    resources :consumptions
-    # API controller
-    resources :activities, :only => [:show]
-    root :to => 'dashboard#index'
-  end
-
-  namespace :auditor do
-    resources :periods do 
-      as_routes
-      member do
-        get :set_current
-      end
-    end
-    match 'measuring_devices/' => redirect("/auditor/measuring_devices/districts")
-    match 'measuring_devices/:action' => 'measuring_devices', :via => :get
-    match 'audits/' => redirect("/auditor/audits/districts")
-    match 'audits/:action' => 'audits', :via => :get
-    match 'activity_values/' => redirect("/auditor/activity_values/districts")
-    match 'activity_values/:action' => 'activity_values', :via => :get
-    match 'consumptions/' => redirect("/auditor/consumptions/districts")
-    match 'consumptions/:action' => 'consumptions', :via => :get
-    root :to => redirect('/auditor/periods')
-  end
-
-  root :to => 'home#index'
-
-  # Sample of regular route:
-  #   match 'products/:id' => 'catalog#view'
-  # Keep in mind you can assign values other than :controller and :action
-
-  # Sample of named route:
-  #   match 'products/:id/purchase' => 'catalog#purchase', :as => :purchase
-  # This route can be invoked with purchase_url(:id => product.id)
-
-  # Sample resource route (maps HTTP verbs to controller actions automatically):
-  #   resources :products
-
-  # Sample resource route with options:
-  #   resources :products do
-  #     member do
-  #       get 'short'
-  #       post 'toggle'
-  #     end
-  #
-  #     collection do
-  #       get 'sold'
-  #     end
-  #   end
-
-  # Sample resource route with sub-resources:
-  #   resources :products do
-  #     resources :comments, :sales
-  #     resource :seller
-  #   end
-
-  # Sample resource route with more complex sub-resources
-  #   resources :products do
-  #     resources :comments
-  #     resources :sales do
-  #       get 'recent', :on => :collection
-  #     end
-  #   end
-
-  # Sample resource route within a namespace:
-  #   namespace :admin do
-  #     # Directs /admin/products/* to Admin::ProductsController
-  #     # (app/controllers/admin/products_controller.rb)
-  #     resources :products
-  #   end
-
-  # You can have the root of your site routed with "root"
-  # just remember to delete public/index.html.
-  # root :to => 'welcome#index'
-
-  # See how all your routes lay out with "rake routes"
-
-  # This is a legacy wild controller route that's not recommended for RESTful applications.
-  # Note: This route will make all actions in every controller accessible via GET requests.
-  # match ':controller(/:action(/:id))(.:format)'
 end

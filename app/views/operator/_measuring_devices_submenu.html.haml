@@ -1,5 +1,4 @@
-%ul.btn-group
-  %li.btn{:class => ("active" if params[:controller] == "operator/measuring_devices")}
-    = link_to "По областям охвата и показателям", operator_measuring_devices_path
-  %li.btn{:class => ("active" if params[:controller] == "operator/measuring_devices_form")}
-    = link_to "Одной формой", operator_measuring_devices_form_index_path
+.btn-toolbar
+  .btn-group
+    %a.btn{:href => measuring_devices_path, :class => ("active" if params[:controller] == "operator/measuring_devices")} По областям охвата и показателям
+    %a.btn{:href => measuring_devices_form_index_path, :class => ("active" if params[:controller] == "operator/measuring_devices_form")} Одной формой

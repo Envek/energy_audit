@@ -1,14 +1,18 @@
-%ul.btn-group
-  - [ |
-    {:action => :districts, :title => "Муниципальные образования"}, |
-    {:action => :authorities, :title => "Исполнительные органы государственной власти"}, |
-    {:action => :organisations, :title => "Организации"}, |
-    {:action => :budgets, :title => "Бюджеты"}, |
-    {:action => :activities, :title => "Мероприятия"}, |
-    {:action => :district_totals, :title => "Итог по МО"}, |
-    {:action => :authority_totals, :title => "Итог по ИОГВ"}, |
-    {:action => :organisation_totals, :title => "Итог по рег. орг."}, |
-    ].each do |item| |
-    %li.btn{:class => ("active" if params[:action] == item[:action].to_s)}
-      = link_to item[:title], url_for(:action => item[:action])
+.btn-toolbar
 
+  - if user_signed_in? and current_user.subjects.any?
+    .btn-group
+      %a.btn.btn-primary{:href => activity_values_path(@period.to_param, current_user.subjects.first)} Внести данные
+
+  .btn-group
+    - [ |
+      {:action => :districts, :title => "Муниципальные образования"}, |
+      {:action => :authorities, :title => "Исполнительные органы государственной власти"}, |
+      {:action => :organisations, :title => "Организации"}, |
+      {:action => :budgets, :title => "Бюджеты"}, |
+      {:action => :activities, :title => "Мероприятия"}, |
+      {:action => :district_totals, :title => "Итог по МО"}, |
+      {:action => :authority_totals, :title => "Итог по ИОГВ"}, |
+      {:action => :organisation_totals, :title => "Итог по рег. орг."}, |
+      ].each do |item| |
+      %a.btn{:href => url_for(:action => item[:action]), :class => ("active" if params[:action].to_s == item[:action].to_s)}= item[:title]

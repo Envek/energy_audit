@@ -1,5 +1,4 @@
 class Operator::ActivityValuesController < OperatorsController
-  before_filter :initialize_common_vars
 
   def index
     @categories = ActivityCategory.for_period_and_subject(@period, @subject)
@@ -45,13 +44,6 @@ class Operator::ActivityValuesController < OperatorsController
     else
       redirect_to url_for(:action => :index), :error => t("operator.activity_values.messages.cant_remove")
     end
-  end
-
-private
-
-  def initialize_common_vars
-    @period = session[:period]
-    @subject = session[:subject]
   end
 
 end

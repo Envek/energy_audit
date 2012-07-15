@@ -8,7 +8,13 @@ class Period < ActiveRecord::Base
 
   default_scope :order => "periods.date DESC"
 
+  scope :published, where(:published => true)
+
   def to_label
+    to_s
+  end
+
+  def to_s
     I18n::localize self.date, :format => "%B %Y"
   end
 
@@ -22,6 +28,17 @@ class Period < ActiveRecord::Base
   
   def date_localized
     I18n::localize self.date, :format => :default
+  end
+
+  # Redefine to/from param methods for nice routing
+
+  def self.from_param(param)
+    /(?<year>\d{4})-(?<month>\d{2})/ =~ param
+    Period.find_by_date!(Date.civil(year.to_i,month.to_i))
+  end
+
+  def to_param
+    date.strftime('%Y-%m')
   end
 
 end

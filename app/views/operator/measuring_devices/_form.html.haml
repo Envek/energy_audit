@@ -1,4 +1,5 @@
-= form_for [:operator, @device] do |f|
+- next_action = (params[:action]=='new' ? 'create' : 'update')
+= form_for @device, :url => url_for(:period_id => @period.to_param, :subject_id => @subject.id, :id => @device.id, :action => next_action) do |f|
   %table.form_table.measuring_devices_form_table
     %thead
       %tr

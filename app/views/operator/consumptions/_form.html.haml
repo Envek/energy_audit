@@ -1,4 +1,5 @@
-= form_for [:operator, @consumption] do |f|
+- next_action = (params[:action]=='new' ? 'create' : 'update')
+= form_for @consumption, :url => url_for(:period_id => @period.to_param, :subject_id => @subject.id, :id => @consumption.id, :action => next_action) do |f|
   %table.form_table.consumptions_form_table
     %thead
       %tr
