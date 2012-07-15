@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20120708135526) do
+ActiveRecord::Schema.define(:version => 20120715134425) do
 
   create_table "activities", :force => true do |t|
     t.string   "name",                 :null => false
@@ -64,16 +64,23 @@ ActiveRecord::Schema.define(:version => 20120708135526) do
   add_index "areas", ["name"], :name => "index_areas_on_name", :unique => true
 
   create_table "audits", :force => true do |t|
-    t.integer  "period_id",                             :null => false
-    t.integer  "subject_id",                            :null => false
-    t.integer  "buildings",              :default => 0
-    t.integer  "audited_before",         :default => 0
-    t.integer  "audit_required",         :default => 0
-    t.integer  "audited_in_period",      :default => 0
-    t.integer  "audit_contracts_before", :default => 0
-    t.integer  "audit_contracts_after",  :default => 0
-    t.datetime "created_at",                            :null => false
-    t.datetime "updated_at",                            :null => false
+    t.integer  "period_id",                                                                        :null => false
+    t.integer  "subject_id",                                                                       :null => false
+    t.integer  "buildings",                                                       :default => 0
+    t.integer  "buildings_before",                                                :default => 0
+    t.integer  "buildings_audited",                                               :default => 0
+    t.integer  "contracts_count_before",                                          :default => 0
+    t.integer  "contracts_count",                                                 :default => 0
+    t.datetime "created_at",                                                                       :null => false
+    t.datetime "updated_at",                                                                       :null => false
+    t.integer  "organizations",                                                   :default => 0
+    t.integer  "organizations_audit_required",                                    :default => 0
+    t.integer  "organizations_before",                                            :default => 0
+    t.integer  "organizations_audited",                                           :default => 0
+    t.decimal  "contracts_volume",                 :precision => 32, :scale => 8, :default => 0.0
+    t.integer  "ref_orgs_with_programs_count"
+    t.integer  "ref_orgs_with_responsibles_count"
+    t.integer  "ref_planning_economy_value"
   end
 
   add_index "audits", ["period_id", "subject_id"], :name => "audits_main_index", :unique => true

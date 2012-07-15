@@ -2,36 +2,34 @@
   %table.form_table.audits_form_table
     %thead
       %tr
-        %th{:rowspan => 2} #{@subject_type.model_name.human if @subject_type}
-        %th{:colspan => 5} Информация по энергоаудиту
-        %th{:colspan => 2} Информация по энергосервисным контрактам
+        %th{:rowspan => 2}= @subject_type.model_name.human
+        %th{:colspan => 3} Находящиеся в ведении ИОГВ или муниципального образования области, шт
+        %th{:colspan => 2} Проведен энергоаудит по состоянию на #{@period.start_date_localized} г.
+        %th{:colspan => 2} Фактически проведено энергоаудитов по состоянию на #{@period.date_localized} г.
+        %th{:colspan => 2} % проведенных энергоаудитов
+        %th{:rowspan => 2} Количество энергосервисных контрактов, заключенных по состоянию на #{@period.start_date_localized} г.
+        %th{:rowspan => 2} Количество энергосервисных контрактов, заключенных по состоянию на #{@period.date_localized} г., шт
+        %th{:rowspan => 2} Объем энергосервисных контрактов, заключенных по состоянию на отчетную дату #{@period.date_localized} г., тыс.руб.
       %tr
-        %th Количество зданий, сооружений, строений, находящихся в ведении исполнительного органа государственной власти или муниципального образования области
-        %th Количество зданий, сооружений строений, по которым проведен энергоаудит по состоянию на #{@period.start_date_localized} г.
-        %th Количество зданий, сооружений строений, по которым необходимо провести энергоаудит 
-        %th Фактическое количество зданий, сооружений строений, по которым проведен энергоаудит по состоянию на #{@period.date_localized} г.
-        %th % проведенных энергоаудитов
-        %th Количество энергосервисных контрактов, заключенных по состоянию на #{@period.start_date_localized} г.
-        %th Количество энергосервисных контрактов, заключенных по состоянию на #{@period.date_localized} г.
+        %th бюджетных учреждений любой формы собственности (юридических лиц), всего
+        %th в т.ч. из графы бюджетных учреждений любой формы собственности (юридических лиц), подлежащих энергетическому обследованию
+        %th зданий, сооружений, строений
+        %th в бюджетных учреждениях любой формы собственности (юридических лиц), подлежащих энергетическому обследованию
+        %th зданий, сооружений, строений
+        %th в бюджетных учрежденях любой формы собственности (юридических лиц), подлежащих энергетическому обследованию
+        %th зданий, сооружений, строений
+        %th бюджетных учреждений любой формы собственности (юридических лиц), подлежащих энергетическому обследованию
+        %th зданий, сооружений, строений
     %tbody
       - @audits.each do |audit|
         %tr
           %th #{link_to audit.subject.name, audits_path(@period, audit.subject)}
-          %td.usual #{audit.buildings}
-          %td.usual #{audit.audited_before}
-          %td.usual #{audit.audit_required}
-          %td.usual #{audit.audited_in_period}
-          %td.usual #{audit.audited_percentage.finite? ? number_to_percentage(audit.audited_percentage) : "недоступен" }
-          %td.usual #{audit.audit_contracts_before}
-          %td.usual #{audit.audit_contracts_after}
+          - Audit.significant_fields.each do |field|
+            %td.usual #{audit.send(field)}
       %tr
         %th Всего
-        %td.usual= @audits.map{|a| a.buildings }.compact.sum
-        %td.usual= @audits.map{|a| a.audited_before }.compact.sum
-        %td.usual= @audits.map{|a| a.audit_required }.compact.sum
-        %td.usual= @audits.map{|a| a.audited_in_period }.compact.sum
-        %td.usual= number_to_percentage(@audits.map{|a| a.audited_in_period }.compact.sum.to_f*100 / @audits.map{|a| a.audit_required }.compact.sum)
-        %td.usual= @audits.map{|a| a.audit_contracts_before }.compact.sum
-        %td.usual= @audits.map{|a| a.audit_contracts_after }.compact.sum
+        - Audit.significant_fields.each do |field|
+          %td.usual= @audits.map{|a| a.send(field) }.compact.sum unless field.to_s.end_with? "percentage"
+
 - else
   %p На текущий период нет данных.

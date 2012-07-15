@@ -1,33 +1,49 @@
 %h1.form_header #{@subject.name}
 
-- if @current_audit
+- if @audit
   %table.form_table.audits_form_table
     %thead
       %tr
-        %th{:colspan => 5} Информация по энергоаудиту
-        %th{:colspan => 2} Информация по энергосервисным контрактам
+        %th{:colspan => 3} Находящиеся в ведении ИОГВ или муниципального образования области, шт
+        %th{:colspan => 2} Проведен энергоаудит по состоянию на #{@period.start_date_localized} г.
+        %th{:colspan => 2} Фактически проведено энергоаудитов по состоянию на #{@period.date_localized} г.
+        %th{:colspan => 2} % проведенных энергоаудитов
+        %th{:rowspan => 2} Количество энергосервисных контрактов, заключенных по состоянию на #{@period.start_date_localized} г.
+        %th{:rowspan => 2} Количество энергосервисных контрактов, заключенных по состоянию на #{@period.date_localized} г., шт
+        %th{:rowspan => 2} Объем энергосервисных контрактов, заключенных по состоянию на отчетную дату #{@period.date_localized} г., тыс.руб.
       %tr
-        %th Количество зданий, сооружений, строений, находящихся в ведении исполнительного органа государственной власти или муниципального образования области
-        %th Количество зданий, сооружений строений, по которым проведен энергоаудит по состоянию на #{@current_audit.period.start_date_localized} г.
-        %th Количество зданий, сооружений строений, по которым необходимо провести энергоаудит 
-        %th Фактическое количество зданий, сооружений строений, по которым проведен энергоаудит по состоянию на #{@current_audit.period.date_localized} г.
-        %th % проведенных энергоаудитов
-        %th Количество энергосервисных контрактов, заключенных по состоянию на #{@current_audit.period.start_date_localized} г.
-        %th Количество энергосервисных контрактов, заключенных по состоянию на #{@current_audit.period.date_localized} г.
+        %th бюджетных учреждений любой формы собственности (юридических лиц), всего
+        %th в т.ч. из графы бюджетных учреждений любой формы собственности (юридических лиц), подлежащих энергетическому обследованию
+        %th зданий, сооружений, строений
+        %th в бюджетных учреждениях любой формы собственности (юридических лиц), подлежащих энергетическому обследованию
+        %th зданий, сооружений, строений
+        %th в бюджетных учрежденях любой формы собственности (юридических лиц), подлежащих энергетическому обследованию
+        %th зданий, сооружений, строений
+        %th бюджетных учреждений любой формы собственности (юридических лиц), подлежащих энергетическому обследованию
+        %th зданий, сооружений, строений
     %tbody
       %tr
-        %td.usual #{@current_audit.buildings}
-        %td.usual #{@current_audit.audited_before}
-        %td.usual #{@current_audit.audit_required}
-        %td.usual #{@current_audit.audited_in_period}
-        %td.usual #{@current_audit.audited_percentage.finite? ? number_to_percentage(@current_audit.audited_percentage) : "недоступен" }
-        %td.usual #{@current_audit.audit_contracts_before}
-        %td.usual #{@current_audit.audit_contracts_after}
+        - Audit.significant_fields.each do |field|
+          %td.usual #{@audit.send(field)}
+
+  - if @audit.reference_filled?
+    %table.form_table.audits_ref_form_table
+      %caption Справочно
+      %tbody
+        %tr
+          %th количество бюджетных учреждений любой формы собственности (юридических лиц), утвердивших программу энергосбережения, шт.
+          %td.usual.with_input #{@audit.ref_orgs_with_programs_count}
+        %tr
+          %th количество бюджетных учреждений любой формы собственности (юридических лиц), в которых назначены ответственные за энергосбережение и повышение энергетической эффективности, шт.
+          %td.usual.with_input #{@audit.ref_orgs_with_responsibles_count}
+        %tr
+          %th Планируемый объем экономии в бюджетных учреждениях любой формы собственности (юридических лиц) по результатам проведенных энергетических обследований, тыс.руб.
+          %td.usual.with_input #{@audit.ref_planning_economy_value}
 
   - if current_user and current_user.subjects.include? @subject
     .form-actions
-      = link_to "Внести изменения", edit_audit_path(@period.to_param, @subject.id, @current_audit.id), :class => "primary_action btn"
-      = link_to "Удалить", audit_path(@period.to_param, @subject.id, @current_audit.id), :class => "btn btn-danger", :method => :delete, :confirm => t(".delete_confirm")
+      = link_to "Внести изменения", edit_audit_path(@period.to_param, @subject.id, @audit.id), :class => "primary_action btn"
+      = link_to "Удалить", audit_path(@period.to_param, @subject.id, @audit.id), :class => "btn btn-danger", :method => :delete, :confirm => t(".delete_confirm")
 
 - else
   %p На текущий период нет данных.

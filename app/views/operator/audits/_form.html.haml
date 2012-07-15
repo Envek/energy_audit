@@ -1,27 +1,60 @@
 - next_action = (params[:action]=='new' ? 'create' : 'update')
-= form_for @current_audit, :url => url_for(:period_id => @period.to_param, :subject_id => @subject.id, :id => @current_audit.id, :action => next_action) do |f|
+= form_for @audit, :url => url_for(:period_id => @period.to_param, :subject_id => @subject.id, :id => @audit.id, :action => next_action) do |f|
+
+  - if @audit.errors.any?
+    .alert.alert-block.alert-error
+      %h4.alert-heading При заполнении формы произошли следующие ошибки:
+      %ul
+        - @audit.errors.full_messages.each do |msg|
+          %li= msg
+
   %table.form_table.audits_form_table
     %thead
       %tr
-        %th{:colspan => 5} Информация по энергоаудиту
-        %th{:colspan => 2} Информация по энергосервисным контрактам
+        %th{:colspan => 3} Находящиеся в ведении ИОГВ или муниципального образования области, шт
+        %th{:colspan => 2} Проведен энергоаудит по состоянию на #{@period.start_date_localized} г.
+        %th{:colspan => 2} Фактически проведено энергоаудитов по состоянию на #{@period.date_localized} г.
+        %th{:colspan => 2} % проведенных энергоаудитов
+        %th{:rowspan => 2} Количество энергосервисных контрактов, заключенных по состоянию на #{@period.start_date_localized} г.
+        %th{:rowspan => 2} Количество энергосервисных контрактов, заключенных по состоянию на #{@period.date_localized} г., шт
+        %th{:rowspan => 2} Объем энергосервисных контрактов, заключенных по состоянию на отчетную дату #{@period.date_localized} г., тыс.руб.
       %tr
-        %th Количество зданий, сооружений, строений, находящихся в ведении исполнительного органа государственной власти или муниципального образования области
-        %th Количество зданий, сооружений строений, по которым проведен энергоаудит по состоянию на #{@period.start_date_localized} г.
-        %th Количество зданий, сооружений строений, по которым необходимо провести энергоаудит 
-        %th Фактическое количество зданий, сооружений строений, по которым проведен энергоаудит по состоянию на #{@period.date_localized} г.
-        %th % проведенных энергоаудитов
-        %th Количество энергосервисных контрактов, заключенных по состоянию на #{@period.start_date_localized} г.
-        %th Количество энергосервисных контрактов, заключенных по состоянию на #{@period.date_localized} г.
+        %th бюджетных учреждений любой формы собственности (юридических лиц), всего
+        %th в т.ч. из графы бюджетных учреждений любой формы собственности (юридических лиц), подлежащих энергетическому обследованию
+        %th зданий, сооружений, строений
+        %th в бюджетных учреждениях любой формы собственности (юридических лиц), подлежащих энергетическому обследованию
+        %th зданий, сооружений, строений
+        %th в бюджетных учрежденях любой формы собственности (юридических лиц), подлежащих энергетическому обследованию
+        %th зданий, сооружений, строений
+        %th бюджетных учреждений любой формы собственности (юридических лиц), подлежащих энергетическому обследованию
+        %th зданий, сооружений, строений
     %tbody
       %tr
+        %td.usual.with_input #{f.number_field :organizations}
+        %td.usual.with_input #{f.number_field :organizations_audit_required}
         %td.usual.with_input #{f.number_field :buildings}
-        %td.usual.with_input #{f.number_field :audited_before}
-        %td.usual.with_input.audit_required #{f.number_field :audit_required}
-        %td.usual.with_input.audited_in_period #{f.number_field :audited_in_period}
-        %td.usual.audited_percentage #{@current_audit.audited_percentage.finite? ? number_to_percentage(@current_audit.audited_percentage) : "недоступен" }
-        %td.usual.with_input #{f.number_field :audit_contracts_before}
-        %td.usual.with_input #{f.number_field :audit_contracts_after}
+        %td.usual.with_input #{f.number_field :organizations_before}
+        %td.usual.with_input #{f.number_field :buildings_before}
+        %td.usual.with_input #{f.number_field :organizations_audited}
+        %td.usual.with_input #{f.number_field :buildings_audited}
+        %td.usual.organizations_audited_percentage= @audit.organizations_audited_percentage
+        %td.usual.buildings_audited_percentage=     @audit.buildings_audited_percentage
+        %td.usual.with_input #{f.number_field :contracts_count_before}
+        %td.usual.with_input #{f.number_field :contracts_count}
+        %td.usual.with_input #{f.number_field :contracts_volume}
+
+  %table.form_table.audits_ref_form_table
+    %caption Справочно
+    %tbody
+      %tr
+        %th количество бюджетных учреждений любой формы собственности (юридических лиц), утвердивших программу энергосбережения, шт.
+        %td.usual.with_input #{f.number_field :ref_orgs_with_programs_count}
+      %tr
+        %th количество бюджетных учреждений любой формы собственности (юридических лиц), в которых назначены ответственные за энергосбережение и повышение энергетической эффективности, шт.
+        %td.usual.with_input #{f.number_field :ref_orgs_with_responsibles_count}
+      %tr
+        %th Планируемый объем экономии в бюджетных учреждениях любой формы собственности (юридических лиц) по результатам проведенных энергетических обследований, тыс.руб.
+        %td.usual.with_input #{f.number_field :ref_planning_economy_value}
 
   .form-actions
     %button.btn.btn-primary{:type => :submit} Внести данные
