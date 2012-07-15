@@ -26,7 +26,7 @@
             %td руб.
           %td{:rowspan => 2} #{consumption.reason}
           %td.manage{:rowspan => 2}
-            - if current_user.subjects.include? @subject
+            - if current_user and current_user.subjects.include? @subject
               = link_to "Изменить", edit_consumption_path(@period.to_param, @subject.id, consumption.id), :class => "btn btn-mini"
               = link_to "Удалить", consumption_path(@period.to_param, @subject.id, consumption.id), :class => "btn btn-danger btn-mini", :method => :delete, :confirm => t(".delete_confirm")
         %tr
@@ -44,7 +44,7 @@
 - else
   %p На текущий период нет данных.
 
-- if current_user.subjects.include? @subject
+- if current_user and current_user.subjects.include? @subject
   - unless @consumptions.count == Resource.count
     .form-actions
       = link_to "Внести данные", new_consumption_path(@period.to_param, @subject.id), :class => "primary_action btn btn-primary"

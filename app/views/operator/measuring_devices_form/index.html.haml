@@ -29,7 +29,7 @@
           - percent = val_sums[:final_value]/divisor.to_f*100 unless divisor.zero?
           %td.usual #{ divisor.zero? ? "недоступен" : number_to_percentage(percent) }
 
-  - if current_user.subjects.include? @subject
+  - if current_user and current_user.subjects.include? @subject
     .form-actions
       = link_to "Внести изменения", url_for(:action => :edit), :class => "primary_action btn"
       = link_to "Удалить", url_for(:action => :destroy), :class => "btn btn-danger", :method => :delete, :confirm => t(".delete_confirm")
@@ -37,6 +37,6 @@
 - else
   %p На текущий период нет данных.
 
-  - if current_user.subjects.include? @subject
+  - if current_user and current_user.subjects.include? @subject
     .form-actions
       = link_to "Внести данные", url_for(:action => :new), :class => "primary_action btn btn-primary"

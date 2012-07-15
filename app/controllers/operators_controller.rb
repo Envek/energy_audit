@@ -1,5 +1,5 @@
 class OperatorsController < ApplicationController
-  before_filter :authenticate_user!
+  before_filter :authenticate_user!, :except => [:index]
   before_filter :set_default_period_and_subject_if_needed
   before_filter :load_period_and_subject
   
