@@ -1,0 +1,17 @@
+# Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/Fixtures.html
+
+one:
+  period: 
+  unit: 
+  production_resource: 
+  production: 9.99
+  consumption: 9.99
+  useful_output: 9.99
+
+two:
+  period: 
+  unit: 
+  production_resource: 
+  production: 9.99
+  consumption: 9.99
+  useful_output: 9.99

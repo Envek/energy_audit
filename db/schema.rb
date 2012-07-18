@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20120715134425) do
+ActiveRecord::Schema.define(:version => 20120718114657) do
 
   create_table "activities", :force => true do |t|
     t.string   "name",                 :null => false
@@ -154,6 +154,31 @@ ActiveRecord::Schema.define(:version => 20120715134425) do
   end
 
   add_index "periods", ["date"], :name => "index_periods_on_date", :unique => true
+
+  create_table "production_resources", :force => true do |t|
+    t.string   "name",       :null => false
+    t.string   "unit",       :null => false
+    t.datetime "created_at", :null => false
+    t.datetime "updated_at", :null => false
+  end
+
+  add_index "production_resources", ["name"], :name => "index_production_resources_on_name", :unique => true
+
+  create_table "productions", :force => true do |t|
+    t.integer  "period_id"
+    t.integer  "subject_id"
+    t.integer  "production_resource_id"
+    t.decimal  "production",             :precision => 32, :scale => 8, :null => false
+    t.decimal  "consumption",            :precision => 32, :scale => 8, :null => false
+    t.decimal  "useful_output",          :precision => 32, :scale => 8, :null => false
+    t.datetime "created_at",                                            :null => false
+    t.datetime "updated_at",                                            :null => false
+  end
+
+  add_index "productions", ["period_id", "subject_id", "production_resource_id"], :name => "productions_main_index", :unique => true
+  add_index "productions", ["period_id"], :name => "index_productions_on_period_id"
+  add_index "productions", ["production_resource_id"], :name => "index_productions_on_production_resource_id"
+  add_index "productions", ["subject_id"], :name => "index_productions_on_subject_id"
 
   create_table "resources", :force => true do |t|
     t.string   "name",                       :null => false

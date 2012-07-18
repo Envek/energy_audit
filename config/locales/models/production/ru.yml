@@ -1,0 +1,22 @@
+ru:
+  activerecord:
+    errors:
+      models:
+        production:
+          attributes:
+            production_resource_id:
+              taken: ": информация по данному ресурсу уже внесена."
+
+    models:
+      production: 
+        one: "Производство"
+        few: "Производства"
+        many: "Производства"
+        other: "Производства"
+
+    attributes:
+      production:
+        production_resource: "Ресурс"
+        production: "Объём производства"
+        consumption: "Объём потребления"
+        useful_output: "Объём полезного отпуска"

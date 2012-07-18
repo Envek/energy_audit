@@ -22,6 +22,10 @@ EnergyAudit::Application.routes.draw do
     match 'consumptions/:action' => 'auditor/consumptions', :via => :get, :as => 'consumptions'
     match 'consumptions.:format' => 'auditor/consumptions#export', :as => 'export_consumptions'
     match 'consumptions' => redirect{ |params| "/#{params[:period_id]}/consumptions/districts" }, :as => nil
+    # Productions
+    match 'productions/:action' => 'auditor/productions', :via => :get, :as => 'productions'
+    match 'productions.:format' => 'auditor/productions#export', :as => 'export_productions'
+    match 'productions' => redirect{ |params| "/#{params[:period_id]}/productions/districts" }, :as => nil
   end
 
   # A combined public and operator area
@@ -50,6 +54,10 @@ EnergyAudit::Application.routes.draw do
   scope ':period_id/consumptions/subjects/:subject_id', :period_id => /\d{4}-\d{2}/, :subject_id => /\d+/ do
     resources :consumptions, :controller => 'operator/consumptions', :path => '', :except => [:show]
   end
+  # Productions
+  scope ':period_id/productions/subjects/:subject_id', :period_id => /\d{4}-\d{2}/, :subject_id => /\d+/ do
+    resources :productions, :controller => 'operator/productions', :path => '', :except => [:show]
+  end
   # Operator options
   match "/operator/options/update" => "operator/options#update", :via => :post
   # API controller
@@ -72,6 +80,7 @@ EnergyAudit::Application.routes.draw do
       resources :resources do as_routes end
       resources :activities do as_routes end
       resources :activity_categories do as_routes end
+      resources :production_resources do as_routes end
       root :to => redirect('/admin/dictionaries/activities')
     end
     root :to => redirect('/admin/users/operators')

@@ -1,0 +1,24 @@
+ru:
+  activerecord:
+    errors:
+      models:
+        production_resource:
+          attributes:
+            name:
+              taken: ": ресурс производства с таким названием уже существует."
+
+    models:
+      production_resource: 
+        one: "Ресурс производства"
+        few: "Ресурсы производства"
+        many: "Ресурсы производства"
+        other: "Ресурсы производства"
+
+    attributes:
+      production_resource:
+        name: "Наименование"
+        unit: "Единица измерения"
+
+    description:
+      production_resource:
+        unit: "Сокращённое название используемой единицы измерения"

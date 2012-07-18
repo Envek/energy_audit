@@ -1,0 +1,31 @@
+- next_action = (params[:action]=='new' ? 'create' : 'update')
+= form_for @production, :url => url_for(:period_id => @period.to_param, :subject_id => @subject.id, :id => @production.id, :action => next_action) do |f|
+
+  - if @production.errors.any?
+    .alert.alert-block.alert-error
+      %h4.alert-heading При заполнении формы произошли следующие ошибки:
+      %ul
+        - @production.errors.full_messages.each do |msg|
+          %li= msg
+
+  %table.form_table.productions_form_table
+    %thead
+      %tr
+        %th= ProductionResource.human_attribute_name :name
+        %th= ProductionResource.human_attribute_name :unit
+        %th= Production.human_attribute_name :production
+        %th= Production.human_attribute_name :consumption
+        %th= Production.human_attribute_name :useful_output
+    %tbody
+      %tr
+        %th.usual.with_input= f.select :production_resource_id, options_for_select(production_resources_for_select_with_resource(@production.production_resource))
+        %th#production_resource_unit.usual
+        %td.usual.with_input= f.number_field :production
+        %td.usual.with_input= f.number_field :consumption
+        %td.usual.with_input= f.number_field :useful_output
+
+  .form-actions
+    = link_to "Назад", request.referer, :class => "btn"
+    %button.btn.btn-inverse{:type => :reset} Отменить изменения
+    %button.primary_action.btn.btn-primary{:type => :submit} Сохранить 
+

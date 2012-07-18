@@ -9,3 +9,5 @@
     = link_to "Показатели", admin_dictionaries_kinds_path
   %li.btn{:class => ("active" if params[:controller] == "admin/dictionaries/areas")}
     = link_to "Области охвата показателей", admin_dictionaries_areas_path
+  %li.btn{:class => ("active" if params[:controller] == "admin/dictionaries/production_resources")}
+    = link_to "Ресурсы производства", admin_dictionaries_production_resources_path

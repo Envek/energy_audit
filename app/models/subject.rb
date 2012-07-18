@@ -5,6 +5,7 @@ class Subject < ActiveRecord::Base
   has_many :audits,            :dependent => :destroy
   has_many :activity_values,   :dependent => :destroy
   has_many :consumptions,      :dependent => :destroy
+  has_many :productions,       :dependent => :destroy
 
   validates :name, :presence => true, :uniqueness => true
 

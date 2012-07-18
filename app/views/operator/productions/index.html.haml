@@ -1,0 +1,33 @@
+%h1.form_header Данные об объеме и структуре производства, потребления и передачи энергетических ресурсов на территории муниципального образования
+%h2.form_header #{@subject.name}
+
+- if @productions.any?
+  %table.form_table.productions_form_table
+    %thead
+      %tr
+        %th= ProductionResource.human_attribute_name :name
+        %th= ProductionResource.human_attribute_name :unit
+        %th= Production.human_attribute_name :production
+        %th= Production.human_attribute_name :consumption
+        %th= Production.human_attribute_name :useful_output
+        %th
+    %tbody
+      - @productions.each do |production|
+        %tr
+          %th.usual #{production.production_resource.name}
+          %td.usual #{production.production_resource.unit}
+          %td.usual #{production.production}
+          %td.usual #{production.consumption}
+          %td.usual #{production.useful_output}
+          %td.manage
+            - if current_user and current_user.subjects.include? @subject
+              = link_to "Изменить", edit_production_path(@period.to_param, @subject.id, production.id), :class => "btn btn-mini"
+              = link_to "Удалить", production_path(@period.to_param, @subject.id, production.id), :class => "btn btn-danger btn-mini", :method => :delete, :confirm => t(".delete_confirm")
+
+- else
+  %p На текущий период нет данных.
+
+- if current_user and current_user.subjects.include? @subject
+  - unless @productions.count == ProductionResource.count
+    .form-actions
+      = link_to "Внести данные", new_production_path(@period.to_param, @subject.id), :class => "primary_action btn btn-primary"

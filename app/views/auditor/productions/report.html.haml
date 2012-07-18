@@ -1,0 +1,26 @@
+- if @productions.any?
+  %table.form_table.productions_form_table
+    %thead
+      %tr
+        %th= @subject_type.model_name.human
+        %th= ProductionResource.human_attribute_name :name
+        %th= ProductionResource.human_attribute_name :unit
+        %th= Production.human_attribute_name :production
+        %th= Production.human_attribute_name :production
+        %th= Production.human_attribute_name :useful_output
+    %tbody
+      - @subjects.each do |subject|
+        - productions = @productions.select{|c| c.subject_id == subject.id }
+        - productions.each_with_index do |production, index|
+          %tr
+            - if index.zero?
+              %td{:rowspan => productions.count}= link_to subject.name, productions_path(@period, subject)
+            %td.usual #{production.production_resource.name}
+            %td.usual #{production.production_resource.unit}
+            %td.usual #{production.production}
+            %td.usual #{production.consumption}
+            %td.usual #{production.useful_output}
+
+- else
+  %p 
+    На текущий период нет данных.
