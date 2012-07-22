@@ -26,6 +26,24 @@ class Auditor::MeasuringDevicesController < AuditorController
     
   end
 
+  def export
+    respond_to do |format|
+      format.xlsx do
+        p = Axlsx::Package.new
+        wb = p.workbook
+        wb = Auditor::MeasuringDevicesExporter::export(wb, @period)
+        begin
+          temp = Tempfile.new("measuring_devices_#{request.uuid}.xlsx")
+          p.serialize temp.path
+          send_file temp.path, :filename => "measuring_devices_#{@period.date}.xlsx", :type => "application/xlsx"
+        ensure
+          temp.close
+          temp.unlink
+        end
+      end
+    end
+  end
+
   private
 
   def load_kinds_and_areas
