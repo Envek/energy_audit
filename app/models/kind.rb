@@ -3,4 +3,6 @@ class Kind < ActiveRecord::Base
 
   validates :name, :presence => true, :uniqueness => true
 
+  default_scope order("id ASC")
+
 end
