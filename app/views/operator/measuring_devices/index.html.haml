@@ -10,7 +10,8 @@
         %th= MeasuringDevice.human_attribute_name :planned_value, :date => @period.start_date_localized
         %th= MeasuringDevice.human_attribute_name :final_value, :period_year => @period.date.year
         %th= MeasuringDevice.human_attribute_name :equipment_level
-        %th
+        - if can? :manage, MeasuringDevice
+          %th
     - @areas.each do |area|
       %tbody
         %tr
@@ -22,8 +23,8 @@
             %td #{device.planned_value}
             %td #{device.final_value}
             %td #{device.equipment_level.finite?? number_to_percentage(device.equipment_level) : "недоступен"}
-            %td.manage
-              - if current_user and current_user.subjects.include? @subject
+            - if can? :manage, device
+              %td.manage
                 = link_to "Изменить", edit_measuring_device_path(@period.to_param, @subject.id, device.id), :class => "btn btn-mini"
                 = link_to "Удалить", measuring_device_path(@period.to_param, @subject.id, device.id), :class => "btn btn-danger btn-mini", :method => :delete, :confirm => t(".delete_confirm")
         %tr
@@ -32,13 +33,11 @@
           %td= p = area.measuring_devices.map{|d| d.planned_value}.compact.sum
           %td= f = area.measuring_devices.map{|d| d.final_value}.compact.sum
           %td= (s+p != 0) ? number_to_percentage(f*100.0/(s+p)) : "недоступен"
-
-  - if current_user and current_user.subjects.include? @subject
-    .form-actions
-      = link_to "Внести данные", new_measuring_device_path, :class => "primary_action btn btn-primary"
-
+          - if can? :manage, MeasuringDevice
+            %td
 - else
   %p На текущий период нет данных.
-  - if current_user and current_user.subjects.include? @subject
-    .form-actions
-      = link_to "Внести данные", new_measuring_device_path, :class => "primary_action btn btn-primary"
+
+- if can? :create, MeasuringDevice
+  .form-actions
+    = link_to "Внести данные", new_measuring_device_path, :class => "primary_action btn btn-primary"

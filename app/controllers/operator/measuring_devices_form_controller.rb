@@ -6,9 +6,11 @@ class Operator::MeasuringDevicesFormController < OperatorsController
   end
 
   def new
+    authorize! :create, MeasuringDevice
   end
 
   def create
+    authorize! :create, MeasuringDevice
     MeasuringDevice.transaction do
       begin
         @areas.each do |a|
@@ -32,12 +34,14 @@ class Operator::MeasuringDevicesFormController < OperatorsController
   end
 
   def edit
+    authorize! :update, MeasuringDevice
     devices = MeasuringDevice.where(:period_id => @period.id, :subject_id => @subject.id)
     redirect_to :action => :new and return if devices.count.zero?
     @current_devices = devices.all
   end
 
   def update
+    authorize! :update, MeasuringDevice
     MeasuringDevice.transaction do
       begin
         @areas.each do |a|
@@ -59,6 +63,7 @@ class Operator::MeasuringDevicesFormController < OperatorsController
   end
 
   def destroy
+    authorize! :delete, MeasuringDevice
     MeasuringDevice.transaction do
       begin
         MeasuringDevice.where(:period_id => @period.id, :subject_id => @subject.id).destroy_all

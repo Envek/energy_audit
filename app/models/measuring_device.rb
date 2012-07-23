@@ -9,9 +9,9 @@ class MeasuringDevice < ActiveRecord::Base
   validates :area, :presence => true
   validates :kind, :presence => true
 
-  validates :start_value, :numericality => { :only_integer => true}
-  validates :planned_value, :numericality => { :only_integer => true}
-  validates :final_value, :numericality => { :only_integer => true}
+  validates :start_value,   :numericality => { :only_integer => true, :greater_than_or_equal_to => 0 }
+  validates :planned_value, :numericality => { :only_integer => true, :greater_than_or_equal_to => 0 }
+  validates :final_value,   :numericality => { :only_integer => true, :greater_than_or_equal_to => 0 }
 
   scope :with_areas_and_kinds, includes(:area, :kind)
   scope :for_period_and_subject, lambda { |p, s| with_values.where(:period_id => p.id, :subject_id => s.id) }

@@ -1,5 +1,13 @@
 - next_action = (params[:action]=='new' ? 'create' : 'update')
 = form_for @device, :url => url_for(:period_id => @period.to_param, :subject_id => @subject.id, :id => @device.id, :action => next_action) do |f|
+
+  - if @device.errors.any?
+    .alert.alert-block.alert-error
+      %h4.alert-heading При заполнении формы произошли следующие ошибки:
+      %ul
+        - @device.errors.full_messages.each do |msg|
+          %li= msg
+
   %table.form_table.measuring_devices_form_table
     %thead
       %tr
