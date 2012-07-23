@@ -15,7 +15,7 @@
   %li{:class => ("active" if params[:controller] == "periods")}
     = link_to "Главная", periods_path
 
-- if user_signed_in? and current_user.admin
+- if can? :manage, :all
   %li.dropdown
     %a.dropdown-toggle{"data-toggle".to_sym => "dropdown", href: "#"}
       Администрирование
