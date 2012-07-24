@@ -5,6 +5,7 @@ class Operator::AuditsController < OperatorsController
   end
 
   def new
+    authorize! :create, Audit
     @audit = Audit.new
   end
 
@@ -14,6 +15,7 @@ class Operator::AuditsController < OperatorsController
         @audit = Audit.new(params[:audit])
         @audit.period = @period
         @audit.subject = @subject
+        authorize! :create, @audit
         @audit.save!
       rescue ActiveRecord::RecordInvalid
         render :new
@@ -26,6 +28,7 @@ class Operator::AuditsController < OperatorsController
 
   def edit
     @audit = Audit.where(:period_id => @period.id, :subject_id => @subject.id).first
+    authorize! :update, @audit
     redirect_to :action => :new and return unless @audit
   end
 
@@ -34,6 +37,7 @@ class Operator::AuditsController < OperatorsController
       begin
         @audit = Audit.where(:period_id => @period.id, :subject_id => @subject.id).first
         @audit.update_attributes(params[:audit])
+        authorize! :update, @audit
         @audit.save!
       rescue ActiveRecord::RecordInvalid
         render :edit
@@ -46,6 +50,7 @@ class Operator::AuditsController < OperatorsController
 
   def destroy
     @audit = Audit.find(params[:id])
+    authorize! :delete, @audit
     @audit.destroy
     redirect_to url_for(:action => :index), :notice => t("operator.audits.messages.removed")
   end

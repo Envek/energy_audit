@@ -40,13 +40,13 @@
           %th Планируемый объем экономии в бюджетных учреждениях любой формы собственности (юридических лиц) по результатам проведенных энергетических обследований, тыс.руб.
           %td.usual.with_input #{@audit.ref_planning_economy_value}
 
-  - if current_user and current_user.subjects.include? @subject
+  - if can? :manage, @audit
     .form-actions
       = link_to "Внести изменения", edit_audit_path(@period.to_param, @subject.id, @audit.id), :class => "primary_action btn"
       = link_to "Удалить", audit_path(@period.to_param, @subject.id, @audit.id), :class => "btn btn-danger", :method => :delete, :confirm => t(".delete_confirm")
 
 - else
   %p На текущий период нет данных.
-  - if current_user and current_user.subjects.include? @subject
+  - if can? :create, Audit
     .form-actions
       = link_to "Внести данные", new_audit_path(@period.to_param, @subject.id), :class => "primary_action btn btn-primary"
