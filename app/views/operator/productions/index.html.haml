@@ -10,7 +10,8 @@
         %th= Production.human_attribute_name :production
         %th= Production.human_attribute_name :consumption
         %th= Production.human_attribute_name :useful_output
-        %th
+        - if can? :manage, Production
+          %th
     %tbody
       - @productions.each do |production|
         %tr
@@ -19,15 +20,15 @@
           %td.usual #{production.production}
           %td.usual #{production.consumption}
           %td.usual #{production.useful_output}
-          %td.manage
-            - if current_user and current_user.subjects.include? @subject
+          - if can? :manage, production
+            %td.manage
               = link_to "Изменить", edit_production_path(@period.to_param, @subject.id, production.id), :class => "btn btn-mini"
               = link_to "Удалить", production_path(@period.to_param, @subject.id, production.id), :class => "btn btn-danger btn-mini", :method => :delete, :confirm => t(".delete_confirm")
 
 - else
   %p На текущий период нет данных.
 
-- if current_user and current_user.subjects.include? @subject
+- if can? :create, Production
   - unless @productions.count == ProductionResource.count
     .form-actions
       = link_to "Внести данные", new_production_path(@period.to_param, @subject.id), :class => "primary_action btn btn-primary"
