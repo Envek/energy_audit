@@ -12,11 +12,11 @@
         %th{:colspan => 2}= Consumption.human_attribute_name :actual_cons, :start_date => @period.start_date_localized
         %th{:colspan => 2}= Consumption.human_attribute_name :deviation, :start_year => @period.date.year-2, :period_year => @period.date.year
         %th= Consumption.human_attribute_name :deviation_reason
-        %th
+        - if can? :manage, Consumption
+          %th{:rowspan => 2}
       %tr
         - 12.times do |i|
           %th #{i+1}
-        %th
     %tbody
       - @consumptions.each do |consumption|
         %tr
@@ -25,8 +25,8 @@
             %td #{consumption.resource.unit}
             %td руб.
           %td{:rowspan => 2} #{consumption.reason}
-          %td.manage{:rowspan => 2}
-            - if current_user and current_user.subjects.include? @subject
+          - if can? :manage, consumption
+            %td.manage{:rowspan => 2}
               = link_to "Изменить", edit_consumption_path(@period.to_param, @subject.id, consumption.id), :class => "btn btn-mini"
               = link_to "Удалить", consumption_path(@period.to_param, @subject.id, consumption.id), :class => "btn btn-danger btn-mini", :method => :delete, :confirm => t(".delete_confirm")
         %tr
@@ -44,7 +44,7 @@
 - else
   %p На текущий период нет данных.
 
-- if current_user and current_user.subjects.include? @subject
+- if can? :create, Consumption
   - unless @consumptions.count == Resource.count
     .form-actions
       = link_to "Внести данные", new_consumption_path(@period.to_param, @subject.id), :class => "primary_action btn btn-primary"
