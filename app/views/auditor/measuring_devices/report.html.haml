@@ -5,10 +5,10 @@
     %thead
       %tr
         %th{:rowspan => 2} #{@subject_type.model_name.human if @subject_type}
-        %th{:colspan => @kinds.count+1} Количество установленных приборов учета по состоянию на #{@period.start_date_localized} г.
-        %th{:colspan => @kinds.count+1} Необходимое количество приборов учета до 100% оснащения на #{@period.start_date_localized} г.
-        %th{:colspan => @kinds.count+1} Фактическое количество установленных приборов учета по состоянию на #{@period.date_localized} г. 
-        %th{:rowspan => 2} Процент оснащённости
+        %th{:colspan => @kinds.count+1}= t 'common.attributes.measuring_device.start_value',   :date => @period.start_date_localized
+        %th{:colspan => @kinds.count+1}= t 'common.attributes.measuring_device.planned_value', :date => @period.start_date_localized
+        %th{:colspan => @kinds.count+1}= t 'common.attributes.measuring_device.final_value',   :date => @period.date_localized
+        %th{:rowspan => 2}= t 'common.attributes.measuring_device.equipment_level'
       %tr
         - @val_types.each do |v|
           - @kinds.each do |kind|
