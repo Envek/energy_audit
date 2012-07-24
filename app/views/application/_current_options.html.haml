@@ -1,4 +1,4 @@
-= form_tag("/operator/options/update", {method: "post", class: 'well form-inline'}) do
+= form_tag("/operator/change_period_and_subject", {method: "post", class: 'well form-inline'}) do
   %span Период и субъект, по которым будут вносится данные:
   = select_tag :period_id, options_for_select(Period.all.map{|p| [p.to_label, p.to_param]}, @period.to_param)
   = select_tag :subject_id, grouped_options_for_select(subjects_grouped_for_select(current_user.subject_ids), @subject.id)

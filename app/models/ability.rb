@@ -14,7 +14,9 @@ class Ability
           can :manage, stat do |stat|
             user.subject_ids.include? stat.subject_id
           end
-          cannot :manage, stat unless user.subject_ids.include? params[:subject_id].to_i
+          if params[:subject_id] and not user.subject_ids.include? params[:subject_id].to_i
+            cannot :manage, stat
+          end
         end
       end
 

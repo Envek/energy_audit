@@ -7,4 +7,12 @@ module ApplicationHelper
     }.compact
   end
 
+  def current_subject
+    if @subject and user_signed_in? and current_user.subjects.include?(@subject)
+      @subject
+    else
+      current_user.subjects.first
+    end
+  end
+
 end

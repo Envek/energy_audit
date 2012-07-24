@@ -59,7 +59,7 @@ EnergyAudit::Application.routes.draw do
     resources :productions, :controller => 'operator/productions', :path => '', :except => [:show]
   end
   # Operator options
-  match "/operator/options/update" => "operator/options#update", :via => :post
+  match 'operator/change_period_and_subject' => 'operators#change_period_and_subject', :via => :post
   # API controller
   resources :activities, :only => [:show], :path => 'operator/activities', :module => 'operator'
 

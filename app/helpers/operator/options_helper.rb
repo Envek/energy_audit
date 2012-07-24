@@ -1,2 +1,0 @@
-module Operator::OptionsHelper
-end
