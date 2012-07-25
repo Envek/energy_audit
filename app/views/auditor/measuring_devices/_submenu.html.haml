@@ -8,5 +8,8 @@
     - [{:action => :districts, :title => "Муниципальные образования"}, {:action => :authorities, :title => "Исполнительные органы государственной власти"}, {:action => :organisations, :title => "Организации"},].each do |item|
       %a.btn{:href =>  url_for(:action => item[:action]), :class => ("active" if params[:action].to_s == item[:action].to_s)}= item[:title]
 
+  .btn-group
+    %a.btn{:href => url_for(:action => :total), :class => ("active" if params[:action].to_s == 'total')} Итог
+
   .btn-group.pull-right
     %a.btn.excel_export{:href => url_for(:action => :export, :format => :xlsx)} Экспорт в Excel

@@ -23,7 +23,15 @@ class Auditor::MeasuringDevicesController < AuditorController
   end
 
   def total
-    
+    ActiveRecord::IdentityMap.use do
+      @subject_types = [District, Authority, Organisation]
+      stub = MeasuringDevice.unscoped.joins([:kind, :subject, :area]).where(:period_id => @period.id).group("areas.id, kinds.id, subjects.type")
+      @devices = stub.order("areas.id ASC, subjects.type ASC, kinds.id ASC").
+                 select("areas.id AS area_id, subjects.type AS subject_type, kinds.id AS kind_id, SUM(measuring_devices.start_value) AS start_value,
+                         SUM(measuring_devices.planned_value) AS planned_value, SUM(measuring_devices.final_value) final_value")
+      @areas = Area.find(stub.pluck(:area_id).uniq)
+      @kinds = Kind.find(stub.pluck(:kind_id).uniq)
+    end
   end
 
   def export
