@@ -1,0 +1,22 @@
+ru:
+  activerecord:
+    errors:
+      models:
+        house_type:
+          attributes:
+            name:
+              taken: ": тип домов с таким названием уже существует."
+
+    models:
+      house_type: 
+        one: "Тип домов"
+        few: "Типы домов"
+        many: "Типы домов"
+        other: "Типы домов"
+
+    attributes:
+      house_type:
+        name: "Название"
+
+    description:
+      house_type:

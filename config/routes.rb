@@ -81,6 +81,7 @@ EnergyAudit::Application.routes.draw do
       resources :activities do as_routes end
       resources :activity_categories do as_routes end
       resources :production_resources do as_routes end
+      resources :house_types do as_routes end
       root :to => redirect('/admin/dictionaries/activities')
     end
     root :to => redirect('/admin/users/operators')
