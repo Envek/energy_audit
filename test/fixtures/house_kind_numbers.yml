@@ -1,0 +1,13 @@
+# Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/Fixtures.html
+
+one:
+  house_number: 
+  house_kind: 
+  required: 1
+  equipped: 1
+
+two:
+  house_number: 
+  house_kind: 
+  required: 1
+  equipped: 1

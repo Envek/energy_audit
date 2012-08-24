@@ -1,4 +1,5 @@
 class HouseType < ActiveRecord::Base
+  has_many :house_numbers, :dependent => :destroy
 
   attr_accessible :name
 

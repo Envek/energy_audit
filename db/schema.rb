@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20120824105144) do
+ActiveRecord::Schema.define(:version => 20120824110911) do
 
   create_table "activities", :force => true do |t|
     t.string   "name",                 :null => false
@@ -109,6 +109,19 @@ ActiveRecord::Schema.define(:version => 20120824105144) do
   add_index "consumptions", ["resource_id"], :name => "index_consumptions_on_resource_id"
   add_index "consumptions", ["subject_id"], :name => "index_consumptions_on_subject_id"
 
+  create_table "house_kind_numbers", :force => true do |t|
+    t.integer  "house_number_id"
+    t.integer  "house_kind_id"
+    t.integer  "required",        :null => false
+    t.integer  "equipped",        :null => false
+    t.datetime "created_at",      :null => false
+    t.datetime "updated_at",      :null => false
+  end
+
+  add_index "house_kind_numbers", ["house_kind_id"], :name => "index_house_kind_numbers_on_house_kind_id"
+  add_index "house_kind_numbers", ["house_number_id", "house_kind_id"], :name => "house_kind_numbers_main_index", :unique => true
+  add_index "house_kind_numbers", ["house_number_id"], :name => "index_house_kind_numbers_on_house_number_id"
+
   create_table "house_kinds", :force => true do |t|
     t.string   "name",       :null => false
     t.datetime "created_at", :null => false
@@ -116,6 +129,22 @@ ActiveRecord::Schema.define(:version => 20120824105144) do
   end
 
   add_index "house_kinds", ["name"], :name => "index_house_kinds_on_name", :unique => true
+
+  create_table "house_numbers", :force => true do |t|
+    t.integer  "period_id"
+    t.integer  "subject_id"
+    t.integer  "house_type_id"
+    t.integer  "total",         :null => false
+    t.integer  "required",      :null => false
+    t.integer  "equipped",      :null => false
+    t.datetime "created_at",    :null => false
+    t.datetime "updated_at",    :null => false
+  end
+
+  add_index "house_numbers", ["house_type_id"], :name => "index_house_numbers_on_house_type_id"
+  add_index "house_numbers", ["period_id", "subject_id", "house_type_id"], :name => "house_numbers_main_index", :unique => true
+  add_index "house_numbers", ["period_id"], :name => "index_house_numbers_on_period_id"
+  add_index "house_numbers", ["subject_id"], :name => "index_house_numbers_on_subject_id"
 
   create_table "house_types", :force => true do |t|
     t.string   "name",       :null => false

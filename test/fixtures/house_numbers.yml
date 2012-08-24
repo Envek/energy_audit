@@ -1,0 +1,17 @@
+# Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/Fixtures.html
+
+one:
+  period: 
+  subject: 
+  house_type: 
+  total: 1
+  required: 1
+  equipped: 1
+
+two:
+  period: 
+  subject: 
+  house_type: 
+  total: 1
+  required: 1
+  equipped: 1
