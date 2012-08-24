@@ -13,3 +13,5 @@
     = link_to "Ресурсы производства", admin_dictionaries_production_resources_path
   %li.btn{:class => ("active" if params[:controller] == "admin/dictionaries/house_types")}
     = link_to "Типы домов", admin_dictionaries_house_types_path
+  %li.btn{:class => ("active" if params[:controller] == "admin/dictionaries/house_kinds")}
+    = link_to "Показатели для кол-ва домов", admin_dictionaries_house_kinds_path

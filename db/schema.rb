@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20120824100127) do
+ActiveRecord::Schema.define(:version => 20120824105144) do
 
   create_table "activities", :force => true do |t|
     t.string   "name",                 :null => false
@@ -108,6 +108,14 @@ ActiveRecord::Schema.define(:version => 20120824100127) do
   add_index "consumptions", ["period_id"], :name => "index_consumptions_on_period_id"
   add_index "consumptions", ["resource_id"], :name => "index_consumptions_on_resource_id"
   add_index "consumptions", ["subject_id"], :name => "index_consumptions_on_subject_id"
+
+  create_table "house_kinds", :force => true do |t|
+    t.string   "name",       :null => false
+    t.datetime "created_at", :null => false
+    t.datetime "updated_at", :null => false
+  end
+
+  add_index "house_kinds", ["name"], :name => "index_house_kinds_on_name", :unique => true
 
   create_table "house_types", :force => true do |t|
     t.string   "name",       :null => false

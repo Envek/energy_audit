@@ -1,0 +1,22 @@
+ru:
+  activerecord:
+    errors:
+      models:
+        house_kind:
+          attributes:
+            name:
+              taken: ": показатель с таким названием уже существует."
+
+    models:
+      house_kind: 
+        one: "Показатель"
+        few: "Показатели"
+        many: "Показатели"
+        other: "Показатели"
+
+    attributes:
+      house_kind:
+        name: "Название"
+
+    description:
+      house_kind:
