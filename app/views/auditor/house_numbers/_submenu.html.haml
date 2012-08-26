@@ -1,0 +1,13 @@
+.btn-toolbar
+
+  - if can? :manage, HouseNumber
+    .btn-group
+      %a.btn.btn-primary{:href => house_numbers_path(@period.to_param, current_subject)} Внести данные
+
+  .btn-group
+    - [ |
+      {:action => :districts, :title => "Муниципальные образования"}, |
+      {:action => :authorities, :title => "Исполнительные органы государственной власти"}, |
+      {:action => :organisations, :title => "Организации"}, |
+      ].each do |item| |
+      %a.btn{:href => url_for(:action => item[:action]), :class => ("active" if params[:action].to_s == item[:action].to_s)}= item[:title]

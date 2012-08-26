@@ -11,6 +11,8 @@
     = link_to "Потребление ТЭР", period_consumptions_path(@period, :districts)
   %li{:class => ("active" if params[:controller].include? "productions")}
     = link_to "Производство", period_productions_path(@period, :districts)
+  %li{:class => ("active" if params[:controller].include? "house_numbers")}
+    = link_to "Количество домов", period_house_numbers_path(@period, :districts)
 - else
   %li{:class => ("active" if params[:controller] == "periods")}
     = link_to "Главная", periods_path

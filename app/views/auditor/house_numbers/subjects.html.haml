@@ -1,0 +1,33 @@
+- if @subjects.any?
+  %table.form_table.activity_values_form_table
+    %thead
+      %tr
+        %th{:rowspan => 2}= @subject_type.model_name.human
+        %th{:rowspan => 2} Всего домов на территории субъекта
+        %th{:rowspan => 2} Из них подлежит оснащению приборами учета
+        %th{:rowspan => 2} Из них фактически оснащено
+        - @kinds.each do |kind|
+          %th{:colspan => 2}= kind.name
+      %tr
+        - @kinds.each do |kind|
+          %th подлежит оснащению
+          %th фактически оснащено
+    - @types.each do |type|
+      %tbody
+        %tr
+          %th{:colspan => 4+@kinds.count*2}= type.name
+      - @subjects.each do |subject|
+        - house_number = subject.house_numbers.find{|n| n.house_type_id == type.id && n.period_id == @period.id}
+        %tr
+          %th= link_to subject.name, house_numbers_path(@period, subject)
+          %td= house_number.try(:total)
+          %td= house_number.try(:required)
+          %td= house_number.try(:equipped)
+          - kind_nums = Array.wrap(house_number.try(:house_kind_numbers))
+          - @kinds.each do |kind|
+            - kind_num = kind_nums.find{|k| k.house_kind_id == kind.id }
+            %td= kind_num.try(:required)
+            %td= kind_num.try(:equipped)
+
+- else
+  %p На текущий период нет данных.

@@ -26,6 +26,10 @@ EnergyAudit::Application.routes.draw do
     match 'productions/:action' => 'auditor/productions', :via => :get, :as => 'productions'
     match 'productions.:format' => 'auditor/productions#export', :as => 'export_productions'
     match 'productions' => redirect{ |params| "/#{params[:period_id]}/productions/districts" }, :as => nil
+    # House numbers
+    match 'house_numbers/:action' => 'auditor/house_numbers', :via => :get, :as => 'house_numbers'
+    match 'house_numbers.:format' => 'auditor/house_numbers#export', :as => 'export_house_numbers'
+    match 'house_numbers' => redirect{ |params| "/#{params[:period_id]}/house_numbers/districts" }, :as => nil
   end
 
   # A combined public and operator area
@@ -57,6 +61,13 @@ EnergyAudit::Application.routes.draw do
   # Productions
   scope ':period_id/productions/subjects/:subject_id', :period_id => /\d{4}-\d{2}/, :subject_id => /\d+/ do
     resources :productions, :controller => 'operator/productions', :path => '', :except => [:show]
+  end
+  # House numbers
+  scope ':period_id/house_numbers/subjects/:subject_id', :period_id => /\d{4}-\d{2}/, :subject_id => /\d+/ do
+    resources :house_numbers, :controller => 'operator/house_numbers', :path => '', :except => [:show]
+  end
+  scope ':period_id/house_kind_numbers/subjects/:subject_id', :period_id => /\d{4}-\d{2}/, :subject_id => /\d+/ do
+    resources :house_kind_numbers, :controller => 'operator/house_kind_numbers', :path => '', :except => [:show]
   end
   # Operator options
   match 'operator/change_period_and_subject' => 'operators#change_period_and_subject', :via => :post
