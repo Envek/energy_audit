@@ -1,0 +1,28 @@
+- next_action = (params[:action]=='new' ? 'create' : 'update')
+= form_for @house_number, :url => url_for(:period_id => @period.to_param, :subject_id => @subject.id, :id => @house_number.id, :action => next_action) do |f|
+
+  - if @house_number.errors.any?
+    .alert.alert-block.alert-error
+      %h4.alert-heading При заполнении формы произошли следующие ошибки:
+      %ul
+        - @house_number.errors.full_messages.each do |msg|
+          %li= msg
+
+  %table.form_table.house_numbers_form_table
+    %thead
+      %tr
+        %th Тип домов
+        %th Всего домов на территории субъекта
+        %th Из них подлежит оснащению приборами учета
+        %th Из них фактически оснащено
+    %tbody
+      %tr
+        %th.usual.with_input= f.select :house_type_id, options_for_select(house_types_for_select_with_type(@house_number.house_type))
+        %td.usual.with_input= f.number_field :total
+        %td.usual.with_input= f.number_field :required
+        %td.usual.with_input= f.number_field :equipped
+
+  .form-actions
+    = link_to "Назад", request.referer, :class => "btn"
+    %button.btn.btn-inverse{:type => :reset} Отменить изменения
+    %button.primary_action.btn.btn-primary{:type => :submit} Сохранить 

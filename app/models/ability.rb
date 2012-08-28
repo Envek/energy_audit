@@ -10,7 +10,7 @@ class Ability
       cannot :read, User
       
       if user.subjects.any?
-        [MeasuringDevice, Audit, ActivityValue, Consumption, Production].each do |stat|
+        [MeasuringDevice, Audit, ActivityValue, Consumption, Production, HouseNumber, HouseKindNumber].each do |stat|
           can :manage, stat do |stat|
             user.subject_ids.include? stat.subject_id
           end

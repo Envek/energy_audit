@@ -66,8 +66,8 @@ EnergyAudit::Application.routes.draw do
   scope ':period_id/house_numbers/subjects/:subject_id', :period_id => /\d{4}-\d{2}/, :subject_id => /\d+/ do
     resources :house_numbers, :controller => 'operator/house_numbers', :path => '', :except => [:show]
   end
-  scope ':period_id/house_kind_numbers/subjects/:subject_id', :period_id => /\d{4}-\d{2}/, :subject_id => /\d+/ do
-    resources :house_kind_numbers, :controller => 'operator/house_kind_numbers', :path => '', :except => [:show]
+  scope 'operator/house_kind_numbers/:house_number_id', :house_number_id => /\d+/ do
+    resources :house_kind_numbers, :controller => 'operator/house_kind_numbers', :path => '', :except => [:index, :show]
   end
   # Operator options
   match 'operator/change_period_and_subject' => 'operators#change_period_and_subject', :via => :post
