@@ -6,7 +6,7 @@
     %table.form_table.house_numbers_form_table
       %thead
         %tr
-          %th Показатель
+          %th
           %th Всего домов на территории субъекта
           %th Из них подлежит оснащению приборами учета
           %th Из них фактически оснащено
@@ -14,7 +14,7 @@
             %th
       %tbody
         %tr
-          %th.usual #{house_number.house_type.name}
+          %td.usual <p>#{house_number.house_type.name}</p><p class="desc">#{house_number.house_type.description}</p>
           %td.usual #{house_number.total}
           %td.usual #{house_number.required}
           %td.usual #{house_number.equipped}
@@ -34,7 +34,7 @@
                 = link_to "Удалить", house_kind_number_path(house_number.id, kind_number.id), :class => "btn btn-danger btn-mini", :method => :delete, :confirm => t(".delete_confirm")
         - if can? :create, HouseKindNumber and house_number.house_kind_numbers.count < HouseKind.count
           %tr
-            %td{:colspan => 5}= link_to "Внести данные по другим показателям", new_house_kind_number_path(house_number.id), :class => "primary_action btn btn-primary"
+            %td{:colspan => 5}= link_to "Внести данные по другим показателям", new_house_kind_number_path(house_number.id), :class => "primary_action btn btn-primary btn-mini"
 
 - else
   %p На текущий период нет данных.

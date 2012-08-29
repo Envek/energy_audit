@@ -8,15 +8,15 @@ class HouseKindNumber < ActiveRecord::Base
   validates :house_number_id, :presence => true, :uniqueness => { :scope => :house_kind_id   }
   validates :house_kind_id,   :presence => true, :uniqueness => { :scope => :house_number_id }
   # House numbers
-  validates :required, :numericality => { :only_integer => true }
-  validates :equipped, :numericality => { :only_integer => true }
+  validates :required, :presence => true, :numericality => { :only_integer => true }
+  validates :equipped, :presence => true, :numericality => { :only_integer => true }
   # Custom validators
   validate :number_constraints
 
 private
 
   def number_constraints
-    errors.add(:equipped, :too_big) unless (equipped <= required)
+    errors.add(:equipped, :too_big) unless equipped and required and (equipped <= required)
   end
 
 end

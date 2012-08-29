@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20120824110911) do
+ActiveRecord::Schema.define(:version => 20120829104433) do
 
   create_table "activities", :force => true do |t|
     t.string   "name",                 :null => false
@@ -147,9 +147,10 @@ ActiveRecord::Schema.define(:version => 20120824110911) do
   add_index "house_numbers", ["subject_id"], :name => "index_house_numbers_on_subject_id"
 
   create_table "house_types", :force => true do |t|
-    t.string   "name",       :null => false
-    t.datetime "created_at", :null => false
-    t.datetime "updated_at", :null => false
+    t.string   "name",        :null => false
+    t.datetime "created_at",  :null => false
+    t.datetime "updated_at",  :null => false
+    t.string   "description"
   end
 
   add_index "house_types", ["name"], :name => "index_house_types_on_name", :unique => true

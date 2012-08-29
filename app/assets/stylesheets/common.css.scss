@@ -10,6 +10,11 @@ body {
   padding-left: 25px;
 }
 
+td p.desc {
+  margin: -1em 0 0;
+  font-size: 75%;
+}
+
 // Overwrite bootstrap styles a bit
 
 .navbar-inner {
