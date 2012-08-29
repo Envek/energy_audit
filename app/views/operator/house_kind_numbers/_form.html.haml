@@ -1,4 +1,4 @@
-- next_action = (params[:action]=='new' ? 'create' : 'update')
+- next_action = ((params[:action].in? ['new', 'create']) ? 'create' : 'update')
 = form_for @house_kind_number, :url => url_for(:house_number_id => @house_number.id, :id => @house_kind_number.id, :action => next_action) do |f|
 
   - if @house_kind_number.errors.any?
