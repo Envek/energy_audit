@@ -1,7 +1,11 @@
 # encoding: utf-8
+
+# TODO: It should be DRYed and refactored using https://github.com/straydogstudio/axlsx_rails !!!
+
 class Auditor::MeasuringDevicesExporter
   def self.export(wb, period)
-    data = [[District, false], [Authority, true], [Organisation, true]].map do |subj_type, use_only_filled|
+    subject_types = [[District, false], [Authority, true], [Organisation, true]]
+    data = subject_types.map do |subj_type, use_only_filled|
       areas = Area.includes(:measuring_devices => [:kind, :subject]).where(:measuring_devices => {:period_id => period.id}, :subjects => {:type => subj_type.to_s}).order("areas.id ASC, subjects.id ASC, kinds.id ASC")
       [areas, use_only_filled, subj_type]
     end
@@ -26,37 +30,40 @@ class Auditor::MeasuringDevicesExporter
       # Printing preparations
       margins = {:left => 2.5/2.54, :right => 0.5/2.54, :top => 0.5/2.54, :bottom => 0.5/2.54, :header => 0, :footer => 0}
       setup = {:fit_to_width => 1, :orientation => :landscape}
+      # Headers info
+      headers = [
+        {:titles => ["Информация об установленных приборах учета в бюджетных учреждениях муниципальных образований области за #{period.date.month-1} #{Russian.p period.date.month-1, "месяц", "месяца", "месяцев"} #{period.date.year} года", Array.new(columns_count-1).map!{ "" }].flatten,
+         :styles => columns_count_array.map{ top_cell },
+         :merges => ["A1:#{('A'.ord+columns_count-1).chr}1"]},
+        {:titles => ["", "%SUBJECT%",
+            I18n::t('common.attributes.measuring_device.start_value', :date => period.start_date_localized),
+            Array.new(kinds_count).map!{""},
+            I18n::t('common.attributes.measuring_device.planned_value', :date => period.start_date_localized),
+            Array.new(kinds_count).map!{""},
+            I18n::t('common.attributes.measuring_device.final_value', :date => period.date_localized),
+            Array.new(kinds_count).map!{""},
+            I18n::t('common.attributes.measuring_device.equipment_level'),
+          ].flatten,
+         :styles => columns_count_array.map{ header_cell },
+         :merges => ["C2:#{('C'.ord+kinds_count).chr}2",
+                     "#{('C'.ord+kinds_count+1).chr}2:#{('C'.ord+(kinds_count+1)*2-1).chr}2",
+                     "#{('C'.ord+(kinds_count+1)*2).chr}2:#{('C'.ord+(kinds_count+1)*3-1).chr}2",
+                    ]
+        },
+        {:titles => ["", "",
+            Array.new(3).map { [kind_names, "Всего"] },
+            ""
+          ].flatten,
+         :styles => columns_count_array.map{ header_cell },
+         :merges => ["A2:A3", "B2:B3", "#{('A'.ord+columns_count-1).chr}2:#{('A'.ord+columns_count-1).chr}3"]}
+      ]
       # Export worksheets
+      total_rows = {} # Here will be remembered numbers of total rows for use in last page (Totals)
       data.each do |areas, use_only_filled_subjects, subject_type|
+        total_rows[subject_type] = {}
         wb.add_worksheet(:name => subject_type.model_name.human(:count => 2), :page_margins => margins, :page_setup => setup) do |sheet|
-          headers = [
-            {:titles => ["Информация об установленных приборах учета в бюджетных учреждениях муниципальных образований области за #{period.date.month-1} #{Russian.p period.date.month-1, "месяц", "месяца", "месяцев"} #{period.date.year} года", Array.new(columns_count-1).map!{ "" }].flatten,
-             :styles => columns_count_array.map{ top_cell },
-             :merges => ["A1:#{('A'.ord+columns_count-1).chr}1"]},
-            {:titles => ["", "#{subject_type.model_name.human if subject_type}",
-                I18n::t('common.attributes.measuring_device.start_value', :date => period.start_date_localized),
-                Array.new(kinds_count).map!{""},
-                I18n::t('common.attributes.measuring_device.planned_value', :date => period.start_date_localized),
-                Array.new(kinds_count).map!{""},
-                I18n::t('common.attributes.measuring_device.final_value', :date => period.date_localized),
-                Array.new(kinds_count).map!{""},
-                I18n::t('common.attributes.measuring_device.equipment_level'),
-              ].flatten,
-             :styles => columns_count_array.map{ header_cell },
-             :merges => ["C2:#{('C'.ord+kinds_count).chr}2",
-                         "#{('C'.ord+kinds_count+1).chr}2:#{('C'.ord+(kinds_count+1)*2-1).chr}2",
-                         "#{('C'.ord+(kinds_count+1)*2).chr}2:#{('C'.ord+(kinds_count+1)*3-1).chr}2",
-                        ]
-            },
-            {:titles => ["", "",
-                Array.new(3).map { [kind_names, "Всего"] },
-                ""
-              ].flatten,
-             :styles => columns_count_array.map{ header_cell },
-             :merges => ["A2:A3", "B2:B3", "#{('A'.ord+columns_count-1).chr}2:#{('A'.ord+columns_count-1).chr}3"]}
-          ]
           headers.each do |hr|
-            sheet.add_row hr[:titles], :style => hr[:styles]
+            sheet.add_row hr[:titles].map{|t| t.gsub("%SUBJECT%", subject_type.model_name.human) }, :style => hr[:styles]
             hr[:merges].each do |merge|
               sheet.merge_cells(merge)
             end
@@ -96,17 +103,88 @@ class Auditor::MeasuringDevicesExporter
                               "=#{('A'.ord+2+(kinds_count+1)*3-1).chr}#{current_row}/(#{('A'.ord+2+(kinds_count+1)-1).chr}#{current_row}+#{('A'.ord+2+(kinds_count+1)*2-1).chr}#{current_row})"
                           ].flatten,
                           :style => [Array.new(columns_count-1).map{ total_cell }, total_percent_cell].flatten
+            total_rows[subject_type][area] = current_row # Remember, on which row the totals stored for use in the last "totals" page
             current_row += 1
           end
           sheet.column_widths *[4, 20, Array.new(columns_count-3).map{8}, 10].flatten
           # Split and freeze panels
           sheet.sheet_view.pane do |pane|
-            pane.top_left_cell = "B#{header_height+1}"
+            pane.top_left_cell = "C#{header_height+1}"
             pane.state = :frozen_split
             pane.y_split = header_height
-            pane.x_split = 1
+            pane.x_split = 2
             pane.active_pane = :bottom_right
           end
+        end
+      end
+      # Export totals
+      wb.add_worksheet(:name => "Итог", :page_margins => margins, :page_setup => setup) do |sheet|
+        headers.each do |hr|
+          sheet.add_row hr[:titles].map{|t| t.gsub("%SUBJECT%", "Тип субъекта") }, :style => hr[:styles]
+          hr[:merges].each do |merge|
+            sheet.merge_cells(merge)
+          end
+        end
+        # Export data
+        current_row = header_height + 1
+        areas = Area.includes(:measuring_devices).where(:measuring_devices => {:period_id => period.id}).order("areas.id ASC")
+        areas.each do |area|
+          if total_rows.map{|r| r[1][area]}.any?
+            # Heading
+            sheet.add_row [ area.name, Array.new(columns_count-1, "")].flatten,
+                          :style => columns_count_array.map{ top_cell }
+            sheet.merge_cells("A#{current_row}:#{('A'.ord+columns_count-1).chr}#{current_row}")
+            current_row += 1
+            # Totals
+            rows_of_total_rows = 0
+            subject_types.map(&:first).each_with_index do |subject_type, index|
+              if total_rows[subject_type][area]
+                current_column = 1
+                sheet.add_row [ index+1, subject_type.model_name.human(:count => 2),
+                  val_types.map{|v|
+                    vals = kinds.map do |kind|
+                      current_column += 1
+                      page_name = "#{subject_type.model_name.human(:count => 2)}"
+                      column = ('A'.ord+current_column).chr
+                      "='#{page_name}'!#{column}#{total_rows[subject_type][area]}"
+                    end
+                    current_column += 1
+                    sum = "=SUM(#{('A'.ord+current_column-kinds_count).chr}#{current_row}:#{('A'.ord+current_column-1).chr}#{current_row})"
+                    [vals, sum]
+                  },
+                  "=#{('A'.ord+2+(kinds_count+1)*3-1).chr}#{current_row}/(#{('A'.ord+2+(kinds_count+1)-1).chr}#{current_row}+#{('A'.ord+2+(kinds_count+1)*2-1).chr}#{current_row})"
+                ].flatten, :style => [Array.new(columns_count-1).map{ usual_cell }, percent_cell].flatten
+                current_row += 1
+                rows_of_total_rows += 1
+              end
+            end
+            # Totals of totals
+            if rows_of_total_rows > 0
+              current_column = 1
+              sheet.add_row [ "", "Всего",
+                val_types.map{|v|
+                  vals = kinds.map do |kind|
+                    current_column += 1
+                    "=SUM(#{('A'.ord+current_column).chr}#{current_row-rows_of_total_rows}:#{('A'.ord+current_column).chr}#{current_row-1})"
+                  end
+                  current_column += 1
+                  sum = "=SUM(#{('A'.ord+current_column-kinds_count).chr}#{current_row}:#{('A'.ord+current_column-1).chr}#{current_row})"
+                  [vals, sum]
+                },
+                "=#{('A'.ord+2+(kinds_count+1)*3-1).chr}#{current_row}/(#{('A'.ord+2+(kinds_count+1)-1).chr}#{current_row}+#{('A'.ord+2+(kinds_count+1)*2-1).chr}#{current_row})"
+              ].flatten, :style => [Array.new(columns_count-1).map{ total_cell }, total_percent_cell].flatten
+              current_row += 1
+            end
+          end
+        end
+        sheet.column_widths *[4, 20, Array.new(columns_count-3).map{8}, 10].flatten
+        # Split and freeze panels
+        sheet.sheet_view.pane do |pane|
+          pane.top_left_cell = "C#{header_height+1}"
+          pane.state = :frozen_split
+          pane.y_split = header_height
+          pane.x_split = 2
+          pane.active_pane = :bottom_right
         end
       end
     end
