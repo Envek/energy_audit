@@ -4,6 +4,11 @@ EnergyAudit::Application.routes.draw do
 
   devise_for :user, :path_names => { :sign_in => 'login', :sign_out => 'logout'}
 
+  # User profile
+  namespace :user do
+    resource :profile, :only => [:show, :edit, :update]
+  end
+
   # Public part: view all aggregated data by periods
   resources :periods, :only => [:index, :show], :path => '', :constraints => {:id => /\d{4}-\d{2}/} do
     # Measuring devices

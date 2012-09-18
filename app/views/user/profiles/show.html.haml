@@ -1,0 +1,16 @@
+%h1 Ваш профиль
+
+%dl.dl-horizontal
+  %dt Имя
+  %dd= current_user.full_name
+  %dt E-mail
+  %dd= current_user.email
+  %dt Субъекты заполнения
+  - if current_user.subjects.none?
+    %dd Вы не можете заполнять информацию ни для одного субъекта
+  - else
+    - current_user.subjects.each do |subject|
+      %dd= subject.name
+
+.form-actions
+  = link_to "Изменить", edit_user_profile_path, :class => "primary_action btn btn-primary"

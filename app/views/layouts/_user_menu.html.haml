@@ -1,6 +1,6 @@
 - if user_signed_in?
   %li
-    = link_to current_user.surname_initials, "#"
+    = link_to current_user.surname_initials, user_profile_path
   %li
     = link_to t("devise.labels.sign_out"), destroy_user_session_path
 - else

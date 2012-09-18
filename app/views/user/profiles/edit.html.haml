@@ -1,0 +1,28 @@
+- if @user.errors.any?
+  .alert.alert-block.alert-error
+    %h4.alert-heading При заполнении формы произошли следующие ошибки:
+    %ul
+      - @user.errors.full_messages.each do |msg|
+        %li= msg
+
+= form_for @user, :url => {:controller => "user/profiles", :action => 'update', :method => 'put'}, :html => { :class => 'form-horizontal' } do |f|
+  %legend Редактирование профиля
+  .control-group
+    = f.label :full_name, "ФИО (полностью)", :class => "control-label"
+    .controls
+      = f.text_field :full_name
+  .control-group
+    = f.label :email, "E-mail", :class => "control-label"
+    .controls
+      = f.email_field :email
+  .control-group
+    = f.label :password, "Новый пароль", :class => "control-label"
+    .controls
+      = f.password_field :password
+  .control-group
+    = f.label :password_confirmation, "Подтверждение пароля", :class => "control-label"
+    .controls
+      = f.password_field :password_confirmation
+
+  .form-actions
+    = f.submit "Сохранить", :class => "btn btn-primary"
