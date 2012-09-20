@@ -1,0 +1,6 @@
+ru:
+  auditor:
+    consumptions:
+      export:
+        total: "Всего"
+        filename: "Потребление ТЭР на %{date}"

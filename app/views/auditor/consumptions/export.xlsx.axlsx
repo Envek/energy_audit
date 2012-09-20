@@ -1,0 +1,59 @@
+wb = xlsx_package.workbook
+styles = {}
+wb.styles do |s|
+  # Cell styles
+  styles[:top_cell] = s.add_style :sz => 12, :font_name => 'Times New Roman', :alignment => { :horizontal=> :center, :vertical => :center }, :border => { :style => :thin, :color =>"00000000" }
+  styles[:header_cell] = s.add_style :sz => 8, :font_name => 'Times New Roman', :alignment => { :horizontal=> :center, :vertical => :center, :wrapText => true }, :border => { :style => :thin, :color =>"00000000" }
+  styles[:usual_cell] = s.add_style :sz => 12, :font_name => 'Times New Roman', :border => { :style => :thin, :color =>"00000000" }
+  styles[:percent_cell] = s.add_style :sz => 12, :font_name => 'Times New Roman', :border => { :style => :thin, :color =>"00000000" }, :format_code => "0.00%"
+  styles[:total_cell] = s.add_style :sz => 12, :font_name => 'Times New Roman', :b => true, :border => { :style => :thin, :color =>"00000000" }
+  styles[:total_percent_cell] = s.add_style :sz => 12, :font_name => 'Times New Roman', :b => true, :border => { :style => :thin, :color =>"00000000" }, :format_code => "0.00%"
+end
+
+header_height = 2
+
+# Printing preparations
+margins = {:left => 2.5/2.54, :right => 0.5/2.54, :top => 0.5/2.54, :bottom => 0.5/2.54, :header => 0, :footer => 0}
+setup = {:fit_to_width => 1, :orientation => :landscape}
+
+# Export main pages
+@data.each do |dataset|
+  wb.add_worksheet(:name => dataset[:type].model_name.human(:count => 2), :page_margins => margins, :page_setup => setup) do |sheet|
+    render :partial => 'headers', :locals => {:sheet => sheet, :subject_title => dataset[:type].model_name.human, :styles => styles}
+    current_row = header_height + 1
+    # Main data
+    dataset[:subjects].each do |subject|
+      consumptions = dataset[:consumptions].select{|c| c.subject_id == subject.id }
+      consumptions.each_with_index do |cons, index|
+        name =  index.zero?? subject.name : ""
+        data = [name, cons.resource.name, cons.prev_cons_units, cons.prev_cons_monetary, 
+                cons.approved_year_cons_units, cons.approved_year_cons_monetary,
+                cons.approved_period_cons_units, cons.approved_period_cons_monetary,
+                cons.actual_cons_units, cons.actual_cons_monetary,
+                "=I#{current_row}-C#{current_row}", "=J#{current_row}-D#{current_row}", cons.reason
+        ]
+        sheet.add_row data, :style => (1..13).map{ styles[:usual_cell] }
+        current_row += 1
+      end
+      sheet.merge_cells("A#{current_row-consumptions.count}:A#{(current_row)-1}") unless consumptions.count.zero?
+    end
+    last_row = current_row - 1
+    # Totals
+    resources = dataset[:consumptions].map{|c| c.resource }.uniq
+    resources.each_with_index do |resource, index|
+      title = index.zero?? t(".total") : ""
+      data = [title, resource.name,
+        (3..10).map{|i| "=SUMIF(B#{header_height+1}:B#{last_row},\"#{resource.name}\",#{('A'.ord+i-1).chr}#{header_height+1}:#{('A'.ord+i-1).chr}#{last_row})" },
+        "=I#{current_row}-C#{current_row}", "=J#{current_row}-D#{current_row}", ""
+      ].flatten
+      sheet.add_row data, :style => (1..13).map{ styles[:total_cell] }
+      current_row += 1
+    end
+    sheet.merge_cells("A#{last_row+1}:A#{last_row+resources.count}") unless resources.count.zero?
+    # Page adjusting
+    sheet.column_widths 20, 15, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10
+  end
+end
+
+# TODO: Export total page
+

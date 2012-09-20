@@ -22,20 +22,15 @@ class Auditor::ConsumptionsController < AuditorController
   end
 
   def export
+    c_1 = Consumption.includes(:subject).where(:period_id => @period.id, :subjects => {:type => 'District'}).order("subjects.id ASC")
+    s_1 = District.all
+    c_2 = Consumption.includes(:subject).where(:period_id => @period.id, :subjects => {:type => 'Authority'}).order("subjects.name ASC")
+    s_2 = c_2.map{|d| d.subject }.uniq
+    @data = [{:consumptions => c_1, :subjects => s_1, :type => District}, {:consumptions => c_2, :subjects => s_2, :type=> Authority}]
     respond_to do |format|
-      format.xlsx do
-        p = Axlsx::Package.new
-        wb = p.workbook
-        wb = Auditor::ConsumptionsExporter::export(wb, @period)
-        begin
-          temp = Tempfile.new("consumptions.xlsx")
-          p.serialize temp.path
-          send_file temp.path, :filename => "consumptions_#{@period.date}.xlsx", :type => "application/xlsx"
-        ensure
-          temp.close
-          temp.unlink
-        end
-      end
+      format.xlsx {
+        render :xlsx => 'export', :disposition => "attachment", :filename => t("auditor.consumptions.export.filename", :date => @period.date)
+      }
     end
   end
 
