@@ -6,8 +6,8 @@
         %th= Consumption.human_attribute_name :resource
         %th{:colspan => 2}= Consumption.human_attribute_name :prev_cons, :start_year => @period.date.year-2, :period_year => @period.date.year
         %th{:colspan => 2}= Consumption.human_attribute_name :approved_year_cons, :period_year => @period.date.year
-        %th{:colspan => 2}= Consumption.human_attribute_name :approved_period_cons, :start_date => @period.start_date_localized
-        %th{:colspan => 2}= Consumption.human_attribute_name :actual_cons, :start_date => @period.start_date_localized
+        %th{:colspan => 2}= Consumption.human_attribute_name :approved_period_cons, :start_date => @period.date_localized
+        %th{:colspan => 2}= Consumption.human_attribute_name :actual_cons, :start_date => @period.date_localized
         %th{:colspan => 2}= Consumption.human_attribute_name :deviation, :start_year => @period.date.year-2, :period_year => @period.date.year
         %th= Consumption.human_attribute_name :deviation_reason
       %tr
