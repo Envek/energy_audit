@@ -4,3 +4,4 @@ ru:
       export:
         total: "Всего"
         filename: "Потребление ТЭР на %{date}"
+        totals_page_title: "Итог"
