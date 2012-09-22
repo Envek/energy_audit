@@ -55,6 +55,7 @@ setup = {:fit_to_width => 1, :orientation => :landscape}
     sheet.merge_cells("A#{last_row+1}:A#{last_row+resources.count}") unless resources.count.zero?
     # Page adjusting
     sheet.column_widths 20, 15, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10
+    sheet.auto_filter = "B#{header_height}:M#{current_row - 1}"
   end
 end
 
@@ -94,4 +95,5 @@ wb.add_worksheet(:name => t(".totals_page_title"), :page_margins => margins, :pa
   sheet.merge_cells("A#{current_row-@resources.count}:A#{current_row-1}") unless @resources.count.zero?
   # Page adjusting
   sheet.column_widths 20, 15, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10
+  sheet.auto_filter = "B#{header_height}:L#{current_row - 1}"
 end
