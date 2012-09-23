@@ -9,6 +9,16 @@ class Auditor::ProductionsController < AuditorController
     render 'report'
   end
 
+  def export
+    productions = Production.includes(:subject).where(:period_id => @period.id, :subjects => {:type => 'District'}).order("subjects.id ASC")
+    @data = [{:productions => productions, :subjects => District.all, :type => District}]
+    respond_to do |format|
+      format.xlsx {
+        render :xlsx => 'export', :disposition => "attachment", :filename => t("auditor.productions.export.filename", :date => @period.date)
+      }
+    end
+  end
+
   private
 
   def load_production_resources

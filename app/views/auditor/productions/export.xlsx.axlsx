@@ -1,0 +1,51 @@
+wb = xlsx_package.workbook
+styles = {}
+wb.styles do |s|
+  # Cell styles
+  styles[:header_cell] = s.add_style :sz => 8, :font_name => 'Times New Roman', :alignment => { :horizontal=> :center, :vertical => :center, :wrapText => true }, :border => { :style => :thin, :color =>"00000000" }
+  styles[:usual_cell] = s.add_style :sz => 12, :font_name => 'Times New Roman', :border => { :style => :thin, :color =>"00000000" }
+  styles[:total_cell] = s.add_style :sz => 12, :font_name => 'Times New Roman', :b => true, :border => { :style => :thin, :color =>"00000000" }
+  styles[:subject_cell] = s.add_style :sz => 12, :font_name => 'Times New Roman', :b => true, :border => { :style => :thin, :color => "00000000" }, :alignment => { :vertical => :center }
+end
+
+header_height = 1
+
+# Printing preparations
+margins = {:left => 2.5/2.54, :right => 0.5/2.54, :top => 0.5/2.54, :bottom => 0.5/2.54, :header => 0, :footer => 0}
+setup = {:fit_to_width => 1, :orientation => :landscape}
+
+# Export main pages
+@data.each do |dataset|
+  wb.add_worksheet(:name => dataset[:type].model_name.human(:count => 2), :page_margins => margins, :page_setup => setup) do |sheet|
+    render :partial => 'headers', :locals => {:sheet => sheet, :subject_title => dataset[:type].model_name.human, :styles => styles, :show_reason => true}
+    current_row = header_height + 1
+    # Main data
+    dataset[:subjects].each do |subject|
+      productions = dataset[:productions].select{|c| c.subject_id == subject.id }
+      productions.each_with_index do |prod, index|
+        name =  index.zero?? subject.name : ""
+        data = [name, prod.production_resource.name, prod.production_resource.unit,
+                prod.production, prod.consumption, prod.useful_output
+        ]
+        sheet.add_row data, :style => [styles[:subject_cell], (2..6).map{ styles[:usual_cell] }].flatten
+        current_row += 1
+      end
+      sheet.merge_cells("A#{current_row-productions.count}:A#{(current_row)-1}") unless productions.count.zero?
+    end
+    last_row = current_row - 1
+    # Totals
+    resources = dataset[:productions].map{|c| c.production_resource }.uniq
+    resources.each_with_index do |resource, index|
+      title = index.zero?? t(".total") : ""
+      data = [title, resource.name, resource.unit,
+        (4..6).map{|i| "=SUMIF(B#{header_height+1}:B#{last_row},\"#{resource.name}\",#{('A'.ord+i-1).chr}#{header_height+1}:#{('A'.ord+i-1).chr}#{last_row})" }
+      ].flatten
+      sheet.add_row data, :style => [styles[:subject_cell], (2..6).map{ styles[:total_cell] }].flatten
+      current_row += 1
+    end
+    sheet.merge_cells("A#{last_row+1}:A#{last_row+resources.count}") unless resources.count.zero?
+    # Page adjusting
+    sheet.column_widths 30, 25, 25, 20, 20, 20
+    sheet.auto_filter = "B#{header_height}:F#{current_row - 1}"
+  end
+end

@@ -3,3 +3,6 @@ ru:
     productions:
       report:
         total: "Всего"
+      export:
+        total: "Всего"
+        filename: "Производство на %{date}"

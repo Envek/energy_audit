@@ -1,0 +1,9 @@
+header_titles = [
+  subject_title,
+  ProductionResource.human_attribute_name(:name),
+  ProductionResource.human_attribute_name(:unit),
+  Production.human_attribute_name(:production),
+  Production.human_attribute_name(:consumption),
+  Production.human_attribute_name(:useful_output),
+].compact
+sheet.add_row header_titles, :style => (1..6).map{ styles[:header_cell] }
