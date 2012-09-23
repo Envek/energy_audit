@@ -6,7 +6,7 @@
         %th= ProductionResource.human_attribute_name :name
         %th= ProductionResource.human_attribute_name :unit
         %th= Production.human_attribute_name :production
-        %th= Production.human_attribute_name :production
+        %th= Production.human_attribute_name :consumption
         %th= Production.human_attribute_name :useful_output
     %tbody
       - @subjects.each do |subject|
