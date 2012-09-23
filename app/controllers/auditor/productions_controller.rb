@@ -5,6 +5,7 @@ class Auditor::ProductionsController < AuditorController
     @productions = Production.includes(:subject).where(:period_id => @period.id, :subjects => {:type => 'District'}).order("subjects.id ASC")
     @subjects = District.all
     @subject_type = District
+    @total_resources = @productions.map(&:production_resource).uniq
     render 'report'
   end
 

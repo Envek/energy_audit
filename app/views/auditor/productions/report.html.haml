@@ -8,6 +8,17 @@
         %th= Production.human_attribute_name :production
         %th= Production.human_attribute_name :consumption
         %th= Production.human_attribute_name :useful_output
+    %tfoot
+      - @total_resources.each_with_index do |resource, index|
+        %tr
+          - if index.zero?
+            %td.usual{:rowspan => @total_resources.count}= t('.total')
+          %td.usual #{resource.name}
+          %td.usual #{resource.unit}
+          - productions = @productions.select{|c| c.production_resource_id == resource.id }
+          %td.usual #{productions.map(&:production).compact.sum}
+          %td.usual #{productions.map(&:consumption).compact.sum}
+          %td.usual #{productions.map(&:useful_output).compact.sum}
     %tbody
       - @subjects.each do |subject|
         - productions = @productions.select{|c| c.subject_id == subject.id }
