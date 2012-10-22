@@ -1,0 +1,16 @@
+%ul.breadcrumb
+  %li
+    = link_to "Система", ( @period ? period_path(@period) : periods_path )
+    <span class="divider">/</span>
+  - if params[:help_page] == 'index'
+    %li
+      Справка
+      <span class="divider">/</span>
+  - else
+    %li
+      = link_to "Справка", help_path
+      <span class="divider">/</span>
+    %li= File.readlines(@requested_page).first
+
+%article.help_text
+  = markdown File.read(@requested_page)

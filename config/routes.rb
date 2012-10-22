@@ -104,4 +104,7 @@ EnergyAudit::Application.routes.draw do
     root :to => redirect('/admin/users/operators')
   end
 
+  # Help pages
+  match 'help(/:help_page(.:format))', :controller => 'help', :action => 'show', :help_page => /(\w*\/?\w*)*/, :defaults => { :help_page => 'index' }, :as => :help
+
 end

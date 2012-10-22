@@ -1,3 +1,6 @@
+%li{:class => ("active" if params[:controller] == "help")}
+  = link_to "Помощь", help_path
+
 - if user_signed_in?
   %li
     = link_to current_user.surname_initials, user_profile_path
