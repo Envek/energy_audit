@@ -15,4 +15,10 @@ module ApplicationHelper
     end
   end
 
+  def markdown(text)
+    options = [:hard_wrap, :filter_html, :autolink, :no_intraemphasis, :fenced_code, :gh_blockcode]
+    @markdown_parser ||= Redcarpet::Markdown.new(Redcarpet::Render::HTML, Hash[options.map{|o| [o, true]}])
+    @markdown_parser.render(text).html_safe
+  end
+
 end

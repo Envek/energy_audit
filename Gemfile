@@ -28,6 +28,8 @@ gem 'haml'
 
 gem 'jquery-rails'
 
+gem 'redcarpet'
+
 gem 'anjlab-bootstrap-rails', '~> 2.0', :require => 'bootstrap-rails'
 
 gem 'active_scaffold'
