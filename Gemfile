@@ -47,7 +47,7 @@ group :development do
   gem 'capistrano'
   gem "rvm-capistrano"
   # Debugging
-  gem 'ruby-debug19', :require => 'ruby-debug'
+  gem 'debugger'
 end
 
 group :production do
