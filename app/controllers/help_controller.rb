@@ -7,6 +7,7 @@ class HelpController < ApplicationController
       raise ActiveRecord::RecordNotFound
     else
       @page = params[:help_page]
+      @page += "/index" if (Rails.root+"app/views/help/"+params[:help_page]).directory?
       respond_to do |format|
         format.html
         format.any(:markdown, :text) do
