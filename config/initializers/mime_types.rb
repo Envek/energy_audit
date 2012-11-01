@@ -5,5 +5,4 @@
 # Mime::Type.register_alias "text/html", :iphone
 
 # Make rails understand the markdown format
-Mime::Type.register "text/x-markdown", :markdown
-Mime::Type.register "text/x-markdown", :md
+Mime::Type.register "text/x-markdown", :markdown, %w( text/x-web-markdown ), %w( md )

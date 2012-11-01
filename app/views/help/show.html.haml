@@ -10,7 +10,7 @@
     %li
       = link_to "Справка", help_path
       <span class="divider">/</span>
-    %li= File.readlines(@requested_page).first
+    %li= File.readlines(@page).first
 
 %article.help_text
-  = markdown File.read(@requested_page)
+  = markdown(render(:template => "help/#{@page}", :formats => [:md]))
